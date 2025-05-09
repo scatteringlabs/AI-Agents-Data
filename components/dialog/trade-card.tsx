@@ -60,33 +60,13 @@ const TradeCard = ({ collectionDetails, dialogRef }: iTradeCard) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    if (!collectionDetails?.has_logo && collectionDetails?.symbol) {
-      const initials = getInitials(collectionDetails?.symbol);
-      const canvas = canvasRef.current;
-      if (canvas) {
-        canvas.width = size;
-        canvas.height = size;
-        const context = canvas.getContext("2d");
-        if (context) {
-          context.fillStyle = getColorForLetter(initials);
-          context.fillRect(0, 0, canvas.width, canvas.height);
-          context.font = `${size / 2}px Arial`;
-          context.fillStyle = "#FFF";
-          context.textAlign = "center";
-          context.textBaseline = "middle";
-          context.fillText(initials, size / 2, size / 2);
-          setImageSrc(canvas.toDataURL());
-        }
-      }
-    } else {
-      setImageSrc(collectionDetails?.logo_url || "");
-    }
+    setImageSrc(collectionDetails?.logo_url || "");
   }, [collectionDetails]);
   const priceInfo = useMemo(
     () => [
       {
         label: "24h Volume",
-        content: `$${formatNumberWithKM(collectionDetails?.volume)}`,
+        content: `$${formatNumberWithKM(collectionDetails?.total_volume_in_24hours)}`,
       },
       {
         label: "Liquidity",
@@ -253,7 +233,9 @@ const TradeCard = ({ collectionDetails, dialogRef }: iTradeCard) => {
                     <PriceChangeText
                       fontSize={isMobile ? 14 : 30}
                       fontWeight={600}
-                      priceChange={Number(collectionDetails?.price_change)}
+                      priceChange={Number(
+                        collectionDetails?.price_change_in_24hours,
+                      )}
                     />
                   </Box>
                 </Stack>
@@ -265,7 +247,6 @@ const TradeCard = ({ collectionDetails, dialogRef }: iTradeCard) => {
         <Box
           sx={{
             color: "#fff",
-            // width: { md: "100%", xs: 100 },
           }}
         >
           <DetailBar

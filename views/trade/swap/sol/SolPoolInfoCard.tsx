@@ -439,48 +439,12 @@ function SolPoolInfoCard({
               variant="h5"
               sx={{ color: " rgba(255, 255, 255, 0.6)" }}
             >
-              Fungible Token Address
+              Contract Address
             </Typography>
             <Typography variant="h5">
-              {formatAddress(poolInfo?.erc20_address)}
-              <CopyToClipboardButton
-                textToCopy={poolInfo?.erc20_address || ""}
-              />
+              {formatAddress(poolInfo?.address)}
+              <CopyToClipboardButton textToCopy={poolInfo?.address || ""} />
             </Typography>
-          </StackWrapper>
-          <StackWrapper>
-            <Typography
-              variant="h5"
-              sx={{ color: " rgba(255, 255, 255, 0.6)" }}
-            >
-              Escrow Address
-            </Typography>
-            <Typography variant="h5">
-              {formatAddress(escrowAddress)}{" "}
-              {escrowAddress ? (
-                <CopyToClipboardButton textToCopy={escrowAddress || ""} />
-              ) : null}
-            </Typography>
-            {!escrowAddress ? "N/A" : null}
-          </StackWrapper>
-          <StackWrapper>
-            <Typography
-              variant="h5"
-              sx={{ color: " rgba(255, 255, 255, 0.6)" }}
-            >
-              Conversion Ratio (1NFT = How Many Tokens)
-            </Typography>
-            {Number(deploymentData?.limitPerMint) ? (
-              <Typography variant="h5">
-                1:
-                {Number(deploymentData?.limitPerMint).toLocaleString("en-US", {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                })}
-              </Typography>
-            ) : (
-              "N/A"
-            )}
           </StackWrapper>
           <StackWrapper>
             <Typography

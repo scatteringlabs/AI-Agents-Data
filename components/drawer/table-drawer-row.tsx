@@ -36,30 +36,11 @@ export const TableDrawerRow = ({
   closeDialog,
 }: iTableDrawerRow) => {
   const router = useRouter();
-  const { selectedOption } = useGlobalState();
-
-  const handleClickErc20z = useCallback(() => {
-    const { chain_id, token_id, mt_address } = item;
-    router.push(
-      `/collect/${ChainIdByName?.[chain_id]}/${mt_address}/${token_id}/`,
-    );
-  }, [router, item]);
   const handleClick = useCallback(() => {
-    if (selectedOption !== "404s") {
-      handleClickErc20z();
-      return;
-    }
-    const { chain_id, slug, price_in_usd, status_flags, erc20_address } = item;
-    if (status_flags === 1 && !Number(price_in_usd)) {
-      closeDialog?.();
-      return router.push(`/launchpad/base/${erc20_address}`);
-    }
-
-    router.push(
-      `/collection/${ChainIdByName?.[Number(chain_id)]}/${erc20_address}`,
-    );
+    const { chain_id, slug } = item;
+    router.push(`/${ChainIdByName?.[Number(chain_id)]}/${slug}`);
     closeDialog?.();
-  }, [router, closeDialog, item, selectedOption, handleClickErc20z]);
+  }, [router, closeDialog, item]);
   const isSelected = useMemo(
     () =>
       item?.erc20_address?.toLowerCase() ===
@@ -124,7 +105,21 @@ export const TableDrawerRow = ({
                 maxWidth: { md: 100, xs: 60 },
               }}
             >
+              {item?.is_verified ? (
+                <span style={{ marginRight: "6px" }}>
+                  <VerifiedIcon size={16} />
+                </span>
+              ) : null}
               {item.symbol}
+              <img
+                src="/images/twitter.svg"
+                alt="Twitter"
+                style={{
+                  width: "16px",
+                  height: "16px",
+                  marginLeft: "8px",
+                }}
+              />
             </Typography>
             <Typography
               variant="body2"

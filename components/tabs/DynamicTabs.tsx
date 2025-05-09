@@ -2,28 +2,30 @@ import { Box, Typography } from "@mui/material";
 import React, { useState, useCallback } from "react";
 
 interface Tab {
-  id: number;
+  rank: number;
   name: string;
 }
 
 interface DynamicTabsProps {
   tabs: Tab[];
   total: number;
-  onChange?: (id: number, name: string) => void;
+  activetab?: Tab;
+  onChange?: (rank: number, name: string) => void;
 }
 
 export default function DynamicTabs({
   tabs,
   onChange,
   total,
+  activetab,
 }: DynamicTabsProps) {
-  const [activeTab, setActiveTab] = useState<Tab>(tabs[0]);
+  const [activeTab, setActiveTab] = useState<Tab>(activetab || tabs[0]);
 
   const handleOnClick = useCallback(
     (tab: Tab) => {
       setActiveTab(tab);
       if (onChange) {
-        onChange(tab.id, tab.name);
+        onChange(tab.rank, tab.name);
       }
     },
     [onChange],
@@ -41,33 +43,16 @@ export default function DynamicTabs({
     >
       {tabs.map((tab) => (
         <li
-          key={tab.id}
+          key={tab.name}
           className={
-            activeTab.id === tab.id ? "item-title active" : "item-title"
+            activeTab.name === tab.name ? "item-title active" : "item-title"
           }
           onClick={() => handleOnClick(tab)}
           style={{ display: "flex", alignItems: "center" }}
         >
-          {tab.name?.toLowerCase() === "drakula" ? (
-            <Box
-              component="img"
-              src="/assets/images/tags/drakula.png"
-              alt=""
-              className="avatar"
-              // onError={handleImgError}
-              sx={{
-                width: { md: 20, xs: 20 * 0.6 },
-                height: { md: 20, xs: 20 * 0.6 },
-                borderRadius: "50%",
-                position: "relative",
-                zIndex: 1,
-                mr: { md: 1, xs: 0.4 },
-              }}
-            />
-          ) : null}
-          <span className="inner">
+          <span className="inner" style={{ fontSize: "12px" }}>
             {tab.name}
-            {activeTab.id === tab.id ? `(${total})` : ""}
+            {activeTab.name === tab.name ? `(${total})` : ""}
           </span>
         </li>
       ))}

@@ -4,30 +4,27 @@ import { Box } from "@mui/material";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { tokenAddress, chain, tab } = context.query;
+  const { slug, chain } = context.query;
 
   return {
     props: {
-      tokenAddress: tokenAddress || null,
+      slug: slug || null,
       chain: chain || null,
-      tab: tab || null,
     },
   };
 };
 
 const Tabpage = ({
-  tokenAddress,
+  slug,
   chain,
-  tab,
 }: {
-  tokenAddress: string | null;
+  slug: string | null;
   chain: string | null;
-  tab: string | null;
 }) => {
   if (chain === "solana") {
-    return <SolanaSlug token={tokenAddress || ""} chain_name={chain} />;
-  } else if (chain && tokenAddress) {
-    return <EvmSlug token={tokenAddress} chain_name={chain} />;
+    return <SolanaSlug slug={slug || ""} chain_name={chain} />;
+  } else if (chain && slug) {
+    return <EvmSlug slug={slug} chain_name={chain} />;
   }
 };
 

@@ -166,7 +166,7 @@ const VerifyInfoIcon = ({
         >
           <Stack flexDirection="row" alignItems="center">
             <AvatarCard
-              hasLogo={collectionDetails?.has_logo}
+              hasLogo={!!collectionDetails?.logo_url}
               // logoUrl={getTokenLogoURL({
               //   chainId: collectionDetails?.chain_id,
               //   address: collectionDetails?.erc20_address,

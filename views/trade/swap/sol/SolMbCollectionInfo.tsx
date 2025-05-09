@@ -4,8 +4,6 @@ import CollectionInfoSkeleton from "../../../collect/CollectionInfoSkeleton";
 import AvatarCard from "@/components/collections/avatar-card";
 import { CollectionDetails } from "@/types/collection";
 import { SecTitle, ShareButton, Title } from "@/components/text";
-import { getTokenLogoURL } from "@/utils/token";
-import ExpandableInfoComponent from "../../../collect/ ExpandableInfoComponent";
 import PriceChangeText from "@/components/collections/price-change-text";
 import { formatNumberWithKM } from "@/utils/format";
 import TextTruncate from "@/components/text-truncate/TextTruncate";
@@ -16,6 +14,8 @@ import Iconify from "@/components/iconify";
 import VerifiedIcon from "../../../collect/verified-icon";
 import VerifyInfoIcon from "../../../collect/verify-info-icon";
 import { CollectionStats } from "@/services/sniper";
+import PriceInfoCardMB from "@/views/collect/zora/price-info-card-md";
+
 interface CollectionInfoProps {
   detailsLoading: boolean;
   allVolume: number;
@@ -23,6 +23,7 @@ interface CollectionInfoProps {
   collectionStat?: CollectionStats;
   handleOpenDialog: () => void;
   setBlinkDialogOpen: (a: boolean) => void;
+  isMobile?: boolean;
 }
 
 const SolMbCollectionInfo = ({
@@ -32,34 +33,42 @@ const SolMbCollectionInfo = ({
   setBlinkDialogOpen,
   collectionStat,
   allVolume,
+  isMobile = false,
 }: CollectionInfoProps) => {
   const {
     chain_id: chainId,
     slug,
     has_logo,
-    erc20_address,
+    address,
     name,
     symbol,
   } = collectionDetails || {};
   const showBaner = useMemo(
-    () => !!collectionDetails?.mobile_banner_url,
-    [collectionDetails],
+    () => !!collectionDetails?.mobile_banner_url && !isMobile,
+    [collectionDetails, isMobile],
   );
   const mediaCfg = useMemo(
     () => [
       { filename: "website", link: collectionDetails?.project_url },
       {
         filename: "scan",
-        link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${erc20_address}`,
+        link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${address}`,
       },
       { filename: "discord", link: collectionDetails?.discord_url },
-      { filename: "x", link: collectionDetails?.twitter_username },
+      ...(collectionDetails?.twitter_username
+        ? [
+            {
+              filename: "x",
+              link: `https://x.com/${collectionDetails?.twitter_username}`,
+            },
+          ]
+        : []),
       {
         filename: "telegram",
         link: collectionDetails?.telegram_url,
       },
     ],
-    [chainId, collectionDetails, erc20_address],
+    [chainId, collectionDetails, address],
   );
   const infoItems = useMemo(
     () => [
@@ -89,21 +98,6 @@ const SolMbCollectionInfo = ({
         label: "MARKET CAP",
         value: `$${formatNumberWithKM(collectionDetails?.market_cap)}`,
       },
-      {
-        label: "FLOOR PRICE",
-        value: collectionStat?.floorPrice
-          ? collectionStat?.floorPrice + " SOL"
-          : "-",
-      },
-      {
-        label: "24H NFT VOL",
-        value: collectionStat?.oneDayVolume
-          ? collectionStat?.oneDayVolume + " SOL"
-          : "-",
-      },
-      { label: "NFT LISTED", value: collectionStat?.listedCount || "-" },
-      { label: "NFT OWNERS", value: collectionStat?.uniqueHolders || "-" },
-      { label: "24H TOTAL VOL", value: `$${formatNumberWithKM(allVolume)}` },
     ],
     [collectionDetails, collectionStat, allVolume],
   );
@@ -116,20 +110,17 @@ const SolMbCollectionInfo = ({
   }
 
   return (
-    <Box sx={{ display: { md: "none", xs: "block" } }}>
+    <Box sx={{ display: { md: isMobile ? "block" : "none", xs: "block" } }}>
       <Box
-        // className={showBaner ? "tw-mt-32" : ""}
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-end",
           pb: 2,
           height: {
-            md: showBaner ? 400 : "auto",
+            md: showBaner ? (isMobile ? 200 : 400) : "auto",
             xs: showBaner ? 200 : "auto",
           },
-          // background:
-          //   "linear-gradient(180deg, rgba(1, 4, 16, 0.00) 0%, #010410 100%)",
         }}
       >
         {showBaner ? (
@@ -141,7 +132,7 @@ const SolMbCollectionInfo = ({
               zIndex: -1,
               width: "100%",
               height: "auto",
-              pt: { md: "80px", xs: "60px" },
+              pt: { md: isMobile ? "60px" : "80px", xs: "60px" },
               "&:after": {
                 content: '""',
                 width: "100%",
@@ -172,12 +163,7 @@ const SolMbCollectionInfo = ({
           alignItems="center"
         >
           <AvatarCard
-            hasLogo={has_logo}
-            // logoUrl={getTokenLogoURL({
-            //   chainId,
-            //   address: erc20_address,
-            //   size: 250,
-            // })}
+            hasLogo={!!collectionDetails?.logo_url}
             logoUrl={collectionDetails?.logo_url || ""}
             chainId={chainId}
             symbol={collectionDetails?.symbol || ""}
@@ -213,22 +199,6 @@ const SolMbCollectionInfo = ({
           }}
         >
           <ShareButton
-            onClick={() => {
-              setBlinkDialogOpen(true);
-            }}
-            sx={{
-              fontSize: { md: 14, xs: 12 },
-              padding: "0px",
-              mb: 0,
-              border: "none",
-            }}
-          >
-            <IconButton sx={{ p: 0.2, pr: 0.6 }}>
-              <Iconify icon="material-symbols:share" color="#b054ff" />
-            </IconButton>
-            Get Blink
-          </ShareButton>
-          <ShareButton
             onClick={handleOpenDialog}
             sx={{
               fontSize: { md: 14, xs: 12 },
@@ -257,7 +227,12 @@ const SolMbCollectionInfo = ({
           </Box>
         </Box>
       </Box>
-      <ExpandableInfoComponent infoItems={infoItems} />
+      {collectionDetails ? (
+        <PriceInfoCardMB
+          collectionDetails={collectionDetails as any}
+          isMobile={isMobile}
+        />
+      ) : null}
       <Box sx={{ mt: 3 }}>
         <TextTruncate text={collectionDetails?.description || ""} />
       </Box>

@@ -18,6 +18,8 @@ export interface CollectionType {
 
 export interface Collection {
   chain_id: number;
+  address: string;
+  project_url: string;
   erc20_address: string;
   erc721_address: string;
   total_mints: string;
@@ -57,6 +59,22 @@ export interface Collection {
   zora_coin_type: CollectionType;
   collection_type: CollectionType;
   rank: number;
+  creation_date: string;
+  twitter_username?: string;
+  creator_x_username?: string;
+  twitter_score?: string;
+  influencers_count?: number;
+  projects_count?: number;
+  venture_capitals_count?: number;
+  tags: {
+    rank: string;
+    name: string;
+  }[];
+  top_20_followers?: Array<{
+    name: string;
+    username: string;
+    avatar: string;
+  }>;
 }
 
 export interface CollectionsResponse {
@@ -84,7 +102,11 @@ export interface CollectionsDetailsResponse {
 
 export interface CollectionDetails {
   chain_id: number;
+  address: string;
+  base_asset_address: string;
   erc20_address: string;
+  total_liquidity: string;
+  total_volume_in_24hours: string;
   erc721_address: string;
   name: string;
   symbol: string;
@@ -92,9 +114,13 @@ export interface CollectionDetails {
   price_in_usd: string;
   volume: string;
   price_change: string;
+  price_change_in_24hours: string;
   total_supply: string;
   market_cap: string;
   liquidity: string;
+  profile: string;
+  research_report: string;
+  ai_report: string;
   slug: string;
   has_logo: boolean;
   is_verified: boolean;
@@ -113,6 +139,7 @@ export interface CollectionDetails {
   discord_url: string;
   telegram_url: string;
   twitter_username: string;
+  creator_x_username: string;
   collection_type: CollectionType;
   create_time: string;
   medium_url: string;
@@ -136,6 +163,12 @@ export interface CollectionDetails {
   escrow_address: string;
   collection_address: string;
   authority_address: string;
+  warpcast_url: string;
+  instagram_url: string;
+  tags: {
+    rank: string;
+    name: string;
+  }[];
 }
 
 export interface CollectionDetailsErc20z {

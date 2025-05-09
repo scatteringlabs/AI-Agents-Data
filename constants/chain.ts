@@ -33,6 +33,7 @@ export const ChainNameById: { [key: string]: number } = {
   sepolia: ChainId.SEPOLIA,
   zora: ChainId.ZORA,
   solana: 10000,
+  bnb: ChainId.BNB,
   "base-sepolia": 84532,
   "": -1,
 };
@@ -45,6 +46,15 @@ export const ChainIdByName: { [key: number]: string } = {
   [ChainId.SEPOLIA]: "sepolia",
   [84532]: "base-sepolia",
   [ChainId.ZORA]: "zora",
+  [ChainId.BNB]: "BNB",
+};
+
+export const DexscreenerNameById: { [key: number]: string } = {
+  [ChainId.MAINNET]: "ethereum",
+  [10000]: "solana",
+  [ChainId.BASE]: "base",
+  [ChainId.SEPOLIA]: "sepolia",
+  [ChainId.BNB]: "bsc",
 };
 export const ZeroAddressSymbol: { [key: number]: string } = {
   [ChainId.MAINNET]: "ETH",
@@ -73,9 +83,8 @@ export const SolBaseTokens = [
 export const BaseTokenById: { [key: number]: Token[] } = {
   [ChainId.MAINNET]: [
     new Token(ChainId.MAINNET, zeroAddress, 18, "ETH", "ETH"),
-    // USDT,
-    // USDC_MAINNET,
   ],
+  [ChainId.BNB]: [new Token(ChainId.BNB, zeroAddress, 18, "BNB", "BNB")],
   [ChainId.ZORA]: [new Token(ChainId.ZORA, zeroAddress, 18, "ETH", "ETH")],
   [ChainId.ARBITRUM_ONE]: [
     new Token(ChainId.ARBITRUM_ONE, zeroAddress, 18, "ETH", "ETH"),

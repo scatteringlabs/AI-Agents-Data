@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import SwapCard from "@/views/trade/SwapCard";
 import { useQuery } from "@tanstack/react-query";
-import { geckoNetworkName, getPoolInfo } from "@/services/tokens";
+import { geckoNetworkName } from "@/services/tokens";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 import { ChainNameById } from "@/constants/chain";
@@ -35,24 +35,6 @@ const TradePageErc20z = ({ collectionDetails }: iTrade) => {
   const [activeTab2, setActiveTab2] = useState<"trade" | "holder" | "overview">(
     "trade",
   );
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["PoolInfo", { chainId, erc20Address }],
-  //   queryFn: () =>
-  //     getPoolInfo({
-  //       chain_id: chainId,
-  //       token_contract_address: erc20Address.toString(),
-  //     }),
-  //   enabled: Boolean(chainId && erc20Address),
-  // });
-
-  // if (
-  //   !chainId ||
-  //   !erc20Address ||
-  //   !data?.data?.item ||
-  //   !data?.data?.item?.base_asset_address
-  // ) {
-  //   return null;
-  // }
   return (
     <Box sx={{ flexGrow: 1, padding: 0, mb: 2 }}>
       <Grid container spacing={2}>
@@ -95,6 +77,7 @@ const TradePageErc20z = ({ collectionDetails }: iTrade) => {
               >
                 <TableTabs
                   activeTab={activeTab2}
+                  // @ts-ignore
                   setActiveTab={setActiveTab2}
                   statusFlags={2}
                   showHolders
@@ -129,7 +112,7 @@ const TradePageErc20z = ({ collectionDetails }: iTrade) => {
             <SwapCard
               symbol={collectionDetails?.symbol?.toUpperCase()}
               decimals={18}
-              erc20Address={collectionDetails?.ft_address}
+              erc20Address={collectionDetails?.ft_address || ""}
               hasLogo={true}
               chainId={Number(collectionDetails?.chain_id)}
               logoUrl={collectionDetails?.logo_url}

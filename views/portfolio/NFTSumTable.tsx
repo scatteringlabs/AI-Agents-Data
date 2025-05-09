@@ -1,7 +1,6 @@
 import { Box, CardContent, Skeleton, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { NFTsSum, getMyNFTsSum } from "@/services/portfolio";
-import { OptionType } from "@/pages/portfolio";
 import AvatarCard from "@/components/collections/avatar-card";
 import { getTokenLogoURL } from "@/utils/token";
 import { useMemo, useState } from "react";

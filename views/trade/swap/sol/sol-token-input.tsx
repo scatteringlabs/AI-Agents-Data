@@ -32,6 +32,7 @@ interface iTokenInput {
   showMax?: boolean;
   isNative?: boolean;
   hasLogo?: boolean;
+  logo_url?: string;
   tokenBalanceLoading?: boolean;
   inputTitle: string;
   symbol: string;
@@ -102,19 +103,11 @@ const TokenInput = ({
   handleMaxPayValue,
   symbol,
   erc20Address,
-  hasLogo,
   solBalance,
   tokenBalance,
   activeTokenBalance,
+  logo_url,
 }: iTokenInput) => {
-  const logoUrl = useMemo(
-    () =>
-      getTokenLogoURL({
-        chainId: chainId || 1,
-        address: erc20Address,
-      }),
-    [chainId, erc20Address],
-  );
   const handlePercentageClick = useCallback(
     (percentage: number) => {
       handleMaxPayValue?.(
@@ -247,79 +240,13 @@ const TokenInput = ({
         </FormControl>
         <Stack flexDirection="row" alignItems="center">
           {baseTokens?.length ? (
-            // <FormControl fullWidth>
-            //   <Select
-            //     className="test-select"
-            //     labelId="select-label"
-            //     id="select"
-            //     placeholder="Select token"
-            //     value={activeToken?.address}
-            //     onChange={(event) => {
-            //       const aToken = baseTokens?.find(
-            //         (t) => t.address === event.target.value,
-            //       );
-            //       aToken && setActiveToken(aToken);
-            //     }}
-            //     sx={selectStyle}
-            //     MenuProps={{
-            //       sx: {
-            //         "& .MuiList-root": {
-            //           bgcolor: "#0E111C",
-            //           py: 0,
-            //           px: 1,
-            //         },
-            //         "& .MuiMenu-list": {},
-            //       },
-            //     }}
-            //   >
-            //     {baseTokens?.map((t) => (
-            //       <MenuItem
-            //         key={t.address}
-            //         value={t.address}
-            //         sx={menuItemStyle}
-            //       >
-            //         <Stack
-            //           flexDirection="row"
-            //           alignItems="center"
-            //           justifyContent="space-between"
-            //         >
-            //           <Box>
-            //             <AvatarCard
-            //               hasLogo={true}
-            //               symbol={t?.symbol || ""}
-            //               logoUrl={getTokenLogoURL({
-            //                 chainId,
-            //                 address: t.address,
-            //               })}
-            //               chainId={chainId}
-            //               size={40}
-            //               mr={1}
-            //             />
-            //           </Box>
-            //           <Typography
-            //             variant="h4"
-            //             sx={{
-            //               fontSize: { md: 24, xs: 16 },
-            //               textTransform: "uppercase",
-            //             }}
-            //           >
-            //             {t.symbol}
-            //           </Typography>
-            //         </Stack>
-            //       </MenuItem>
-            //     ))}
-            //   </Select>
-            // </FormControl>
             <>
               {" "}
               <Box>
                 <AvatarCard
-                  hasLogo={hasLogo}
-                  symbol={symbol || ""}
-                  logoUrl={getTokenLogoURL({
-                    chainId,
-                    address: "So11111111111111111111111111111111111111112",
-                  })}
+                  hasLogo={!!logo_url}
+                  symbol={"SOl"}
+                  logoUrl={"/assets/images/tokens/sol-active.svg"}
                   chainId={chainId}
                   size={40}
                   mr={1}
@@ -339,9 +266,9 @@ const TokenInput = ({
             <>
               <Box>
                 <AvatarCard
-                  hasLogo={hasLogo}
+                  hasLogo={!!logo_url}
                   symbol={symbol || ""}
-                  logoUrl={logoUrl}
+                  logoUrl={logo_url || ""}
                   chainId={chainId}
                   size={40}
                   mr={1}

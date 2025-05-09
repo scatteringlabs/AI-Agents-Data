@@ -1,4 +1,4 @@
-import { BASE_URL_DEV } from "@/constants/url";
+import { BASE_URL_V3 } from "@/constants/url";
 
 export interface MarketToken {
   chain_id: number;
@@ -29,7 +29,7 @@ interface StasResponse {
 }
 
 export const getMarketStats = async (): Promise<StasResponse> => {
-  const response = await fetch(`${BASE_URL_DEV}/market/stats`);
+  const response = await fetch(`${BASE_URL_V3}/market/stats`);
 
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -52,7 +52,7 @@ export const getMarketChart = async (
   days: number,
 ): Promise<MarketChartResponss> => {
   const response = await fetch(
-    `${BASE_URL_DEV}/market/market_cap_volume_stats?days=${days}`,
+    `${BASE_URL_V3}/market/market_cap_volume_stats?days=${days}`,
   );
 
   if (!response.ok) {

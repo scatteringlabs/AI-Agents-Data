@@ -18,14 +18,15 @@ import { CollectionDetails } from "@/types/collection";
 interface iTradingInfoCard {
   poolInfo?: PoolInfo;
   loading: boolean;
+  isMobile?: boolean;
   priceInUsd: string;
   collectionDetails?: CollectionDetails;
 }
 function TradingInfoCard({
-  poolInfo,
   loading,
   priceInUsd,
   collectionDetails,
+  isMobile = false,
 }: iTradingInfoCard) {
   const { tokenPrice } = useTradeTokenPrice();
 
@@ -55,17 +56,8 @@ function TradingInfoCard({
             <AvatarCard
               hasLogo={true}
               logoUrl={collectionDetails?.logo_url || ""}
-              symbol={poolInfo?.base_asset_symbol || "token"}
-              // logoUrl={
-              //   // @ts-ignore
-              //   Number(collectionDetails.status_flags) === 2
-              //     ? collectionDetails?.logo_url || ""
-              //     : getTokenLogoURL({
-              //         chainId: poolInfo?.chain_id || 1,
-              //         address: poolInfo?.base_asset_address,
-              //       })
-              // }
-              chainId={poolInfo?.chain_id}
+              symbol={collectionDetails?.base_asset_symbol || "token"}
+              chainId={collectionDetails?.chain_id}
               size={40}
             />
             <Stack flexDirection="row" alignItems="center">
@@ -77,7 +69,7 @@ function TradingInfoCard({
                   textTransform: "uppercase",
                 }}
               >
-                {poolInfo?.base_asset_symbol || "Unknown Token"}
+                {collectionDetails?.base_asset_symbol || "Unknown Token"}
               </Typography>
             </Stack>
             <Typography
@@ -95,40 +87,47 @@ function TradingInfoCard({
             sx={{
               ml: 2,
               fontSize: { md: 20, xs: 16 },
-              display: { md: "none", xs: "block" },
+              display: { md: isMobile ? "block" : "none", xs: "block" },
               color:
-                Number(poolInfo?.price_change || 0) > 0 ? "#00B912" : "#DC2626",
+                Number(collectionDetails?.price_change_in_24hours || 0) > 0
+                  ? "#00B912"
+                  : "#DC2626",
             }}
           >
-            {`${Number(poolInfo?.price_change) || 0}%`}
+            {`${Number(collectionDetails?.price_change_in_24hours) || 0}%`}
           </Typography>
           <Grid
             container
             spacing={2}
-            sx={{ width: "60%", display: { md: "flex", xs: "none" } }}
+            sx={{
+              width: "60%",
+              display: { md: isMobile ? "none" : "flex", xs: "none" },
+            }}
           >
             <TradeInfoItem
               loading={loading}
               title="24h Change"
-              value={`${poolInfo?.price_change || 0}%`}
+              value={`${collectionDetails?.price_change_in_24hours || 0}%`}
               color={
-                Number(poolInfo?.price_change || 0) > 0 ? "#00B912" : "#DC2626"
+                Number(collectionDetails?.price_change_in_24hours || 0) > 0
+                  ? "#00B912"
+                  : "#DC2626"
               }
             />
             <TradeInfoItem
               loading={loading}
               title="24h Volume"
-              value={`$${formatNumberWithKM(poolInfo?.total_volume)}`}
+              value={`$${formatNumberWithKM(collectionDetails?.total_volume_in_24hours)}`}
             />
             <TradeInfoItem
               loading={loading}
               title="Liquidity"
-              value={`$${formatNumberWithKM(poolInfo?.total_liquidity)}`}
+              value={`$${formatNumberWithKM(collectionDetails?.liquidity)}`}
             />
             <TradeInfoItem
               loading={loading}
               title="Market Cap"
-              value={`$${formatNumberWithKM(poolInfo?.market_cap)}`}
+              value={`$${formatNumberWithKM(collectionDetails?.market_cap)}`}
             />
           </Grid>
         </Box>

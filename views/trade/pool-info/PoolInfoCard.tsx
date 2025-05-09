@@ -2,6 +2,7 @@ import CopyToClipboardButton from "@/components/button/CopyToClipboardButton";
 import { ChainNameById } from "@/constants/chain";
 import { SCAN_URL_ID } from "@/constants/url";
 import { PoolInfo, getLiquidityInfo } from "@/services/tokens";
+import { Collection } from "@/types/collection";
 import {
   formatAddress,
   formatIntNumberWithKM,
@@ -67,14 +68,16 @@ interface iPoolInfoCard {
   conversionRatio: number;
   collectionAddress: string;
   type: string;
+  collectionDetails?: Collection;
 }
 function PoolInfoCard({
-  poolInfo,
+  // poolInfo,
   chainId,
   collectionAddress,
   type,
   status,
   conversionRatio,
+  collectionDetails,
 }: iPoolInfoCard) {
   const router = useRouter();
   const [value, setValue] = useState(0);
@@ -92,19 +95,6 @@ function PoolInfoCard({
     enabled: Boolean(chainId && collectionAddress),
   });
   const liquidityList = useMemo(() => data?.data?.list, [data]);
-  // const mediaCfg = useMemo(
-  //   () => [
-  //     { filename: "website", link: poolInfo?.project_url },
-  //     {
-  //       filename: "scan",
-  //       link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${poolInfo?.base_asset_address}`,
-  //     },
-  //     { filename: "discord", link: poolInfo?.discord_url },
-  //     { filename: "x", link: poolInfo?.twitter_url },
-  //     { filename: "telegram", link: poolInfo?.telegram_url },
-  //   ],
-  //   [poolInfo, chainId],
-  // );
   return (
     <Card
       sx={{
@@ -393,15 +383,15 @@ function PoolInfoCard({
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <Stack sx={{ my: 2 }}>
-          <StackWrapper>
+          {/* <StackWrapper>
             <Typography
               variant="h5"
               sx={{ color: " rgba(255, 255, 255, 0.6)" }}
             >
               Ticker
             </Typography>
-            <Typography variant="h5">{poolInfo?.base_asset_symbol}</Typography>
-          </StackWrapper>
+            <Typography variant="h5">{collectionDetails?.address}</Typography>
+          </StackWrapper> */}
           <StackWrapper>
             <Typography
               variant="h5"
@@ -418,7 +408,7 @@ function PoolInfoCard({
                 overflow: "hidden",
               }}
             >
-              {poolInfo?.name}
+              {collectionDetails?.name}
             </Typography>
           </StackWrapper>
           <StackWrapper>
@@ -426,52 +416,14 @@ function PoolInfoCard({
               variant="h5"
               sx={{ color: " rgba(255, 255, 255, 0.6)" }}
             >
-              ERC20 address
+              Contract address
             </Typography>
             <Typography variant="h5">
-              {formatAddress(poolInfo?.base_asset_address)}
+              {formatAddress(collectionDetails?.address)}
               <CopyToClipboardButton
-                textToCopy={poolInfo?.base_asset_address || ""}
+                textToCopy={collectionDetails?.address || ""}
               />
             </Typography>
-          </StackWrapper>
-          {type === "ERC20i" || type === "ERC11" ? null : (
-            <StackWrapper>
-              <Typography
-                variant="h5"
-                sx={{ color: " rgba(255, 255, 255, 0.6)" }}
-              >
-                ERC721 address
-              </Typography>
-              <Typography variant="h5">
-                {formatAddress(poolInfo?.erc721_address)}
-                <CopyToClipboardButton
-                  textToCopy={poolInfo?.erc721_address || ""}
-                />
-              </Typography>
-            </StackWrapper>
-          )}
-          <StackWrapper>
-            <Typography
-              variant="h5"
-              sx={{ color: " rgba(255, 255, 255, 0.6)" }}
-            >
-              Conversion Ratio (1NFT = How Many Tokens)
-            </Typography>
-            <Typography variant="h5">
-              {conversionRatio ? formatIntNumberWithKM(conversionRatio) : "N/A"}
-            </Typography>
-            {/* {Number(deploymentData?.limitPerMint) ? (
-              <Typography variant="h5">
-                1:
-                {Number(deploymentData?.limitPerMint).toLocaleString("en-US", {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                })}
-              </Typography>
-            ) : (
-              "-"
-            )} */}
           </StackWrapper>
           <StackWrapper>
             <Typography
@@ -481,7 +433,7 @@ function PoolInfoCard({
               Total supply
             </Typography>
             <Typography variant="h5">
-              {formatIntNumberWithKM(poolInfo?.total_supply || "0")}
+              {formatIntNumberWithKM(collectionDetails?.total_supply || "0")}
             </Typography>
           </StackWrapper>
         </Stack>

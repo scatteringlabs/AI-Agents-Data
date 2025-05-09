@@ -37,38 +37,19 @@ const MediaLinkList = ({
         {list?.map((item) => (
           <Grid key={item.key} item xs={4} md={col}>
             <Link
-              href={
-                collectionDetails?.[
-                  item.key as keyof CollectionDetails
-                ]?.toString() || "#"
-              }
+              href={item.link || "#"}
               target="_blank"
               style={{
-                pointerEvents: collectionDetails?.[
-                  item.key as keyof CollectionDetails
-                ]
-                  ? "auto"
-                  : "none",
+                pointerEvents: item.link ? "auto" : "none",
+                textDecoration: "none",
               }}
             >
               <TextLogo
                 sx={{
                   fontSize: { md: 14, xs: 10 },
-                  background: collectionDetails?.[
-                    item.key as keyof CollectionDetails
-                  ]
-                    ? "none"
-                    : "#484848",
-                  borderColor: collectionDetails?.[
-                    item.key as keyof CollectionDetails
-                  ]
-                    ? "#B054FF"
-                    : "#484848",
-                  color: collectionDetails?.[
-                    item.key as keyof CollectionDetails
-                  ]
-                    ? "#B054FF"
-                    : "rgba(255, 255, 255,0.6)",
+                  background: "none",
+                  borderColor: item.link ? "#B054FF" : "rgba(255, 255, 255, 0.3)",
+                  color: item.link ? "#B054FF" : "rgba(255, 255, 255, 0.3)",
                 }}
               >
                 <Box

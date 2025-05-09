@@ -34,7 +34,7 @@ interface TradesTableProps {
   toSymbol: string;
   activeTab: string;
   address: string;
-  quoteToken: string;
+  quoteToken?: string;
   chainId: number;
   decimals: number;
 }

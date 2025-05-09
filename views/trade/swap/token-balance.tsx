@@ -74,7 +74,7 @@ const TokenBalance = ({
             height={20}
             width={60}
           />
-        ) : token?.symbol === "ETH" ? (
+        ) : token?.symbol === "ETH" || token?.symbol === "BNB" ? (
           formatWeiToToken(batchBalance?.ethBalance, token?.decimals)
         ) : (
           formatWeiToToken(batchBalance?.erc20Balance, token?.decimals)

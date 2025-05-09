@@ -32,6 +32,7 @@ import { CollectionStats } from "@/services/sniper";
 import PreviewComponent from "./PreviewComponent";
 import { ButtonWrapper } from "@/components/button/wrapper";
 import { toast } from "react-toastify";
+import PriceInfoCard from "@/views/collect/zora/price-info-card";
 interface SolCollectionInfoProps {
   detailsLoading: boolean;
   allVolume: number;
@@ -59,7 +60,7 @@ const SolCollectionInfo = ({
     telegram_url,
     description,
     discord_url,
-    erc20_address,
+    address,
     volume,
     price_change,
     name,
@@ -80,23 +81,24 @@ const SolCollectionInfo = ({
       { filename: "website", link: project_url },
       {
         filename: "sol-scan",
-        link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${erc20_address}`,
+        link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${address}`,
       },
       { filename: "discord", link: discord_url },
-      { filename: "x", link: twitter_username },
+      ...(collectionDetails?.creator_x_username ? [{
+        filename: "dev2",
+        link: `https://twitter.com/${collectionDetails.creator_x_username}`,
+        isDevIcon: true
+      }] : []),
+      ...(twitter_username ? [{
+        filename: "x",
+        link: `https://x.com/${twitter_username}`,
+      }] : []),
       {
         filename: "telegram",
         link: telegram_url,
       },
     ],
-    [
-      chainId,
-      project_url,
-      telegram_url,
-      discord_url,
-      erc20_address,
-      twitter_username,
-    ],
+    [chainId, project_url, telegram_url, discord_url, address, twitter_username, collectionDetails?.creator_x_username],
   );
   const priceInfo = useMemo(
     () => [
@@ -216,10 +218,10 @@ const SolCollectionInfo = ({
           <Box className="tw-flex-shrink-0  tw-overflow-hidden">
             <Box sx={{ width: "100%" }}>
               <AvatarCard
-                hasLogo={has_logo}
+                hasLogo={!!collectionDetails?.logo_url}
                 // logoUrl={getTokenLogoURL({
                 //   chainId,
-                //   address: erc20_address,
+                //   address: address,
                 //   size: 250,
                 // })}
                 logoUrl={collectionDetails?.logo_url || ""}
@@ -241,7 +243,7 @@ const SolCollectionInfo = ({
             </Stack>
             <Box className="tw-flex tw-items-center tw-gap-10">
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <ShareButton
+                {/* <ShareButton
                   onClick={() => {
                     setBlinkDialogOpen(true);
                   }}
@@ -251,7 +253,7 @@ const SolCollectionInfo = ({
                     <Iconify icon="material-symbols:share" color="#fff" />
                   </IconButton>
                   Get Blink
-                </ShareButton>
+                </ShareButton> */}
                 <ShareButton onClick={handleOpenDialog}>
                   <IconButton>
                     <Iconify
@@ -281,7 +283,10 @@ const SolCollectionInfo = ({
           </Box>
         </Box>
 
-        <Box
+        {collectionDetails ? (
+          <PriceInfoCard collectionDetails={collectionDetails as any} />
+        ) : null}
+        {/* <Box
           sx={{
             flexDirection: "column",
             display: { md: "flex !important", xs: "none !important" },
@@ -295,7 +300,7 @@ const SolCollectionInfo = ({
               <DetailBar data={totalInfo}></DetailBar>
             </Box>
           </Stack>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

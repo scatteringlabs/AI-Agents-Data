@@ -16,9 +16,8 @@ const SortIconButton20Z = ({ title }: iSortIconButton) => {
   }, [setSortedField, title]);
 
   return (
-    <Typography
+    <Box
       onClick={toggleSort}
-      variant="h3"
       sx={{
         display: "flex",
         alignItems: "center",
@@ -26,9 +25,11 @@ const SortIconButton20Z = ({ title }: iSortIconButton) => {
         background:
           sortedField === title ? "rgba(255, 255, 255, 0.05)" : "transparent",
         borderRadius: "4px",
-        padding: sortedField === title ? "8px 10px" : "0px",
+        padding: sortedField === title ? "2px 10px" : "0px",
         width: "auto",
-        fontSize: { md: "14px !important", xs: "12px !important" },
+        fontSize: "12px !important",
+        fontWeight: 500,
+        color: "rgba(255, 255, 255, 0.8)",
       }}
     >
       {title}
@@ -67,7 +68,7 @@ const SortIconButton20Z = ({ title }: iSortIconButton) => {
           />
         </Box>
       </Box>
-    </Typography>
+    </Box>
   );
 };
 

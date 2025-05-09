@@ -1,6 +1,5 @@
 import { InputAdornment, TextField, styled } from "@mui/material";
 import Iconify from "../iconify";
-import { useGlobalState } from "@/context/GlobalStateContext";
 
 export const CustomTextField = styled(TextField)({
   border: "1px solid #B054FF",
@@ -21,7 +20,6 @@ export const CustomTextField = styled(TextField)({
 });
 
 const SearchInputButton = ({ setOpen }: { setOpen: (a: boolean) => void }) => {
-  const { selectedOption } = useGlobalState();
   return (
     <CustomTextField
       value=""
@@ -41,11 +39,7 @@ const SearchInputButton = ({ setOpen }: { setOpen: (a: boolean) => void }) => {
         },
       }}
       autoComplete="off"
-      placeholder={
-        selectedOption === "404s"
-          ? "Search collection or contract address"
-          : "Search token or contract address"
-      }
+      placeholder="Search token or contract address"
       type="search"
       onClick={() => {
         setOpen(true);

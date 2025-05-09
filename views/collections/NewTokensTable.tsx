@@ -107,7 +107,6 @@ const NewTokensTable: React.FC<NewTokensTableProps> = ({ chainId }) => {
         page: 1,
         page_size: paseSize,
         sort_field: SortFieldMap[sortedField || "24h Vol"],
-        parent_type_id: selectedTabId,
         chain_id: Number(chainId) === -1 ? "" : Number(chainId) || 1,
         sort_direction: sortOrder || "desc",
       }),
@@ -117,7 +116,7 @@ const NewTokensTable: React.FC<NewTokensTableProps> = ({ chainId }) => {
     <>
       <DynamicTabs
         total={collections?.data?.total_count || 0}
-        tabs={[{ id: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
+        tabs={[{ rank: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
         onChange={handleDynamicTabsChange}
       />
       {paseSize !== 12 ? (

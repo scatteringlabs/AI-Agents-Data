@@ -1,5 +1,11 @@
 import { ChainNameById } from "@/constants/chain";
-import { BASE_URL, BASE_URL_DEV, MP_BASE_URL, XApiKey } from "@/constants/url";
+import {
+  BASE_URL,
+  BASE_URL_DEV,
+  BASE_URL_V3,
+  MP_BASE_URL,
+  XApiKey,
+} from "@/constants/url";
 import {
   CollectionsDetailsResponse,
   CollectionsResponse,
@@ -15,7 +21,7 @@ import { BLinkApiData } from "@/views/trade/swap/sol/PreviewComponent";
 interface CollectionParams {
   page?: number;
   page_size?: number;
-  parent_type_id?: number;
+  // parent_type_id?: number;
   chain_id?: number | string;
   sort_field?: string;
   type_name?: string;
@@ -28,9 +34,7 @@ export const getCollections = async (
   params: CollectionParams,
 ): Promise<CollectionsResponse> => {
   const queryParams = new URLSearchParams(params as any).toString();
-  const response = await fetch(
-    `${BASE_URL_DEV}/index/collections?${queryParams}`,
-  );
+  const response = await fetch(`${BASE_URL_V3}/collections?${queryParams}`);
 
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -38,6 +42,41 @@ export const getCollections = async (
 
   return response.json();
 };
+
+interface TokenFilter {
+  chain_id?: number;
+  address?: string;
+}
+
+interface FavorCollectionParams {
+  page?: number;
+  page_size?: number;
+  sort_field?: string;
+  type_name?: string;
+  tokens?: TokenFilter[];
+  sort_direction?: string;
+  name_like?: string;
+}
+
+export const getFavorCollections = async (
+  params: FavorCollectionParams,
+): Promise<CollectionsResponse> => {
+  const response = await fetch(`${BASE_URL_V3}/watchlist/local`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // "x-api-key": XApiKey,
+    },
+    body: JSON.stringify(params),
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const getNewCollections = async (
   params: CollectionParams,
 ): Promise<CollectionsResponse> => {
@@ -71,7 +110,7 @@ interface CollectionBySlugParams {
 export const getCollectionBySlug = async ({
   slug,
 }: CollectionBySlugParams): Promise<CollectionSlugResponse> => {
-  const response = await fetch(`${BASE_URL_DEV}/collection/slug/${slug}`);
+  const response = await fetch(`${BASE_URL_V3}/collections/${slug}`);
 
   if (!response.ok) {
     throw new Error("Network response was not ok");

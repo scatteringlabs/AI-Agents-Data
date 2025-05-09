@@ -22,6 +22,7 @@ export const tokenIcons: TokenIcons = {
   [ChainId.BASE]: "/assets/images/tokens/base.svg",
   [ChainId.ZORA]: "/assets/images/tokens/zora-active.png",
   [84532]: "/assets/images/tokens/base.svg",
+  [ChainId.BNB]: "/assets/images/tokens/bsc-active.svg",
 };
 export const activeTokenIcons: TokenIcons = {
   [10000]: "/assets/images/tokens/sol.svg",
@@ -29,6 +30,7 @@ export const activeTokenIcons: TokenIcons = {
   [ChainId.SEPOLIA]: "/assets/images/tokens/eth.svg",
   [ChainId.ARBITRUM_ONE]: "/assets/images/tokens/arb.svg",
   [ChainId.BASE]: "/assets/images/tokens/base.svg",
+  [ChainId.BNB]: "/assets/images/tokens/bsc-active.svg",
 };
 // eslint-disable-next-line no-restricted-syntax
 export const NATIVE_CHAIN_ID = "NATIVE";

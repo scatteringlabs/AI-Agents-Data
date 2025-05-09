@@ -27,7 +27,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useTransition } from "react";
 import TopCollection from "../home/TopCollection";
 import TopCollectionCard from "../home/components/TopCollectionCard";
 import Iconify from "@/components/iconify";
@@ -63,7 +63,7 @@ const RankText = styled(Typography)`
 `;
 const TopTokensTable: React.FC<TopTokensTableProps> = ({ chainId }) => {
   const theme = useTheme();
-
+  const [isPending, startTransition] = useTransition();
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
   const [selectedTab, setSelectedTab] = useState<string>("All");
   const [selectedTabId, setSelectedTabID] = useState<number>(0);
@@ -90,10 +90,21 @@ const TopTokensTable: React.FC<TopTokensTableProps> = ({ chainId }) => {
   });
 
   const handleTabChange = useCallback((key: string) => {
-    setSelectedTab(key);
+    startTransition(() => {
+      setSelectedTab(key);
+    });
   }, []);
+
   const handleDynamicTabsChange = useCallback((id: number) => {
-    setSelectedTabID(id);
+    startTransition(() => {
+      setSelectedTabID(id);
+    });
+  }, []);
+
+  const handlePaseSizeChange = useCallback((size: number) => {
+    startTransition(() => {
+      setPaseSize(size);
+    });
   }, []);
 
   const { data: collections, isLoading } = useQuery({
@@ -106,7 +117,6 @@ const TopTokensTable: React.FC<TopTokensTableProps> = ({ chainId }) => {
         page: 1,
         page_size: paseSize,
         sort_field: SortFieldMap[sortedField || "24h Vol"],
-        parent_type_id: selectedTabId,
         chain_id: Number(chainId) === -1 ? "" : Number(chainId) || 1,
         sort_direction: sortOrder || "desc",
       }),
@@ -116,7 +126,7 @@ const TopTokensTable: React.FC<TopTokensTableProps> = ({ chainId }) => {
     <>
       <DynamicTabs
         total={collections?.data?.total_count || 0}
-        tabs={[{ id: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
+        tabs={[{ rank: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
         onChange={handleDynamicTabsChange}
       />
       {paseSize !== 12 ? (
@@ -223,6 +233,30 @@ const TopTokensTable: React.FC<TopTokensTableProps> = ({ chainId }) => {
                               </span>
                             ) : null}
                             {item.symbol}
+                            {item.twitter_username && (
+                              <Link 
+                                href={`https://twitter.com/${item.twitter_username}`} 
+                                target="_blank"
+                                style={{
+                                  marginLeft: '8px',
+                                  display: 'flex',
+                                  alignItems: 'center'
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <img 
+                                  src="/images/twitter.svg" 
+                                  alt="Twitter" 
+                                  style={{
+                                    width: '16px',
+                                    height: '16px',
+                                    transition: 'opacity 0.2s',
+                                  }}
+                                  onMouseOver={(e) => e.currentTarget.style.opacity = '0.7'}
+                                  onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
+                                />
+                              </Link>
+                            )}
                           </div>
                           <Typography
                             variant="body2"
@@ -324,9 +358,7 @@ const TopTokensTable: React.FC<TopTokensTableProps> = ({ chainId }) => {
         </Typography>
         {pageSizes?.map((size) => (
           <Typography
-            onClick={() => {
-              setPaseSize(size);
-            }}
+            onClick={() => handlePaseSizeChange(size)}
             sx={{
               background: "rgba(255,255,255,0.1)",
               p: 1.4,
@@ -341,9 +373,7 @@ const TopTokensTable: React.FC<TopTokensTableProps> = ({ chainId }) => {
           </Typography>
         ))}
         <Typography
-          onClick={() => {
-            setPaseSize(12);
-          }}
+          onClick={() => handlePaseSizeChange(12)}
           sx={{
             background: "rgba(255,255,255,0.1)",
             p: 1.3,

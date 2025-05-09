@@ -1,29 +1,22 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import BackToTop from "../elements/BackToTop";
 import Footer1 from "./footer/Footer1";
 import Header3 from "./header/Header";
-import { useRouter } from "next/router";
-import { NO_FOOTER_PATH } from "@/configs/footer";
 import { Box } from "@mui/material";
 import Head from "next/head";
-import Iconify from "../iconify";
 import { MessageButton } from "../button/message-button";
-import Logo from "./header/Logo";
 import Sidebar from "./Sidebar";
+import { useRouter } from "next/router";
 // import { Helmet } from "react-helmet-async";
 export default function Layout({ children }: any) {
   const [isMobileMenu, setMobileMenu] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const handleMobileMenu = () => setMobileMenu(!isMobileMenu);
   const router = useRouter();
 
-  const [navVisible, setNavVisible] = useState<boolean>(false);
-  const toggleNavVisibility = useCallback(
-    () => setNavVisible((visible) => !visible),
-    [],
-  );
-  const { pathname } = router;
-  const needFooter = !NO_FOOTER_PATH.includes(pathname.toString());
-  console.log("Layout");
+  const handleSidebarCollapse = (collapsed: boolean) => {
+    setIsSidebarCollapsed(collapsed);
+  };
 
   return (
     <>
@@ -45,11 +38,11 @@ export default function Layout({ children }: any) {
         <meta name="theme-color" content="#000000" />
         <meta
           name="description"
-          content="Native marketplace for all hybrid assets."
+          content="Scattering platform serves as a native marketplace for AI tokens such as AI agents, AGI, crypto trading, autonomous agents, frameworks, DeFAI, Swarm, 3D models, music, video, app stores, trading, investment DAO, games, development tools, Launchpad, social and data, building a comprehensive cutting-edge technology and innovation ecosystem."
         />
         <meta
           name="keywords"
-          content="ERC404,DN404,Scattering,Hybrid Assets,BT404,SP404"
+          content="AI agents, AGI, crypto trading, autonomous agents, frameworks, DeFAI, Swarm, 3D models, music, video, app stores, trading, investment DAO, games, development tools, Launchpad, social and data,"
         />
         <meta
           name="twitter:card"
@@ -64,7 +57,7 @@ export default function Layout({ children }: any) {
         />
         <meta
           name="twitter:description"
-          content="Native marketplace for all hybrid assets."
+          content="Scattering platform serves as a native marketplace for AI tokens such as AI agents, AGI, crypto trading, autonomous agents, frameworks, DeFAI, Swarm, 3D models, music, video, app stores, trading, investment DAO, games, development tools, Launchpad, social and data, building a comprehensive cutting-edge technology and innovation ecosystem."
         />
         <meta
           content="https://scattering.io/assets/images/media/twitter-card.png"
@@ -83,43 +76,53 @@ export default function Layout({ children }: any) {
         style={{
           position: "relative",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
+          height: "100vh",
+          overflow: "hidden",
         }}
       >
-        <Sidebar />
-        <Header3
-          isMobileMenu={isMobileMenu}
-          handleMobileMenu={handleMobileMenu}
-        />
-        {/* <img
-          style={{
-            position: "absolute",
-            width: "100%",
-            left: 0,
-            top: 0,
-            zIndex: -1,
-          }}
-          src="/assets/images/layout-bg.png"
-          alt="scattering-layout"
-        /> */}
+        <Box sx={{ display: { md: "block", xs: "none" } }}>
+          <Sidebar onCollapse={handleSidebarCollapse} />
+        </Box>
         <Box
           sx={{
-            // maxWidth: {
-            //   lg: "1980px",
-            //   // xl: "1980px",
-            // },
-            width: "calc( 100vw - 200px )",
-            margin: "0 auto",
-            minHeight: "calc( 100vh - 40px )",
-            padding: "40px",
-            marginTop: "80px",
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            ml: { md: 0, xs: 0 },
           }}
-          id="page"
-          className="home-7"
         >
-          {children}
+          <Header3
+            isMobileMenu={isMobileMenu}
+            handleMobileMenu={handleMobileMenu}
+            isSidebarCollapsed={isSidebarCollapsed}
+          />
+          <Box
+            sx={{
+              width: "100%",
+              margin: "0 auto",
+              minHeight: "0px",
+              position: "relative",
+              pl: { md: 0, xs: 0 },
+            }}
+            id="page"
+            className="home-7"
+          >
+            {children}
+            <Box
+              sx={{
+                position: "sticky",
+                left: "-40px",
+                bottom: "0px",
+                width: "100%",
+                zIndex: 999,
+              }}
+            >
+              {" "}
+              <Footer1 />
+            </Box>
+          </Box>
         </Box>
-        {/* {needFooter && <Footer1 />} */}
       </div>
       <BackToTop />
       <MessageButton />

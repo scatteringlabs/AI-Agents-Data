@@ -86,7 +86,7 @@ export const fetchRoute = async ({
   // swapping SOL to USDC with input 0.1 SOL and 0.5% slippage
   try {
     const routes = await fetch(
-      `${JUPITER_API_URL}?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&autoSlippage=true&autoSlippageCollisionUsdValue=1000&swapMode=ExactIn&onlyDirectRoutes=false&asLegacyTransaction=false&maxAccounts=64&experimentalDexes=Jupiter%20LO`,
+      `${JUPITER_API_URL}?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&platformFeeBps=10&autoSlippage=true&autoSlippageCollisionUsdValue=1000&swapMode=ExactIn&onlyDirectRoutes=false&asLegacyTransaction=false&maxAccounts=64&experimentalDexes=Jupiter%20LO`,
     );
     const { data } = await routes.json();
   } catch (error) {
@@ -216,6 +216,8 @@ export const getJupiterSwapTx = async (
         quoteResponse: jupiterData,
         userPublicKey: userAddress,
         wrapAndUnwrapSol: true,
+        // platformFeeBps: 10,
+        // feeAccount: "G416sDDzrom59mDBg3oQ4SrkXhDUAcRsd4cyi1qKqG5A", //SOL 收款地址
       }),
       {
         headers: {

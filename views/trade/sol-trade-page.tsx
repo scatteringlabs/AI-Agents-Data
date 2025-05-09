@@ -1,6 +1,15 @@
 import TradingView from "@/views/trade/trading-view/TradingView";
-import { Grid, Box, Card, CardContent, Stack, Button } from "@mui/material";
-import { geckoNetworkName, getPoolInfo } from "@/services/tokens";
+import {
+  Grid,
+  Box,
+  Card,
+  CardContent,
+  Stack,
+  Button,
+  Typography,
+  Link,
+} from "@mui/material";
+import { geckoNetworkName } from "@/services/tokens";
 import { use, useCallback, useEffect, useState } from "react";
 import TokenPriceProvider from "@/context/token-price-provider";
 import SolSwapCard from "./SolSwapCard";
@@ -10,18 +19,27 @@ import { CollectionDetails } from "@/types/collection";
 import SolTradingInfoCard from "./swap/sol/SolTradingInfoCard";
 import SolPoolInfoCard from "./swap/sol/SolPoolInfoCard";
 import HolderTable from "./okx-stat/position-table";
+import AISummary from "./components/AI-Summary";
+import Announcement from "./components/Announcement";
+
 interface iSolTrade {
   collectionDetails?: CollectionDetails;
   detailsLoading: boolean;
+  isMobile?: boolean;
 }
 
-const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
-  const [activeTab, setActiveTab] = useState<"trade" | "holder" | "overview">(
-    "trade",
-  );
+const SolTrade = ({
+  collectionDetails,
+  detailsLoading,
+  isMobile = false,
+}: iSolTrade) => {
+  const [activeTab, setActiveTab] = useState<
+    "trade" | "holder" | "overview" | "AI Summary" | "Announcement"
+  >("AI Summary");
   if (!collectionDetails?.status) {
     return null;
   }
+
   return (
     <Box sx={{ flexGrow: 1, padding: 0, mb: 2 }}>
       <Grid container spacing={2}>
@@ -31,18 +49,19 @@ const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
             xs={12}
             sm={12}
             md={12}
-            lg={8}
+            lg={isMobile ? 12 : 8}
             // sx={{ position: "sticky", top: "170px" }}
           >
             {collectionDetails?.status === 1 ? (
               <>
                 {" "}
-                <Stack flexDirection="row" sx={{ mb: 2 }}>
+                {/* <Stack flexDirection="row" sx={{ mb: 2 }}>
                   <SolTradingInfoCard
                     collectionDetails={collectionDetails}
                     loading={detailsLoading}
+                    isMobile={isMobile}
                   />
-                </Stack>
+                </Stack> */}
                 <TradingView
                   loading={detailsLoading}
                   poolAddress={collectionDetails?.pool_address || ""}
@@ -82,14 +101,21 @@ const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
                   overflowX: { xs: "scroll", md: "initial" },
                   pb: "16px !important",
                   px: 0,
-                  display: { xs: "none", md: "block" },
+                  display: { xs: "none", md: isMobile ? "none" : "block" },
                 }}
               >
                 <TableTabs
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
+                  isMobile={isMobile}
                   // showHolders={false}
                 />
+                {activeTab === "AI Summary" ? (
+                  <AISummary collectionDetails={collectionDetails} />
+                ) : null}
+                {activeTab === "Announcement" ? (
+                  <Announcement collectionDetails={collectionDetails} />
+                ) : null}
                 <TradesTable
                   activeTab={activeTab}
                   network={geckoNetworkName?.[10000]}
@@ -98,18 +124,13 @@ const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
                   symbol={collectionDetails?.base_asset_symbol || ""}
                   toSymbol={collectionDetails?.quote_asset_symbol || ""}
                   decimals={collectionDetails?.base_asset_decimals || 18}
-                  address={collectionDetails?.erc20_address || ""}
-                  quoteToken={
-                    collectionDetails?.erc20_address >
-                    "So11111111111111111111111111111111111111112"
-                      ? "token0"
-                      : "token1"
-                  }
+                  address={collectionDetails?.address || ""}
+                  quoteToken=""
                 />
                 <HolderTable
                   activeTab={activeTab}
                   network={geckoNetworkName?.[10000]}
-                  address={collectionDetails.erc20_address}
+                  address={collectionDetails.address}
                   chainId={10000}
                   total={collectionDetails?.total_supply}
                   price={collectionDetails?.price_in_usd}
@@ -117,12 +138,12 @@ const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={4}>
+          <Grid item xs={12} sm={12} md={12} lg={isMobile ? 12 : 4}>
             <SolSwapCard
               symbol={collectionDetails?.base_asset_symbol || ""}
               decimals={collectionDetails?.base_asset_decimals}
-              erc20Address={collectionDetails?.erc20_address}
-              hasLogo={!!collectionDetails?.has_logo}
+              erc20Address={collectionDetails?.address}
+              logo_url={collectionDetails?.logo_url}
               chainId={10000}
             />
             <Card
@@ -138,7 +159,7 @@ const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
                   overflowX: { xs: "scroll", md: "initial" },
                   pb: "16px !important",
                   px: 0,
-                  display: { xs: "block", md: "none" },
+                  display: { xs: "block", md: isMobile ? "block" : "none" },
                 }}
               >
                 <TableTabs
@@ -146,6 +167,12 @@ const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
                   setActiveTab={setActiveTab}
                   // showHolders={false}
                 />
+                {activeTab === "AI Summary" ? (
+                  <AISummary collectionDetails={collectionDetails} />
+                ) : null}
+                {activeTab === "Announcement" ? (
+                  <Announcement collectionDetails={collectionDetails} />
+                ) : null}
                 <TradesTable
                   activeTab={activeTab}
                   network={geckoNetworkName?.[10000]}
@@ -154,18 +181,13 @@ const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
                   symbol={collectionDetails?.base_asset_symbol || ""}
                   toSymbol={collectionDetails?.quote_asset_symbol || ""}
                   decimals={collectionDetails?.base_asset_decimals || 18}
-                  address={collectionDetails?.erc20_address || ""}
-                  quoteToken={
-                    collectionDetails?.erc20_address >
-                    "So11111111111111111111111111111111111111112"
-                      ? "token0"
-                      : "token1"
-                  }
+                  address={collectionDetails?.address || ""}
+                  quoteToken=""
                 />
                 <HolderTable
                   activeTab={activeTab}
                   network={geckoNetworkName?.[10000]}
-                  address={collectionDetails.erc20_address}
+                  address={collectionDetails.address}
                   chainId={10000}
                   total={collectionDetails?.total_supply}
                   price={collectionDetails?.price_in_usd}
@@ -176,7 +198,7 @@ const SolTrade = ({ collectionDetails, detailsLoading }: iSolTrade) => {
               poolInfo={collectionDetails}
               chainId={10000}
               status={collectionDetails?.status || 0}
-              collectionAddress={collectionDetails?.erc20_address || ""}
+              collectionAddress={collectionDetails?.address || ""}
               escrowAddress={collectionDetails?.escrow_address || ""}
             />
           </Grid>

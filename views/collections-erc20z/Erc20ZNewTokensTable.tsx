@@ -36,8 +36,8 @@ import { NoDataSearched } from "@/components/search-not-found/no-data-searched";
 import { getNewTokens } from "@/services/collections-erc20z";
 import { ERC20ZNewTableHeader } from "./table/table-header";
 import { TableSkeleton } from "./table/table-skeleton";
-import { Erc20ZTokenTableRow } from "./table/table-row";
 import { SortFieldMap } from "./table-config";
+import Erc20ZTokenTableRow from "./table/table-row";
 
 interface Erc20ZNewTokensTableProps {
   chainId: string;
@@ -90,8 +90,8 @@ const Erc20ZNewTokensTable: React.FC<Erc20ZNewTokensTableProps> = ({
     [router],
   );
   const { data: tokenTypes } = useQuery({
-    queryKey: ["getZoraTokenTypes", { chainId }],
-    queryFn: () => getZoraTokenTypes(Number(chainId)),
+    queryKey: ["getZoraTokenTypes"],
+    queryFn: () => getZoraTokenTypes(),
   });
 
   const handleTabChange = useCallback((key: string) => {
@@ -110,8 +110,7 @@ const Erc20ZNewTokensTable: React.FC<Erc20ZNewTokensTableProps> = ({
       getNewTokens({
         page: 1,
         page_size: paseSize,
-        sort_field: SortFieldMap[sortedField || "24h Vol"],
-        parent_type_id: selectedTabId,
+        sort_field: SortFieldMap[sortedField || "1h Chg"],
         chain_id: Number(chainId) === -1 ? "" : Number(chainId) || 1,
         sort_direction: sortOrder || "desc",
       }),
@@ -121,7 +120,7 @@ const Erc20ZNewTokensTable: React.FC<Erc20ZNewTokensTableProps> = ({
     <div className="widget-content-tab pt-10 pb-4">
       <DynamicTabs
         total={collections?.data?.total_count || 0}
-        tabs={[{ id: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
+        tabs={[{ rank: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
         onChange={handleDynamicTabsChange}
       />
       <div className="widget-content-inner">

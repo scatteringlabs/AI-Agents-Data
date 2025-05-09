@@ -29,12 +29,6 @@ export const chainsErc20z: {
     iconActive: "/assets/images/tokens/all-active.svg",
   },
   {
-    value: ChainId.MAINNET.toString(),
-    label: "ethereum",
-    icon: "/assets/images/tokens/eth-gray.svg",
-    iconActive: "/assets/images/tokens/eth-active.svg",
-  },
-  {
     value: "10000",
     label: "Solana",
     icon: "/assets/images/tokens/sol-gray.svg",
@@ -45,6 +39,18 @@ export const chainsErc20z: {
     label: "base",
     icon: "/assets/images/tokens/base-gray.svg",
     iconActive: "/assets/images/tokens/base-active.svg",
+  },
+  {
+    value: ChainId.BNB.toString(),
+    label: "BNB",
+    icon: "/assets/images/tokens/bsc-gray.svg",
+    iconActive: "/assets/images/tokens/bsc-active.svg",
+  },
+  {
+    value: ChainId.MAINNET.toString(),
+    label: "ethereum",
+    icon: "/assets/images/tokens/eth-gray.svg",
+    iconActive: "/assets/images/tokens/eth-active.svg",
   },
   // {
   //   value: ChainId.ARBITRUM_ONE.toString(),
@@ -61,7 +67,7 @@ const CustomToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   overflow: "hidden",
   // padding: "0px 10px",
   display: "flex",
-  borderRadius: "6px 6px 0px 0px",
+  // borderRadius: "6px 6px 0px 0px",
   borderTop: "1px solid rgba(255, 255, 255,0.1)",
   borderBottom: "1px solid rgba(255, 255, 255,0.1)",
   justifyContent: "flex-start",
@@ -91,9 +97,9 @@ const AllChainFilter: React.FC<AllChainFilterProps> = ({
   onChainChange,
   initialChain,
 }) => {
-  const router = useRouter();
-  const { selectedOption } = useGlobalState();
   const showChain = useMemo(() => chainsErc20z, []);
+  const router = useRouter();
+
   useEffect(() => {
     if (initialChain) {
       onChainChange(initialChain);
@@ -105,6 +111,14 @@ const AllChainFilter: React.FC<AllChainFilterProps> = ({
   ) => {
     if (newChain !== null) {
       onChainChange(newChain);
+      // router.push(
+      //   {
+      //     pathname: router.pathname,
+      //     query: { ...router.query, chain: newChain },
+      //   },
+      //   undefined,
+      //   { shallow: true },
+      // );
     }
   };
   return (

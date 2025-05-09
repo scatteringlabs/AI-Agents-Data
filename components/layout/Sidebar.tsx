@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Drawer,
   List,
@@ -7,66 +7,110 @@ import {
   Collapse,
   ListItemIcon,
   Box,
+  Typography,
+  Fade,
+  Tooltip,
+  IconButton,
+  Popover,
 } from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import {
+  ExpandLess,
+  ExpandMore,
+  ChevronLeft,
+  ChevronRight,
+} from "@mui/icons-material";
 import { Icon } from "@iconify/react";
 import Logo from "./header/Logo";
 import { useRouter } from "next/router"; // Next.js 路由
+import Link from "next/link";
 
-// 菜单项类型
 type MenuItem = {
   title: string;
   icon?: string;
-  link?: string; // 新增跳转链接
+  link?: string;
   children?: MenuItem[];
+  disabled?: boolean; // 新增 disabled 属性
 };
 
-// 侧边栏菜单数据
 const menuItems: MenuItem[] = [
   {
-    title: "Tokens",
-    icon: "mdi:currency-btc",
-    children: [
-      { title: "Trade (V1)", icon: "mdi:swap-horizontal", link: "/" },
-      { title: "Market Overview", icon: "mdi:chart-line", link: "/market" },
-      {
-        title: "Smart Money Data",
-        icon: "mdi:account-group",
-        link: "/smart-money",
-      },
-    ],
+    title: "Trade",
+    icon: "mdi:swap-horizontal",
+    link: "/",
   },
   {
-    title: "Dashboards",
-    icon: "mdi:view-dashboard",
-    children: [
-      { title: "Mind Share", icon: "mdi:account-circle", link: "/mind-share" },
-      { title: "Framework", icon: "mdi:settings", link: "/framework" },
-      { title: "Launchpad", icon: "mdi:rocket-launch", link: "/launchpad" },
-      { title: "DeFAI", icon: "mdi:brain", link: "/defai" },
-      { title: "GameAI", icon: "mdi:gamepad", link: "/gameai" },
-      {
-        title: "Agent Studio",
-        icon: "mdi:code-json",
-        link: "https://elyra.example.com",
-      }, // 外部链接
-    ],
+    title: "Market Overview",
+    icon: "mdi:scale-balance",
+    link: "/market-overview",
+  },
+  {
+    title: "Smart Money Data",
+    icon: "fluent:person-money-24-filled",
+    link: "/smart-money",
+    disabled: true,
+  },
+  {
+    title: "Mind Share",
+    icon: "mdi:head-thinking-outline",
+    link: "/mind-share",
+    disabled: true,
+  },
+  {
+    title: "Framework",
+    icon: "file-icons:robotframework",
+    link: "/framework",
   },
   {
     title: "Launchpad",
     icon: "mdi:rocket-launch",
     link: "/launchpad",
+    disabled: true,
   },
   {
-    title: "Docs",
-    icon: "mdi:file-document",
-    link: "https://docs.example.com", // 外部链接
+    title: "DeFAI",
+    icon: "mdi:brain",
+    link: "/defai",
+    disabled: true,
+  },
+  {
+    title: "GameAI",
+    icon: "mdi:gamepad",
+    link: "/gameai",
+    disabled: true,
+  },
+  {
+    title: "Meme Agent",
+    icon: "mdi:rocket-launch",
+    link: "https://elyra.fun/",
+  },
+  {
+    title: "Hybrids",
+    icon: "mdi:web",
+    link: "https://hybrids.scattering.io/",
+  },
+  {
+    title: "Submit Project",
+    icon: "gg:add-r",
+    link: "https://forms.gle/dvFh4AEt6VEusrM4A",
   },
 ];
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  onCollapse?: (collapsed: boolean) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [currentSubmenu, setCurrentSubmenu] = useState<MenuItem | null>(null);
   const router = useRouter(); // Next.js 路由
+
+  const handleCollapse = () => {
+    const newCollapsed = !isCollapsed;
+    setIsCollapsed(newCollapsed);
+    onCollapse?.(newCollapsed);
+  };
 
   // 切换菜单展开/折叠
   const handleToggle = (title: string) => {
@@ -80,68 +124,252 @@ const Sidebar: React.FC = () => {
   const handleMenuClick = (item: MenuItem) => {
     if (item.link) {
       if (item.link.startsWith("http")) {
-        // 处理外部链接
         window.open(item.link, "_blank");
       } else {
-        // 处理内部跳转
         router.push(item.link);
       }
-    } else if (item.children) {
-      handleToggle(item.title);
     }
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+    setCurrentSubmenu(null);
+  };
+
+  useEffect(() => {
+    const initialOpenMenus: Record<string, boolean> = {};
+    menuItems.forEach((item) => {
+      if (item.children) {
+        initialOpenMenus[item.title] = true; // 默认展开
+      }
+    });
+    setOpenMenus(initialOpenMenus);
+  }, []);
+
   // 递归渲染菜单
   const renderMenuItems = (items: MenuItem[], level = 0) => {
-    return items.map((item) => (
-      <Box key={item.title}>
-        <ListItemButton
-          sx={{ pl: level * 2 }}
-          onClick={() => handleMenuClick(item)}
-        >
-          {item.icon && (
-            <ListItemIcon>
-              <Icon icon={item.icon} width={20} height={20} />
-            </ListItemIcon>
+    return items.map((item) => {
+      const isActive = router.pathname === item.link;
+      return (
+        <Box key={item.title}>
+          <Tooltip
+            title={item.title}
+            placement="right"
+            arrow
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  bgcolor: "#000000",
+                  color: "#fff",
+                  fontSize: "14px",
+                  padding: "8px 12px",
+                  "& .MuiTooltip-arrow": {
+                    color: "#000000",
+                  },
+                },
+              },
+            }}
+          >
+            <ListItemButton
+              disabled={item?.disabled}
+              sx={{
+                mx: "auto",
+                width: 48,
+                height: 48,
+                borderRadius: 1,
+                backgroundColor: isActive ? "#25143f" : "transparent",
+                "&:hover": {
+                  backgroundColor: isActive
+                    ? "#25143f"
+                    : "rgba(175, 84, 255, 0.21)",
+                },
+                justifyContent: "center",
+                alignItems: "center",
+                "& .MuiListItemIcon-root": {
+                  color: isActive ? "#AF54FF" : "rgba(255, 255, 255, 0.8)",
+                  "&:hover": {
+                    color: "#AF54FF",
+                  },
+                },
+              }}
+              onClick={() => handleMenuClick(item)}
+            >
+              {item.icon && (
+                <ListItemIcon
+                  sx={{
+                    minWidth: "unset",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Icon icon={item.icon} width={24} height={24} />
+                </ListItemIcon>
+              )}
+            </ListItemButton>
+          </Tooltip>
+          {!isCollapsed && item.children && (
+            <Collapse in={openMenus[item.title]} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {renderMenuItems(item.children, level + 1)}
+              </List>
+            </Collapse>
           )}
-          <ListItemText
-            primary={item.title}
-            sx={{ fontSize: "30px !important" }}
-          />
-          {item.children &&
-            (openMenus[item.title] ? <ExpandLess /> : <ExpandMore />)}
-        </ListItemButton>
+        </Box>
+      );
+    });
+  };
 
-        {/* 递归渲染子菜单 */}
-        {item.children && (
-          <Collapse in={openMenus[item.title]} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {renderMenuItems(item.children, level + 1)}
-            </List>
-          </Collapse>
+  const renderSubmenuItems = (items: MenuItem[]) => {
+    return items.map((item) => (
+      <ListItemButton
+        key={item.title}
+        onClick={() => {
+          if (item.link) {
+            if (item.link.startsWith("http")) {
+              window.open(item.link, "_blank");
+            } else {
+              router.push(item.link);
+            }
+          }
+          handleClose();
+        }}
+        disabled={item?.disabled}
+        sx={{
+          pl: 2,
+          pr: 4,
+          py: 1,
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.08)",
+          },
+        }}
+      >
+        {item.icon && (
+          <ListItemIcon sx={{ minWidth: 40 }}>
+            <Icon icon={item.icon} width={20} height={20} />
+          </ListItemIcon>
         )}
-      </Box>
+        <ListItemText
+          primary={item.title}
+          sx={{
+            span: {
+              fontSize: "14px !important",
+            },
+          }}
+        />
+      </ListItemButton>
     ));
   };
 
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: 240,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: 240,
-          boxSizing: "border-box",
-          padding: "20px 10px",
-        },
-      }}
-    >
-      <Box sx={{ padding: 2 }}>
-        <Logo />
-      </Box>
-      <List>{renderMenuItems(menuItems)}</List>
-    </Drawer>
+    <>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 80,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: 80,
+            boxSizing: "border-box",
+            padding: "10px 0",
+            height: "100vh",
+            transition: "width 0.3s ease",
+          },
+        }}
+      >
+        <List sx={{ width: "100%" }}>
+          {menuItems.map((item) => {
+            const isActive = router.pathname === item.link;
+            return (
+              <Box
+                key={item.title}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                  mb: 1,
+                }}
+              >
+                <Tooltip
+                  title={item.title}
+                  placement="right"
+                  arrow
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: "#000000",
+                        color: "#fff",
+                        fontSize: "14px",
+                        padding: "8px 12px",
+                        "& .MuiTooltip-arrow": {
+                          color: "#000000",
+                        },
+                      },
+                    },
+                  }}
+                >
+                  <ListItemButton
+                    disabled={item?.disabled}
+                    sx={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 1,
+                      backgroundColor: isActive ? "#25143f" : "transparent",
+                      "&:hover": {
+                        backgroundColor: isActive
+                          ? "#25143f"
+                          : "rgba(0, 0, 0, 0.08)",
+                      },
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={() => handleMenuClick(item)}
+                  >
+                    {item.icon && (
+                      <ListItemIcon
+                        sx={{
+                          minWidth: "unset",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Icon icon={item.icon} width={24} height={24} />
+                      </ListItemIcon>
+                    )}
+                  </ListItemButton>
+                </Tooltip>
+              </Box>
+            );
+          })}
+        </List>
+      </Drawer>
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        PaperProps={{
+          sx: {
+            mt: 1,
+            ml: 1,
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          },
+        }}
+      >
+        <Box sx={{ py: 1 }}>
+          {currentSubmenu?.children &&
+            renderSubmenuItems(currentSubmenu.children)}
+        </Box>
+      </Popover>
+    </>
   );
 };
 

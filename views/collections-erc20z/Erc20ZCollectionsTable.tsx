@@ -10,14 +10,14 @@ import {
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { ERC20ZTableHeader } from "./table/table-header";
 import { TableSkeleton } from "./table/table-skeleton";
-import { Erc20ZTokenTableRow } from "./table/table-row";
 import { useSort } from "@/context/erc20z-all-token-sort-provider";
-import { SortFieldMap } from "./table-config";
+import { SortFieldMap, tableColumns } from "./table-config";
 import DynamicTabs from "@/components/tabs/DynamicTabs";
 import TimeFilter from "../home/components/hour-filter";
 import { useCallback, useState } from "react";
 import { getZoraTokenTypes } from "@/services/tokens";
 import { useErc20ZChain } from "@/context/chain-provider-erc20z";
+import Erc20ZTokenTableRow from "./table/table-row";
 
 interface CollectionsTableProps {
   // chainId: string;
@@ -29,38 +29,64 @@ interface CollectionsPage {
 }
 
 interface CollectionsParams {
-  selectedTabId?: number;
+  selectedTabName?: string;
   chainId: number;
   sortOrder?: string;
   sortedField?: string;
 }
 
-function useInfiniteCollections({
-  selectedTabId,
+export function useInfiniteCollections({
+  selectedTabName,
   chainId,
   sortOrder,
   sortedField,
 }: CollectionsParams): UseInfiniteQueryResult<CollectionsPage, Error> {
+  // 处理特殊的排序字段
+  let sortField = SortFieldMap[sortedField || "1h Chg"];
+
+  // 确保 Twitter Score 使用正确的排序字段
+  if (sortedField === "Twitter Score") {
+    sortField = "index_collections.twitter_score";
+  }
+
+  // 添加更详细的日志
+  console.log("Current sortedField:", sortedField);
+  console.log("Mapped sortField:", sortField);
+  console.log("Sort order:", sortOrder);
+  console.log("SortFieldMap:", SortFieldMap);
+
+  // 构建查询参数
+  const queryParams = {
+    page: 1,
+    page_size: 10,
+    type_name: selectedTabName === "All" ? "" : selectedTabName,
+    sort_field: sortField,
+    chain_id: Number(chainId) === -1 ? "" : Number(chainId) || 1,
+    sort_direction: sortOrder || "desc",
+  };
+
+  // 如果是 Twitter Score，添加特殊处理
+  if (sortedField === "Twitter Score") {
+    queryParams.sort_field = "twitter_score"; // 尝试使用不带前缀的字段名
+  }
+
+  console.log("Query params:", queryParams);
+
   return useInfiniteQuery({
     queryKey: [
       "collections",
-      { selectedTabId, chainId, sortOrder, sortedField },
+      { selectedTabName, chainId, sortOrder, sortedField },
     ],
     queryFn: ({ pageParam = 1 }) =>
       getCollections({
+        ...queryParams,
         page: pageParam,
-        page_size: 10,
-        sort_field: SortFieldMap[sortedField || "24h Vol"],
-        parent_type_id: selectedTabId,
-        chain_id: Number(chainId) === -1 ? "" : Number(chainId) || 1,
-        sort_direction: sortOrder || "desc",
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage.data?.list?.length) return undefined;
       return pages.length + 1;
     },
-    // enabled: Boolean(selectedTabId && sortOrder),
   });
 }
 const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
@@ -71,7 +97,7 @@ const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
     setSortedField,
   } = useSort();
   const [selectedTime, setSelectedTime] = useState<"1h" | "6h" | "24h">("24h");
-  const [selectedTabId, setSelectedTabID] = useState<number>(0);
+  const [selectedTabName, setSelectedTabName] = useState<string>("");
   const {
     data,
     fetchNextPage,
@@ -80,7 +106,7 @@ const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
     isLoading,
     error,
   } = useInfiniteCollections({
-    selectedTabId,
+    selectedTabName,
     chainId: Number(chainId),
     sortOrder: sortOrder || "",
     sortedField: sortedField || "",
@@ -95,12 +121,12 @@ const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
   });
 
   const { data: tokenTypes } = useQuery({
-    queryKey: ["getZoraTokenTypes", { chainId }],
-    queryFn: () => getZoraTokenTypes(Number(chainId)),
+    queryKey: ["getZoraTokenTypes"],
+    queryFn: () => getZoraTokenTypes(),
   });
 
-  const handleDynamicTabsChange = useCallback((id: number) => {
-    setSelectedTabID(id);
+  const handleDynamicTabsChange = useCallback((id: number, name: string) => {
+    setSelectedTabName(name);
   }, []);
   const handleTimeChange = (time: "1h" | "6h" | "24h") => {
     if (sortedField !== `${time} Vol`) {
@@ -124,12 +150,21 @@ const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
           {" "}
           <DynamicTabs
             total={data?.pages?.[0]?.data?.total_count || 0}
-            tabs={[{ id: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
+            tabs={[{ rank: 0, name: "All" }].concat(
+              tokenTypes?.data?.list || [],
+            )}
             onChange={handleDynamicTabsChange}
           />
           <TimeFilter value={selectedTime} onChange={handleTimeChange} />
         </Box>
-        <div className="widget-content-inner">
+        <div
+          className="widget-content-inner"
+          style={{
+            overflowX: "auto",
+            width: "100%",
+            minWidth: "1700px",
+          }}
+        >
           <div className="widget-table-ranking">
             <ERC20ZTableHeader selectedTime={selectedTime} />
             {isLoading ? (
@@ -137,8 +172,49 @@ const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
             ) : (
               <div
                 className="table-ranking-content"
-                style={{ minHeight: "500px" }}
+                style={{
+                  minHeight: "500px",
+                  width: "100%",
+                }}
               >
+                <div
+                  className="table-ranking-header"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                      "80px 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+                    padding: "12px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "8px",
+                    marginBottom: "8px",
+                    minWidth: "1700px",
+                    overflowX: "auto",
+                  }}
+                >
+                  {tableColumns.map((column, index) => (
+                    <div
+                      key={index}
+                      className="table-ranking-header-item"
+                      style={{
+                        color: "rgba(255, 255, 255, 0.8)",
+                        fontSize: "12px",
+                        fontWeight: 500,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        ...(column.key === "twitter_score"
+                          ? {
+                            minWidth: "120px",
+                            maxWidth: "120px",
+                            textAlign: "center",
+                          }
+                          : {}),
+                      }}
+                    >
+                      {column.title}
+                    </div>
+                  ))}
+                </div>
                 {data?.pages?.map((page) => {
                   return page?.data?.list?.map((item) => (
                     <Erc20ZTokenTableRow

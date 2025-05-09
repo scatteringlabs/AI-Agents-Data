@@ -345,7 +345,7 @@ function PoolInfoCardErc20Z({ collectionDetails }: iPoolInfoCardErc20Z) {
               variant="h5"
               sx={{ color: " rgba(255, 255, 255, 0.6)" }}
             >
-              ERC20 Address
+              Contract address
             </Typography>
             <Typography variant="h5">
               {formatAddress(collectionDetails?.ft_address)}

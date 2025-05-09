@@ -50,14 +50,14 @@ interface CollectionsPage {
 }
 
 interface CollectionsParams {
-  selectedTabId?: number;
+  selectedTabName?: string;
   chainId: number;
   sortOrder?: string;
   sortedField?: string;
 }
 
 function useInfiniteCollections({
-  selectedTabId,
+  selectedTabName,
   chainId,
   sortOrder,
   sortedField,
@@ -65,14 +65,14 @@ function useInfiniteCollections({
   return useInfiniteQuery({
     queryKey: [
       "collections",
-      { selectedTabId, chainId, sortOrder, sortedField },
+      { selectedTabName, chainId, sortOrder, sortedField },
     ],
     queryFn: ({ pageParam = 1 }) =>
       getCollections({
         page: pageParam,
         page_size: 10,
         sort_field: SortFieldMap[sortedField || "24h Vol"],
-        parent_type_id: selectedTabId,
+        type_name: selectedTabName,
         chain_id: Number(chainId) === -1 ? "" : Number(chainId) || 1,
         sort_direction: sortOrder || "desc",
       }),
@@ -86,7 +86,7 @@ function useInfiniteCollections({
 }
 const CollectionsTable: React.FC<CollectionsTableProps> = ({ chainId }) => {
   const [selectedTab, setSelectedTab] = useState<string>("All");
-  const [selectedTabId, setSelectedTabID] = useState<number>(0);
+  const [selectedTabName, setSelectedTabName] = useState<string>("");
   const [total, setTotal] = useState<number>(0);
   const router = useRouter();
   const { sortOrder = "desc", sortedField = "24h Vol" } = useSort();
@@ -112,8 +112,8 @@ const CollectionsTable: React.FC<CollectionsTableProps> = ({ chainId }) => {
   const handleTabChange = useCallback((key: string) => {
     setSelectedTab(key);
   }, []);
-  const handleDynamicTabsChange = useCallback((id: number) => {
-    setSelectedTabID(id);
+  const handleDynamicTabsChange = useCallback((rank: number, name: string) => {
+    setSelectedTabName(name);
   }, []);
   const {
     data,
@@ -124,7 +124,7 @@ const CollectionsTable: React.FC<CollectionsTableProps> = ({ chainId }) => {
     isLoading,
     error,
   } = useInfiniteCollections({
-    selectedTabId,
+    selectedTabName,
     chainId: Number(chainId),
     sortOrder: sortOrder || "",
     sortedField: sortedField || "",
@@ -142,7 +142,7 @@ const CollectionsTable: React.FC<CollectionsTableProps> = ({ chainId }) => {
     <>
       <DynamicTabs
         total={data?.pages?.[0]?.data?.total_count || 0}
-        tabs={[{ id: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
+        tabs={[{ rank: 0, name: "All" }].concat(tokenTypes?.data?.list || [])}
         onChange={handleDynamicTabsChange}
       />
       <div className="widget-content-tab pt-10">

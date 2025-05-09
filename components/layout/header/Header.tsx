@@ -9,6 +9,8 @@ import {
   TextField,
   Typography,
   styled,
+  Container,
+  useMediaQuery,
 } from "@mui/material";
 import MobileHeader from "./MobileHeader";
 import PcNav from "./PcNav";
@@ -25,39 +27,38 @@ import { useGlobalState } from "@/context/GlobalStateContext";
 import PrivyLogin from "./privy-wallet";
 import { useErc20ZChain } from "@/context/chain-provider-erc20z";
 import GlobalTypeSwitcher from "./GlobalTypeSwitcher";
+import { usePathname } from "next/navigation";
+import { Menu } from "@mui/icons-material";
 
 interface HeaderProps {
   isMobileMenu: boolean;
   handleMobileMenu: () => void;
+  isSidebarCollapsed?: boolean;
 }
 
 export default function Header3({
   isMobileMenu,
   handleMobileMenu,
+  isSidebarCollapsed = false,
 }: HeaderProps) {
-  const { selectedOption } = useGlobalState();
-
   const [open, setOpen] = useState(false);
-  const [backgroundColor, setBackgroundColor] =
-    useState<string>("rgba(1, 4, 16, 1)");
-  const { chainId, setChainId } = useChain();
+  const [backgroundColor, setBackgroundColor] = useState<string>(
+    "rgba(1, 4, 16, 0.5)",
+  );
   const { chainId: zoraChainId, setChainId: setZoraChainId } = useErc20ZChain();
   const handleChain = (newChain: string) => {
     setZoraChainId(Number(newChain));
   };
 
   const router = useRouter();
+  const pathName = usePathname();
+  const { slug } = router.query;
   const isShowChainFilter = useMemo(
-    () =>
-      !router.pathname?.includes("collect") &&
-      !router.pathname?.includes("collection") &&
-      !router.pathname?.includes("assets") &&
-      !router.pathname?.includes("portfolio") &&
-      !router.pathname?.includes("/market-overview") &&
-      !router.pathname?.includes("/genie") &&
-      !router.pathname?.includes("/launchpad"),
-    [router],
+    () => !slug && pathName !== "/market-overview",
+    [slug, pathName],
   );
+
+  const isMobile = useMediaQuery("(max-width:900px)");
 
   return (
     <DrawerSortProvider>
@@ -65,6 +66,7 @@ export default function Header3({
         sx={{
           background: `${backgroundColor} !important`,
           top: 0,
+          backdropFilter: "blur(4px)",
           height: {
             md: isShowChainFilter ? "128px !important" : "80px !important",
             xs: isShowChainFilter ? "110px !important" : "60px !important",
@@ -87,7 +89,20 @@ export default function Header3({
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Stack flexDirection="row">1</Stack>
+                  <Box
+                    sx={{
+                      display: { md: "none", xs: "block", width: "100px" },
+                    }}
+                  >
+                    <Link href="/" rel="home" className="main-logo">
+                      <img
+                        id="mobile-logo_header"
+                        src="/assets/images/logo/logo.png"
+                        data-retina="assets/images/logo/logo-dark@2x.png"
+                      />
+                    </Link>
+                  </Box>
+                  <Stack flexDirection="row"> </Stack>
                   {!open ? (
                     <Box
                       sx={{
@@ -96,27 +111,21 @@ export default function Header3({
                         flexGrow: 1,
                         maxWidth: 1000,
                       }}
-                      // onMouseEnter={(event) => {
-                      //   setAnchorEl(event.currentTarget);
-                      // }}
                     >
                       <SearchInputButton setOpen={setOpen} />
                     </Box>
                   ) : null}
-                  {/* <Box sx={{ display: { md: "none", xs: "block" } }}>
-                    <GlobalTypeSwitcher />
-                  </Box> */}
                   <Stack
                     flexDirection="row"
                     alignItems="center"
                     justifyContent="center"
                   >
-                    {/* <IconButton
+                    <IconButton
                       onClick={() => {
                         setOpen(true);
                       }}
                       sx={{
-                        display: { sm: "none", xs: "block" },
+                        display: { md: "none", xs: "block" },
                         p: { md: 2, xs: 1 },
                       }}
                     >
@@ -124,7 +133,7 @@ export default function Header3({
                         icon="eva:search-fill"
                         sx={{ ml: { md: 1, xs: 0 }, color: "#fff" }}
                       />
-                    </IconButton> */}
+                    </IconButton>
                     <PrivyLogin />
                     <Box
                       className="mobile-button"
@@ -149,7 +158,7 @@ export default function Header3({
           <Box
             sx={{
               position: "fixed",
-              left: 240,
+              left: isSidebarCollapsed ? 80 : 80,
               top: { md: 80, xs: 60 },
               width: "100%",
               zIndex: 2,

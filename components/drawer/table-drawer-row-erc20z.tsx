@@ -39,10 +39,8 @@ export const TableDrawerRowERC20Z = ({
   const { selectedOption } = useGlobalState();
 
   const handleClickErc20z = useCallback(() => {
-    const { chain_id, token_id, mt_address } = item;
-    router.push(
-      `/collect/${ChainIdByName?.[chain_id]}/${mt_address}/${token_id}/`,
-    );
+    const { chain_id, slug } = item;
+    router.push(`/${ChainIdByName?.[chain_id]}/${slug}`);
     closeDialog?.();
   }, [router, item, closeDialog]);
   const isSelected = useMemo(

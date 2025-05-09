@@ -45,7 +45,7 @@ const ExpandableInfoComponent: React.FC<ExpandableInfoComponentProps> = ({
           position: "absolute",
           left: "calc( 50% -  24px )",
           bottom: -24,
-          zIndex: 99,
+          zIndex: 8,
         }}
       >
         {expanded ? (

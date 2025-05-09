@@ -52,8 +52,8 @@ function useInfiniteCollections({
       getCollections({
         page: pageParam,
         page_size: 10,
-        sort_field: SortFieldMap[sortedField || "24h Vol"],
-        parent_type_id: 0,
+        sort_field: SortFieldMap[sortedField || "1h Chg"],
+        // parent_type_id: 0,
         chain_id:
           Number(selectedChain) === -1 ? "" : Number(selectedChain) || 1,
         sort_direction: sortOrder || "desc",

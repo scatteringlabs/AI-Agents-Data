@@ -4,7 +4,12 @@ import { Dispatch, SetStateAction } from "react";
 
 interface iTableTabs {
   activeTab: string;
-  setActiveTab: Dispatch<SetStateAction<"trade" | "holder" | "overview">>;
+  setActiveTab: Dispatch<
+    SetStateAction<
+      "trade" | "holder" | "overview" | "AI Summary" | "Announcement"
+    >
+  >;
+  isMobile?: boolean;
   showHolders?: boolean;
   statusFlags?: number;
 }
@@ -12,10 +17,67 @@ const TableTabs = ({
   activeTab,
   setActiveTab,
   showHolders = true,
+  isMobile = false,
   statusFlags = 0,
 }: iTableTabs) => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", width: "100%", overflowX: "scroll" }}>
+      <ButtonWrapper
+        sx={{
+          background:
+            activeTab === "AI Summary" ? "#af54ff" : "rgba(255,255,255,0.0)",
+          border:
+            activeTab === "AI Summary"
+              ? "1px solid #af54ff"
+              : "1px solid rgba(255,255,255,0.3)",
+          color:
+            activeTab === "AI Summary"
+              ? "rgba(255,255,255,1)"
+              : "rgba(255,255,255,0.4)",
+          fontWeight: activeTab === "AI Summary" ? 700 : 500,
+          fontSize: { md: 16, xs: 12 },
+          borderRadius: "8px",
+          padding: { md: "10px 20px", xs: "10px 10px" },
+          m: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          mr: 2,
+        }}
+        onClick={() => {
+          setActiveTab("AI Summary");
+        }}
+      >
+        AI Summary
+      </ButtonWrapper>
+      {/* <ButtonWrapper
+        sx={{
+          background:
+            activeTab === "Announcement" ? "#af54ff" : "rgba(255,255,255,0.0)",
+          border:
+            activeTab === "Announcement"
+              ? "1px solid #af54ff"
+              : "1px solid rgba(255,255,255,0.3)",
+          color:
+            activeTab === "Announcement"
+              ? "rgba(255,255,255,1)"
+              : "rgba(255,255,255,0.4)",
+          fontWeight: activeTab === "Announcement" ? 700 : 500,
+          fontSize: { md: 16, xs: 12 },
+          borderRadius: "8px",
+          padding: { md: "10px 20px", xs: "10px 10px" },
+          m: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          mr: 2,
+        }}
+        onClick={() => {
+          setActiveTab("Announcement");
+        }}
+      >
+        Announcement
+      </ButtonWrapper> */}
       <ButtonWrapper
         sx={{
           background:
@@ -31,7 +93,7 @@ const TableTabs = ({
           fontWeight: activeTab === "trade" ? 700 : 500,
           borderRadius: "8px",
           padding: { md: "10px 20px", xs: "10px 10px" },
-          fontSize: { md: 16, xs: 14 },
+          fontSize: { md: 16, xs: 12 },
           m: 0,
           mr: 2,
           display: "flex",
@@ -42,7 +104,12 @@ const TableTabs = ({
           setActiveTab("trade");
         }}
       >
-        <Box sx={{ mr: 1 }}>
+        <Box
+          sx={{
+            mr: 1,
+            display: { md: isMobile ? "none" : "block", xs: "none" },
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -80,7 +147,7 @@ const TableTabs = ({
                 ? "rgba(255,255,255,1)"
                 : "rgba(255,255,255,0.4)",
             fontWeight: activeTab === "holder" ? 700 : 500,
-            fontSize: { md: 16, xs: 14 },
+            fontSize: { md: 16, xs: 12 },
             borderRadius: "8px",
             padding: { md: "10px 20px", xs: "10px 10px" },
             m: 0,
@@ -92,7 +159,12 @@ const TableTabs = ({
             setActiveTab("holder");
           }}
         >
-          <Box sx={{ mr: 1 }}>
+          <Box
+            sx={{
+              mr: 1,
+              display: { md: isMobile ? "none" : "block", xs: "none" },
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="21"
@@ -109,6 +181,7 @@ const TableTabs = ({
           Top Holders
         </ButtonWrapper>
       ) : null}
+
       {statusFlags === 1 ? (
         <ButtonWrapper
           sx={{
@@ -125,7 +198,7 @@ const TableTabs = ({
             fontWeight: activeTab === "overview" ? 700 : 500,
             borderRadius: "8px",
             padding: { md: "10px 20px", xs: "10px 10px" },
-            fontSize: { md: 16, xs: 14 },
+            fontSize: { md: 16, xs: 12 },
             m: 0,
             ml: 2,
             display: "flex",

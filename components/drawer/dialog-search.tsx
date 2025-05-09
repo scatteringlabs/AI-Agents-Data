@@ -43,11 +43,7 @@ const DialogSearch = ({ setOpen, open }: iDialogSearch) => {
         },
       }}
     >
-      {selectedOption === "404s" ? (
-        <HeaderTokensTable title="TRADE" closeDialog={handleClose} />
-      ) : (
-        <HeaderTokensTableErc20Z title="TRADE" closeDialog={handleClose} />
-      )}
+      <HeaderTokensTableErc20Z title="TRADE" closeDialog={handleClose} />
     </Dialog>
   );
 };

@@ -1,6 +1,6 @@
 import { Box, Card, CardHeader } from "@mui/material";
 import Tabs from "@/components/tabs/Tabs";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChainId, Token } from "@uniswap/sdk-core";
 import { zeroAddress } from "viem";
 import TokenProvider from "../../context/token-provider";
@@ -14,12 +14,15 @@ import TokenCardOkx from "./swap/token-card-okx";
 import TypeTab from "./type-tab";
 import { BatchBalanceResult } from "@/services/zora/swap/balance";
 import { useBatchBalanceQuery } from "@/services/zora/swap/balance404";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { ethers } from "ethers";
+import { formatWeiToToken } from "./erc20z-swap/swap-card";
+import { AlchemyRpcUrl } from "@/configs/chain";
 const tabs = ["Buy", "Sell"];
 export type TabType = "Buy" | "Sell";
 interface iSwapCard {
   symbol?: string;
-  erc20Address?: string;
+  erc20Address: string;
   logoUrl?: string;
   decimals: number;
   chainId: number;
@@ -28,18 +31,22 @@ interface iSwapCard {
 function SwapCard({
   symbol,
   decimals,
-  erc20Address = "",
+  erc20Address,
   hasLogo,
   logoUrl,
   chainId,
 }: iSwapCard) {
   const [activeTab, setActiveTab] = useState<TabType>("Buy");
   const [initFlag, setInitFlag] = useState<boolean>(false);
+  const { wallets } = useWallets();
+  const wallet = useMemo(() => wallets?.[0], [wallets]);
   const { user } = usePrivy();
   const address = useMemo(() => user?.wallet?.address, [user]);
+
   const erc404Token = useMemo(
     () =>
       chainId &&
+      erc20Address &&
       new Token(chainId, erc20Address?.toString(), decimals, symbol, symbol),
     [erc20Address, chainId, symbol, decimals],
   );
@@ -58,11 +65,13 @@ function SwapCard({
     erc20Address: erc20Address || "",
     chainId: chainId || 0,
   });
+
   useEffect(() => {
     if (initFlag) {
       refectBalance();
     }
   }, [initFlag, refectBalance]);
+
   if (!(baseTokens && erc404Token)) {
     return <Preloader />;
   }

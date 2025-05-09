@@ -3,6 +3,8 @@ import { Token } from "@uniswap/sdk-core";
 import { safeParseUnits } from "@/utils/format";
 import { usePrivy, useSolanaWallets, useWallets } from "@privy-io/react-auth";
 import { useMemo } from "react";
+import { useSwitchChain } from "wagmi";
+import { BaseSID } from "@/views/launchpad/create/tokenService";
 interface iButtonComfirm {
   quoteError: any;
   chainId: number;
@@ -27,7 +29,9 @@ export const ButtonComfirm = ({
   quoteError,
 }: iButtonComfirm) => {
   const { wallets } = useWallets();
+  // const { switchChain } = useSwitchChain();
   const wallet = useMemo(() => wallets[0], [wallets]);
+
   const currentChainId = useMemo(
     () => wallet?.chainId?.split(":")?.[1],
     [wallet],
@@ -71,7 +75,17 @@ export const ButtonComfirm = ({
     return (
       <ButtonWrapper
         sx={{}}
-        onClick={() => wallet?.switchChain(`0x${chainId?.toString(16)}`)}
+        onClick={() => {
+          console.log("wallet", wallet);
+
+          try {
+            // switchChain({ chainId });
+          } catch (error) {
+            console.log("switchChain", error);
+          }
+          wallet?.switchChain(chainId);
+          // wallet?.switchChain(`0x${chainId?.toString(16)}`);
+        }}
       >
         Switch network
       </ButtonWrapper>

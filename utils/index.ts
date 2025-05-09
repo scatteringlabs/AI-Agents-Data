@@ -50,6 +50,9 @@ export function chainIdToName(chainId?: number | string) {
     case ChainId.ZORA:
       name = "Zora";
       break;
+    case ChainId.BNB:
+      name = "BNB";
+      break;
     case 84532:
       name = "Base Sepolia";
       break;

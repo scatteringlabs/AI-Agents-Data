@@ -1,15 +1,6 @@
-import DynamicTabs from "@/components/tabs/DynamicTabs";
-import { useErc20ZChain } from "@/context/chain-provider-erc20z";
-import {
-  useSort,
-  ALlTokenSortProvider,
-} from "@/context/erc20z-all-token-sort-provider";
-import { getZoraTokenTypes } from "@/services/tokens";
+import { ALlTokenSortProvider } from "@/context/erc20z-all-token-sort-provider";
 import Erc20ZCollectionsTable from "@/views/collections-erc20z/Erc20ZCollectionsTable";
-import TimeFilter from "@/views/home/components/hour-filter";
 import { Box } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
 
 function Collections() {
   return (

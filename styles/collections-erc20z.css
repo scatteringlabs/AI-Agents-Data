@@ -1,0 +1,74 @@
+.table-ranking-header {
+  display: grid;
+  grid-template-columns: 80px 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.table-ranking-header-item {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.table-ranking-row {
+  display: grid;
+  grid-template-columns: 80px 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.table-ranking-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.table-ranking-row.selected {
+  background: rgba(175, 84, 255, 0.1);
+}
+
+.table-ranking-row-item {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  padding: 0 8px;
+  min-width: 100px;
+}
+
+.table-ranking-row-item:first-child {
+  min-width: 200px;
+}
+
+.table-ranking-row-item:last-child {
+  justify-content: flex-end;
+}
+
+.collection {
+  gap: 12px;
+}
+
+.collection-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.followers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.followers .MuiAvatar-root {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s;
+}
+
+.followers .MuiAvatar-root:hover {
+  transform: scale(1.1);
+}

@@ -54,6 +54,7 @@ interface iSolTokenCard {
   type: "Buy" | "Sell";
   symbol: string;
   erc20Address: string;
+  logo_url: string;
   initFlag: boolean;
   hasLogo: boolean;
   isSol: boolean;
@@ -93,6 +94,7 @@ const SolTokenCard = ({
   symbol,
   erc20Address,
   hasLogo,
+  logo_url,
 }: iSolTokenCard) => {
   const [payValue, setPayValue] = useState<string>("");
   // const { connection } = useConnection();
@@ -260,27 +262,6 @@ const SolTokenCard = ({
     [setPayDebouncedValue, debouncedPayValidation, setPayValue],
   );
 
-  const handleReceiveValueChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newValue = event.target.value;
-    const decimalRegex = new RegExp(
-      `^\\d+(\\.\\d{0,${receiveToken.decimals}})?$`,
-    );
-    if (decimalRegex.test(newValue)) {
-      setReceiveValue(newValue);
-      setReceiveDebouncedValue(newValue);
-      debouncedReceiveValidation(newValue);
-    }
-
-    if (!newValue) {
-      setPayValue("");
-      setReceiveValue("");
-      setPayDebouncedValue("");
-      setReceiveDebouncedValue("");
-    }
-  };
-
   useEffect(() => {
     return () => {
       debouncedPayValidation.cancel();
@@ -404,37 +385,37 @@ const SolTokenCard = ({
         // console.log("swapTransactionBuf", swapTransactionBuf);
         // // console.log("rawTransaction", rawTransaction);
 
-        const encodedTx = bs58.encode(transaction?.serialize());
+        // const encodedTx = bs58.encode(transaction?.serialize());
         // console.log("encodedTx", encodedTx);
 
-        const jitoURL =
-          "https://mainnet.block-engine.jito.wtf/api/v1/transactions";
-        const payload = {
-          jsonrpc: "2.0",
-          id: 1,
-          method: "sendTransaction",
-          params: [encodedTx],
-        };
-        let txOpts = {
-          skipPreflight: true,
-          preflightCommitment: "singleGossip",
-          commitment: "confirmed",
-          maxRetries: 0,
-        };
-        let txSig: string;
-        try {
-          const response = await axios.post(jitoURL, payload, {
-            headers: { "Content-Type": "application/json" },
-          });
-          setSwapLoading(false);
-          toast.success("Transaction confirmed.");
-          refetchAll();
-          txSig = response.data.result;
-        } catch (error) {
-          console.error("Error:", error);
-          toast.error("Transaction failed.");
-          throw new Error("Jito Bundle Error: cannot send.");
-        }
+        // const jitoURL =
+        //   "https://mainnet.block-engine.jito.wtf/api/v1/transactions";
+        // const payload = {
+        //   jsonrpc: "2.0",
+        //   id: 1,
+        //   method: "sendTransaction",
+        //   params: [encodedTx],
+        // };
+        // let txOpts = {
+        //   skipPreflight: true,
+        //   preflightCommitment: "singleGossip",
+        //   commitment: "confirmed",
+        //   maxRetries: 0,
+        // };
+        // let txSig: string;
+        // try {
+        //   const response = await axios.post(jitoURL, payload, {
+        //     headers: { "Content-Type": "application/json" },
+        //   });
+        //   setSwapLoading(false);
+        //   toast.success("Transaction confirmed.");
+        //   refetchAll();
+        //   txSig = response.data.result;
+        // } catch (error) {
+        //   console.error("Error:", error);
+        //   toast.error("Transaction failed.");
+        //   throw new Error("Jito Bundle Error: cannot send.");
+        // }
         let currentBlockHeight = await connection.getBlockHeight(
           connection.commitment,
         );
@@ -505,7 +486,7 @@ const SolTokenCard = ({
         <form noValidate autoComplete="off">
           <Box sx={{ position: "relative" }}>
             <TokenInput
-              hasLogo={hasLogo}
+              logo_url={logo_url}
               erc20Address={erc20Address}
               inputTitle="Pay"
               chainId={chainId}
@@ -521,23 +502,6 @@ const SolTokenCard = ({
               activeTokenBalance={activeTokenBalance}
               isNative={type === "Buy" ? true : false}
             />
-            {/* <TokenInput
-              hasLogo={hasLogo}
-              erc20Address={erc20Address}
-              inputTitle="Receive"
-              chainId={chainId}
-              handleInputValueChange={handleReceiveValueChange}
-              handleMaxPayValue={handleMaxPayValue}
-              inputValue={receiveValue}
-              token={receiveToken}
-              baseTokens={type === "Buy" ? [] : baseTokens}
-              showMax={false}
-              symbol={symbol}
-              solBalance={solBalance}
-              tokenBalance={tokenBalance}
-              activeTokenBalance={activeTokenBalance}
-              isNative={type === "Buy" ? false : true}
-            /> */}
             <Typography
               sx={{
                 display: "flex",

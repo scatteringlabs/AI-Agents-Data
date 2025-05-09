@@ -11,6 +11,8 @@ export const AlchemySwapRpcUrl: { [key: number]: string } = {
     "https://zora-mainnet.g.alchemy.com/v2/2xhw8860Xv2QHTOjit5gbPQ30BR5HttT",
   [ChainId.BASE]:
     "https://base-mainnet.g.alchemy.com/v2/2xhw8860Xv2QHTOjit5gbPQ30BR5HttT",
+  [ChainId.BNB]:
+    "https://bnb-mainnet.g.alchemy.com/v2/gcYcBYmX69u_PZ3B8AdOH10-2B9fwcY8",
 };
 
 export const AlchemyRpcUrl: { [key: number]: string } = {
@@ -22,6 +24,10 @@ export const AlchemyRpcUrl: { [key: number]: string } = {
     "https://zora-mainnet.g.alchemy.com/v2/CDVPSoGW0dc4AIKFN7nEwnrsLjAHvN5X",
   [ChainId.BASE]:
     "https://base-mainnet.g.alchemy.com/v2/CDVPSoGW0dc4AIKFN7nEwnrsLjAHvN5X",
+  [ChainId.BNB]:
+    "https://bnb-mainnet.g.alchemy.com/v2/gcYcBYmX69u_PZ3B8AdOH10-2B9fwcY8",
+  // [ChainId.BNB]:
+  //   "https://bnb-mainnet.g.alchemy.com/v2/CDVPSoGW0dc4AIKFN7nEwnrsLjAHvN5X",
 };
 
 export function getMultiChainProvider(

@@ -1,4 +1,9 @@
-import { BASE_URL_DEV, ZORA_BASE_URL, ZoraXApiKey } from "@/constants/url";
+import {
+  BASE_URL_DEV,
+  BASE_URL_V3,
+  ZORA_BASE_URL,
+  ZoraXApiKey,
+} from "@/constants/url";
 import { ChainId } from "@uniswap/sdk-core";
 
 interface GetPoolInfoParams {
@@ -37,25 +42,11 @@ interface GetPoolInfoResponse {
 interface GetTokenTypeResponse {
   data: {
     list: {
-      id: number;
+      rank: number;
       name: string;
     }[];
   };
 }
-export const getPoolInfo = async (
-  params: GetPoolInfoParams,
-): Promise<GetPoolInfoResponse> => {
-  const queryParams = new URLSearchParams(params as any).toString();
-  const response = await fetch(
-    `${BASE_URL_DEV}/trade/pool/info?${queryParams}`,
-  );
-
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-
-  return response.json();
-};
 
 export const getTokenTypes = async (
   chain_id: number,
@@ -70,17 +61,12 @@ export const getTokenTypes = async (
 
   return response.json();
 };
-export const getZoraTokenTypes = async (
-  chain_id: number,
-): Promise<GetTokenTypeResponse> => {
-  const response = await fetch(
-    `${ZORA_BASE_URL}/coins/types?chain_id=${chain_id === -1 ? 0 : chain_id}`,
-    {
-      headers: {
-        "x-api-key": ZoraXApiKey,
-      },
+export const getZoraTokenTypes = async (): Promise<GetTokenTypeResponse> => {
+  const response = await fetch(`${BASE_URL_V3}/collections/tags`, {
+    headers: {
+      "x-api-key": ZoraXApiKey,
     },
-  );
+  });
 
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -113,7 +99,7 @@ export const getLiquidityInfo = async (
 ): Promise<GetLiquidityResponse> => {
   const queryParams = new URLSearchParams(params as any).toString();
   const response = await fetch(
-    `${BASE_URL_DEV}/trade/liquidity/list?${queryParams}`,
+    `${BASE_URL_V3}/collections/liquidity?${queryParams}`,
   );
 
   if (!response.ok) {
@@ -132,6 +118,7 @@ export const geckoNetworkName: Record<number, string> = {
   [ChainId.MAINNET]: "eth",
   [ChainId.BASE]: "base",
   [ChainId.ZORA]: "zora-network",
+  [ChainId.BNB]: "bsc",
   10000: "solana",
 };
 export async function getTokensPrice({

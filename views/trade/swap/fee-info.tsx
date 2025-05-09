@@ -42,33 +42,6 @@ const FeeInfo = ({
   );
   return (
     <Box sx={{ mt: 2 }}>
-      <Stack
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ background: "rgba(175, 84, 255, 0.1)", p: 2, borderRadius: 2 }}
-      >
-        <Stack flexDirection="row" alignItems="center">
-          <Box
-            component="img"
-            src="/assets/images/logo/logo.png"
-            sx={{ width: { md: 100, xs: 80 } }}
-          />
-          <Typography variant="body2" sx={{ ml: 1, fontSize: 12 }}>
-            Swap Fee: {scrFee * 100}%
-          </Typography>
-        </Stack>
-        <Stack alignItems="flex-end">
-          <Typography variant="h5" sx={{ color: "#17D070" }}>
-            {formatUSD(scrFeeUsd)}
-          </Typography>
-          {receiveAmount && !isSol ? (
-            <Typography variant="body2" sx={{ fontSize: { md: 12, xs: 10 } }}>
-              Save you {formatUSD(uniFeeUsd - scrFeeUsd)}
-            </Typography>
-          ) : null}
-        </Stack>
-      </Stack>
       {isSol ? null : (
         <Stack
           sx={{

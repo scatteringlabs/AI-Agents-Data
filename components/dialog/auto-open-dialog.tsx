@@ -37,7 +37,7 @@ const AutoOpenDialog: React.FC = () => {
 
   return (
     <Dialog
-      open={open}
+      open={false}
       onClose={handleClose}
       PaperProps={{ sx: { background: "#202025" } }}
     >

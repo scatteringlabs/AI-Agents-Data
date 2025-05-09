@@ -23,12 +23,20 @@ import DexscreenerIcon from "./media-icon/dexscreener-icon";
 import DEXToolsIcon from "./media-icon/dextools-icon";
 import GithubIcon from "./media-icon/github-icon";
 import ProjectIcon from "./media-icon/cmc-icon copy";
+import CreatorIcon from "./media-icon/creator-icon";
+import {
+  ChainIdByName,
+  ChainNameById,
+  DexscreenerNameById,
+} from "@/constants/chain";
 
 export interface iIconList {
   key: string;
   name: string;
   icon: JSX.Element;
+  link?: string;
 }
+
 const MediaLink = ({
   collectionDetails,
 }: {
@@ -42,101 +50,125 @@ const MediaLink = ({
         key: "project_url",
         name: "Website",
         icon: <ProjectIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.project_url,
+      },
+      {
+        key: "creator_x_username",
+        name: "Dev",
+        icon: <CreatorIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.creator_x_username
+          ? `https://twitter.com/${collectionDetails.creator_x_username}`
+          : undefined,
       },
       {
         key: "twitter_username",
         name: "Twitter",
         icon: <TwitterIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.twitter_username
+          ? `https://twitter.com/${collectionDetails.twitter_username}`
+          : undefined,
       },
       {
         key: "telegram_url",
         name: "Telegram",
         icon: <TelegramIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.telegram_url,
       },
       {
         key: "discord_url",
         name: "Discord",
         icon: <DiscordIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.discord_url,
       },
       {
         key: "medium_url",
         name: "Medium",
         icon: <MediumIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.medium_url,
       },
       {
         key: "facebook_url",
         name: "Facebook",
         icon: <FacebookIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.facebook_url,
       },
       {
         key: "tiktok_url",
         name: "TikTok",
         icon: <TikTokIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.tiktok_url,
       },
       {
         key: "reddit_url",
         name: "Reddit",
         icon: <RedditIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.reddit_url,
       },
       {
         key: "warpcast_url",
         name: "Warpcast",
         icon: <WarpcastIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.warpcast_url,
       },
       {
         key: "instagram_url",
         name: "Instagram",
         icon: <InstagramIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.instagram_url,
       },
     ],
     [collectionDetails],
   );
+
   const nftMarketList: iIconList[] = useMemo(
     () => [
       {
         key: "opensea_url",
         name: "OpenSea",
         icon: <OpenseaIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.opensea_url,
       },
       {
         key: "magiceden_url",
         name: "MagicEden",
         icon: <MagicEdenIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.magiceden_url,
       },
       {
         key: "okxmarket_url",
         name: "OKX Market",
         icon: <OkxIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.okxmarket_url,
       },
     ],
     [collectionDetails],
   );
+
   const otherList: iIconList[] = useMemo(
     () => [
       {
         key: "coingecko_url",
         name: "CoinGecko",
         icon: <CoinGeckoIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.coingecko_url,
       },
       {
         key: "coinmarketcap_url",
         name: "CMC",
         icon: <CMCIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.coinmarketcap_url,
       },
       {
         key: "dexscreener_url",
         name: "Dexscreener",
         icon: <DexscreenerIcon collectionDetails={collectionDetails} />,
-      },
-      {
-        key: "dextools_url",
-        name: "DEXTools",
-        icon: <DEXToolsIcon collectionDetails={collectionDetails} />,
+        link: `https://dexscreener.com/${DexscreenerNameById?.[Number(collectionDetails?.chain_id)]}/${collectionDetails?.address}`,
       },
       {
         key: "github_url",
         name: "Github",
         icon: <GithubIcon collectionDetails={collectionDetails} />,
+        link: collectionDetails?.github_url,
       },
     ],
     [collectionDetails],
@@ -205,13 +237,6 @@ const MediaLink = ({
         list={mediaList}
         collectionDetails={collectionDetails}
         col={2.4}
-      />
-      <MediaLinkList
-        title="NFT Marketplace"
-        list={nftMarketList}
-        collectionDetails={collectionDetails}
-        col={2.8}
-        showBackGround={false}
       />
       <MediaLinkList
         title="Other Links"

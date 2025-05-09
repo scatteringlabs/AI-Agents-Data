@@ -255,6 +255,8 @@ const NETWORK_CONFIG: Record<number, string> = {
     "https://base-mainnet.g.alchemy.com/v2/CDVPSoGW0dc4AIKFN7nEwnrsLjAHvN5X", // Base Mainnet
   [ChainId.ZORA]:
     "https://zora-mainnet.g.alchemy.com/v2/CDVPSoGW0dc4AIKFN7nEwnrsLjAHvN5X", // Base Mainnet
+  [ChainId.BNB]:
+    "https://bnb-mainnet.g.alchemy.com/v2/gcYcBYmX69u_PZ3B8AdOH10-2B9fwcY8", // Bnb Mainnet
 };
 
 export const pollTransactionReceipt = async (

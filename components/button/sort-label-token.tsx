@@ -14,9 +14,8 @@ const SortLabelAllToken = ({ title }: iSortLabelToken) => {
   }, [setSortedField, title]);
 
   return (
-    <Typography
+    <Box
       onClick={toggleSort}
-      variant="h3"
       sx={{
         display: "flex",
         alignItems: "center",
@@ -27,6 +26,8 @@ const SortLabelAllToken = ({ title }: iSortLabelToken) => {
         padding: sortedField === title ? "8px 10px" : "0px",
         width: "auto",
         fontSize: { md: "14px !important", xs: "12px !important" },
+        fontWeight: 500,
+        color: "rgba(255, 255, 255, 0.8)",
       }}
     >
       {title}
@@ -65,7 +66,7 @@ const SortLabelAllToken = ({ title }: iSortLabelToken) => {
           />
         </Box>
       </Box>
-    </Typography>
+    </Box>
   );
 };
 

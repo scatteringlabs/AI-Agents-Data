@@ -109,6 +109,7 @@ const AvatarCard = ({
           className="avatar"
           onError={handleImgError}
           sx={{
+            minWidth: { md: size, xs: size * 0.6 },
             width: { md: size, xs: size * 0.6 },
             height: { md: size, xs: size * 0.6 },
             borderRadius: "50%",
@@ -125,6 +126,7 @@ const AvatarCard = ({
           alt=""
           className="avatar"
           sx={{
+            minWidth: { md: size * 0.3, xs: size * 0.2 },
             width: { md: size * 0.3, xs: size * 0.2 },
             height: { md: size * 0.3, xs: size * 0.2 },
             position: "absolute",

@@ -1,6 +1,7 @@
 import {
   BASE_URL,
   BASE_URL_DEV,
+  BASE_URL_V3,
   MP_BASE_URL,
   XApiKey,
   ZORA_BASE_URL,
@@ -22,7 +23,7 @@ import { BLinkApiData } from "@/views/trade/swap/sol/PreviewComponent";
 interface CollectionParams {
   page?: number;
   page_size?: number;
-  parent_type_id?: number;
+  // parent_type_id?: number;
   zora_coin_type?: number;
   chain_id?: number | string;
   sort_field?: string;
@@ -36,7 +37,7 @@ export const getCollections = async (
   params: CollectionParams,
 ): Promise<CollectionsResponse> => {
   const queryParams = new URLSearchParams(params as any).toString();
-  const response = await fetch(`${ZORA_BASE_URL}/coins/list?${queryParams}`, {
+  const response = await fetch(`${BASE_URL_V3}/collections?${queryParams}`, {
     headers: {
       "x-api-key": ZoraXApiKey,
     },

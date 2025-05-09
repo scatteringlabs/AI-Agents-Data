@@ -25,9 +25,9 @@ const Tabpage = ({
   tab: string | null;
 }) => {
   if (chain === "solana") {
-    return <SolanaSlug token={tokenAddress || ""} chain_name={chain} />;
+    return <SolanaSlug slug={tokenAddress || ""} chain_name={chain} />;
   } else if (chain && tokenAddress) {
-    return <EvmSlug token={tokenAddress} chain_name={chain} />;
+    return <EvmSlug slug={tokenAddress} chain_name={chain} />;
   }
 };
 

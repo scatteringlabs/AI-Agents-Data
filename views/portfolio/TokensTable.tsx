@@ -10,7 +10,6 @@ import { arbitrum, base, flare, mainnet } from "viem/chains";
 import { erc20Abi } from "viem";
 import { readContracts } from "@wagmi/core";
 import { config } from "@/configs/wagmi-config";
-import { OptionType } from "@/pages/portfolio";
 import NFTNotFound from "@/components/nft-not-found";
 import { SCAN_URL_ID } from "@/constants/url";
 import Link from "next/link";
@@ -28,7 +27,7 @@ interface Balance {
   chainId: number;
 }
 interface TokensTableProps {
-  options: OptionType[];
+  options: any[];
   address: string;
 }
 

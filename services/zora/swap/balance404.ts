@@ -1,7 +1,7 @@
 import { AlchemyRpcUrl } from "@/configs/chain";
 import { useQuery } from "@tanstack/react-query";
-import { ethers } from "ethers";
-
+import { ChainId } from "@uniswap/sdk-core";
+import { ethers, providers } from "ethers";
 export type BatchBalanceResult = {
   ethBalance: string;
   erc20Balance: string;
@@ -22,7 +22,17 @@ async function fetchBatchBalanceData({
   if (!rpcUrl) {
     throw new Error(`RPC URL for chainId ${chainId} is not configured`);
   }
-
+  // if (chainId === ChainId.BNB) {
+  //   try {
+  //     const provider = new ethers.providers.JsonRpcProvider(
+  //       AlchemyRpcUrl?.[ChainId.BNB],
+  //     );
+  //     const bnbBalance = await provider.getBalance(userAddress || "");
+  //     console.log("bnbBalance.toString()", bnbBalance.toString());
+  //   } catch (error) {
+  //     console.log("bnbBalance.toString()", error);
+  //   }
+  // }
   const batchRequests = [
     {
       jsonrpc: "2.0",
@@ -63,7 +73,10 @@ async function fetchBatchBalanceData({
   }
 
   const ethBalance = ethers.BigNumber.from(data[0].result);
+
   const erc20Balance = ethers.BigNumber.from(data[1].result);
+  console.log("ethBalance.toString()", ethBalance.toString());
+  console.log("erc20Balance.toString()", erc20Balance.toString());
 
   return {
     ethBalance: ethBalance.toString(),
@@ -82,6 +95,13 @@ export function useBatchBalanceQuery({
   erc20Address,
   chainId,
 }: UseBatchBalanceQueryParams) {
+  console.log(
+    "userAddress, erc20Address, chainId",
+    userAddress,
+    erc20Address,
+    chainId,
+  );
+
   return useQuery({
     queryKey: ["batchBalanceData", { userAddress, erc20Address, chainId }],
     queryFn: () =>

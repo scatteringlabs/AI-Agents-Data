@@ -10,7 +10,7 @@ import {
 import TokenBalance from "./token-balance";
 import { InputWrapper } from "./wrapper";
 import AvatarCard from "@/components/collections/avatar-card";
-import { Token } from "@uniswap/sdk-core";
+import { ChainId, Token } from "@uniswap/sdk-core";
 import { ChangeEventHandler, useCallback, useMemo } from "react";
 import { useActiveToken } from "@/context/hooks/useActiveToken";
 import { getTokenLogoURL } from "@/utils/token";
@@ -65,18 +65,11 @@ const TokenInputOkx = ({
       }),
     [chainId, erc20Address],
   );
-  const ethUrl = useMemo(
-    () =>
-      getTokenLogoURL({
-        chainId: 1,
-        address: zeroAddress,
-      }),
-    [],
-  );
+
   const handlePercentageClick = useCallback(
     (percentage: number) => {
       const erc20BalanceWei =
-        token?.symbol === "ETH"
+        token?.symbol === "ETH" || token?.symbol === "BNB"
           ? batchBalance?.ethBalance || 0
           : batchBalance?.erc20Balance || 0;
       const balance = ethers.BigNumber.from(erc20BalanceWei)
@@ -192,7 +185,11 @@ const TokenInputOkx = ({
               <AvatarCard
                 hasLogo={true}
                 symbol={symbol || ""}
-                logoUrl={ethUrl}
+                logoUrl={
+                  chainId === ChainId.BNB
+                    ? "/assets/images/tokens/bnb-active.svg"
+                    : "/assets/images/tokens/eth-active.svg"
+                }
                 chainId={chainId}
                 size={40}
                 mr={1}

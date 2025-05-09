@@ -9,22 +9,8 @@ import ExpandableInfoComponent from "./ ExpandableInfoComponent";
 import PriceChangeText from "@/components/collections/price-change-text";
 import { formatNumberWithKM } from "@/utils/format";
 import TextTruncate from "@/components/text-truncate/TextTruncate";
-import InfoText from "./info-text";
-import MediaLink from "./MediaLink";
-import { SCAN_URL_ID } from "@/constants/url";
-import Iconify from "@/components/iconify";
-import VerifiedIcon from "./verified-icon";
-import VerifyInfoIcon from "./verify-info-icon";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Collection,
-  fetchCollectionDetails,
-  fetchTokensDetails,
-  TokenDetails,
-} from "@/services/reservoir";
-import { WETH_ADDRESS } from "@uniswap/universal-router-sdk";
-import { fetchTokenPrices, TokenPrices } from "@/services/gecko";
-import { geckoNetworkName } from "@/services/tokens";
+import { fetchTokensDetails, TokenDetails } from "@/services/reservoir";
 import InfoTextErc20Z from "./info-text-erc20z";
 interface CollectionInfoProps {
   slugLoading: boolean;

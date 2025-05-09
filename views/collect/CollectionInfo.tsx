@@ -39,6 +39,7 @@ import { fetchTokenPrices, TokenPrices } from "@/services/gecko";
 import { ChainIdByName } from "@/constants/chain";
 import { geckoNetworkName } from "@/services/tokens";
 import { WETH_ADDRESS } from "@uniswap/universal-router-sdk";
+import PriceInfoCard from "./zora/price-info-card";
 interface CollectionInfoProps {
   slugLoading: boolean;
   collectionDetails?: CollectionDetails;
@@ -60,7 +61,7 @@ const CollectionInfo = ({
     telegram_url,
     description,
     discord_url,
-    erc20_address,
+    address,
     volume,
     price_change,
     name,
@@ -71,16 +72,6 @@ const CollectionInfo = ({
     price_in_usd,
   } = collectionDetails || {};
   console.log("collectionDetails", collectionDetails);
-
-  const { data: collections } = useQuery<Collection[]>({
-    queryKey: ["collectionDetails", collectionDetails?.erc721_address],
-    queryFn: () =>
-      fetchCollectionDetails(
-        collectionDetails?.erc721_address || "",
-        Number(collectionDetails?.chain_id) || 1,
-      ),
-    enabled: Boolean(collectionDetails?.erc721_address),
-  });
   const wethAddress = useMemo(
     () => WETH_ADDRESS(Number(collectionDetails?.chain_id) || 1).toLowerCase(),
     [collectionDetails?.chain_id],
@@ -97,16 +88,6 @@ const CollectionInfo = ({
     () => Number(tokenPrices?.[wethAddress]),
     [wethAddress, tokenPrices],
   );
-  const nftVolume = useMemo(() => {
-    return collections?.[0]?.volume?.["1day"] || 0;
-  }, [collections]);
-  const totalVolume = useMemo(
-    () =>
-      formatNumberWithKM(
-        (nftVolume * ethPrice || 0) + Number(collectionDetails?.volume),
-      ),
-    [nftVolume, ethPrice, collectionDetails?.volume],
-  );
   const showBaner = useMemo(
     () => !!collectionDetails?.banner_url,
     [collectionDetails],
@@ -116,10 +97,18 @@ const CollectionInfo = ({
       { filename: "website", link: project_url },
       {
         filename: "scan",
-        link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${erc20_address}`,
+        link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${address}`,
       },
       { filename: "discord", link: discord_url },
-      { filename: "x", link: twitter_username },
+      ...(collectionDetails?.creator_x_username ? [{
+        filename: "dev2",
+        link: `https://twitter.com/${collectionDetails.creator_x_username}`,
+        isDevIcon: true,
+      }] : []),
+      ...(twitter_username ? [{
+        filename: "x",
+        link: `https://x.com/${twitter_username}`,
+      }] : []),
       {
         filename: "telegram",
         link: telegram_url,
@@ -130,72 +119,11 @@ const CollectionInfo = ({
       project_url,
       telegram_url,
       discord_url,
-      erc20_address,
+      address,
       twitter_username,
+      collectionDetails?.creator_x_username,
     ],
   );
-  const priceInfo = useMemo(
-    () => [
-      {
-        label: "Price",
-        content: `$${formatTokenFixedto(collectionDetails?.price_in_usd)}`,
-      },
-      {
-        label: "24h Change",
-        content: (
-          <PriceChangeText
-            priceChange={Number(collectionDetails?.price_change)}
-          />
-        ),
-      },
-      {
-        label: "24h Volume",
-        content: `$${formatNumberWithKM(collectionDetails?.volume)}`,
-      },
-      {
-        label: "Liquidity",
-        content: `$${formatNumberWithKM(collectionDetails?.liquidity)}`,
-      },
-      {
-        label: "Market Cap",
-        content: `$${formatNumberWithKM(collectionDetails?.market_cap)}`,
-      },
-    ],
-    [collectionDetails],
-  );
-  const nftInfo = useMemo(
-    () => [
-      {
-        label: "Floor Price",
-        content: collections?.[0]?.floorAsk?.price?.amount?.decimal
-          ? `${collections?.[0]?.floorAsk?.price?.amount?.decimal} ETH`
-          : "-",
-      },
-      {
-        label: "24h NFT VOL",
-        content: nftVolume ? `${nftVolume} ETH` : "0",
-      },
-      {
-        label: "nft Listed",
-        content: collections?.[0]?.onSaleCount || "-",
-      },
-      {
-        label: "nft Owners",
-        content: collections?.[0]?.ownerCount || collectionDetails?.nft_owners,
-      },
-    ],
-    [collectionDetails, collections, nftVolume],
-  );
-  const totalInfo = useMemo(
-    () => [
-      {
-        label: "24h total vol",
-        content: `$${totalVolume}`,
-      },
-    ],
-    [totalVolume],
-  );
-  const isPc = useIsPc();
   if (slugLoading) {
     return (
       <Box sx={{ display: { md: "block", xs: "none" } }}>
@@ -256,31 +184,19 @@ const CollectionInfo = ({
         <Box className="tw-flex tw-items-start">
           <Box className="tw-flex-shrink-0  tw-overflow-hidden">
             <Box sx={{ width: "100%" }}>
-              {collectionDetails?.logo_url ? (
-                <Box
-                  component="img"
-                  src={collectionDetails?.logo_url}
-                  alt=""
-                  className="avatar"
-                  sx={{
-                    width: { md: 152, xs: 152 * 0.6 },
-                    height: { md: 152, xs: 152 * 0.6 },
-                    borderRadius: "50%",
-                    position: "relative",
-                    zIndex: 1,
-                  }}
-                />
-              ) : (
-                <AvatarCard
-                  hasLogo={has_logo}
-                  logoUrl={collectionDetails?.logo_url || ""}
-                  chainId={chainId}
-                  symbol={collectionDetails?.symbol || ""}
-                  size={152}
-                  showChain={false}
-                  mr={0}
-                />
-              )}
+              <Box
+                component="img"
+                src={collectionDetails?.logo_url}
+                alt=""
+                className="avatar"
+                sx={{
+                  width: { md: 152, xs: 152 * 0.6 },
+                  height: { md: 152, xs: 152 * 0.6 },
+                  borderRadius: "50%",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              />
             </Box>
           </Box>
 
@@ -315,29 +231,16 @@ const CollectionInfo = ({
             </Box>
             <InfoText
               totalSupply={total_supply}
-              nftItems={collections?.[0]?.tokenCount || nft_items}
+              nftItems={"0"}
               createTime={create_time}
               collectionDetails={collectionDetails}
               chainId={chainId}
             />
           </Box>
         </Box>
-
-        <Box
-          sx={{
-            flexDirection: "column",
-            display: { md: "flex !important", xs: "none !important" },
-          }}
-          className={`tw-overflow-x-scroll tw-flex tw-gap-4 tw-overflow-y-hidden ${styles.hideScrollbar}`}
-        >
-          <DetailBar data={priceInfo}></DetailBar>
-          <Stack flexDirection="row">
-            <DetailBar data={nftInfo}></DetailBar>
-            <Box sx={{ ml: 1.2 }}>
-              <DetailBar data={totalInfo}></DetailBar>
-            </Box>
-          </Stack>
-        </Box>
+        {collectionDetails ? (
+          <PriceInfoCard collectionDetails={collectionDetails as any} />
+        ) : null}
       </Box>
     </Box>
   );

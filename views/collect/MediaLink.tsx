@@ -5,6 +5,7 @@ import Link from "next/link";
 export interface MediaItem {
   filename: string;
   link?: string;
+  isDevIcon?: boolean;
 }
 
 interface MediaLinkProps {
@@ -23,22 +24,26 @@ const MediaLink = ({
       <Link
         href={item.link}
         key={idx}
-        className="tw-flex-shrink-0"
+        className="tw-flex-shrink-0 tw-flex tw-items-center"
         target="_blank"
       >
         <Box
           component="img"
-          src={`/assets/images/media/${item.filename}.svg`}
+          src={item.isDevIcon ? `/images/${item.filename}.svg` : `/assets/images/media/${item.filename}.svg`}
           alt=""
-          sx={{ width: { md: 24, xs: 20 }, height: { md: 24, xs: 20 } }}
+          sx={{ 
+            width: item.isDevIcon ? 20 : { md: 24, xs: 20 }, 
+            height: item.isDevIcon ? 20 : { md: 24, xs: 20 } 
+          }}
         />
       </Link>
     ) : null;
   });
+
   return (
     <div className="tw-inline-block">
       <div
-        className={`tw-flex tw-justify-between ${showBg ? "tw-bg-white/[.05]" : ""} tw-px-4 md:tw-px-8 tw-py-2 md:tw-py-4 tw-gap-4 md:tw-gap-10 tw-rounded-full`}
+        className={`tw-flex tw-justify-between tw-items-center ${showBg ? "tw-bg-white/[.05]" : ""} tw-px-4 md:tw-px-8 tw-py-2 md:tw-py-4 tw-gap-4 md:tw-gap-10 tw-rounded-full`}
       >
         {links}
       </div>

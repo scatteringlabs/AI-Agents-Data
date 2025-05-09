@@ -33,8 +33,6 @@ const InfoTextErc20Z: React.FC<InfoTextProps> = ({
   chainId,
   tokenDetails,
 }) => {
-  console.log("tokenDetails", tokenDetails);
-
   const infoItems: InfoItem[] = [
     {
       label: "Total supply",
@@ -53,7 +51,6 @@ const InfoTextErc20Z: React.FC<InfoTextProps> = ({
     {
       label: "Token Standard",
       value: "ERC20z",
-      // value: tokenDetails?.token?.kind?.toLocaleUpperCase() || "N/A",
     },
     {
       label: "Chain",

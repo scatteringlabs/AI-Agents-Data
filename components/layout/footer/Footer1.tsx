@@ -13,6 +13,9 @@ export default function Footer1() {
                 sx={{
                   flexDirection: { md: "row", xs: "column" },
                   alignItems: "center",
+                  "& .widget-social": {
+                    marginRight: "20px",
+                  },
                 }}
                 className="footer-content flex flex-grow"
               >

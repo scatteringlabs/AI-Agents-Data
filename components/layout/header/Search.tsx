@@ -194,7 +194,7 @@ export default function CollectionSearch() {
                 background: "transparent !important",
               },
             }}
-            placeholder="Search collection or contract address"
+            placeholder="Search token or contract address"
             name="s"
             title="Search for"
             required

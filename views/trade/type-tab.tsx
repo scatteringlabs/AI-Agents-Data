@@ -8,21 +8,7 @@ export function calculateTotalBalance(
   batchBalance: BatchBalanceResult,
   decimals: number,
 ): string {
-  console.log("batchBalance", batchBalance);
-
-  // 将 ERC1155 余额转换为 BigNumber，并提升到 18 位精度
-  // const erc1155BalanceInWei = ethers.utils.parseUnits(
-  //   batchBalance?.erc1155Balance || "0",
-  //   18,
-  // );
-
-  // 将 ERC20 余额直接解析为 BigNumber
   const erc20Balance = ethers.BigNumber.from(batchBalance?.erc20Balance || "0");
-
-  // 计算总余额
-  // const totalBalance = erc1155BalanceInWei.add(erc20Balance);
-
-  // 返回用户可读格式（18 位小数精度）
   return ethers.utils.formatUnits(erc20Balance, decimals);
 }
 

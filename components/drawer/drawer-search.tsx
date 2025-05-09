@@ -50,11 +50,7 @@ const DrawerSearch = ({ setSearchQuery, searchQuery }: iDrawerSearch) => {
         },
       }}
       autoComplete="off"
-      placeholder={
-        selectedOption === "404s"
-          ? "Search collection or contract address"
-          : "Search token or contract address"
-      }
+      placeholder="Search token or contract address"
       type="search"
       onChange={(event) => handleSearch(event?.target?.value)}
       InputProps={{

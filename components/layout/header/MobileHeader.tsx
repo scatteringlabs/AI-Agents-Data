@@ -1,10 +1,6 @@
 import Link from "next/link";
 import MobileMenu from "../MobileMenu";
-import { Box, IconButton, InputAdornment } from "@mui/material";
-import CollectionSearch from "./Search";
-import Iconify from "@/components/iconify";
-import SearchInputButton from "@/components/drawer/search-input-button";
-import GlobalTypeSwitcher from "./GlobalTypeSwitcher";
+import Sidebar from "../Sidebar";
 
 interface MobileHeaderProps {
   isMobileMenu: boolean;
@@ -20,7 +16,10 @@ const MobileHeader = ({
     <>
       <div className={`mobile-nav-wrap ${isMobileMenu ? "active" : ""}`}>
         <div className="overlay-mobile-nav" onClick={handleMobileMenu} />
-        <div className="inner-mobile-nav">
+        <div
+          className="inner-mobile-nav"
+          style={{ background: "none", height: "100%" }}
+        >
           <Link href="/" rel="home" className="main-logo">
             <img
               id="mobile-logo_header"
@@ -29,7 +28,16 @@ const MobileHeader = ({
             />
           </Link>
 
-          <div className="mobile-nav-close" onClick={handleMobileMenu}>
+          <div
+            className="mobile-nav-close"
+            onClick={handleMobileMenu}
+            style={{
+              zIndex: 29000,
+              right: "100px",
+              top: "42px",
+              height: "100%",
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -47,25 +55,9 @@ const MobileHeader = ({
               </g>
             </svg>
           </div>
-          <MobileMenu handleMobileMenu={handleMobileMenu} />
+          {isMobileMenu ? <Sidebar /> : null}
         </div>
       </div>
-      {/* <Box
-        sx={{
-          display: { md: "none", xs: "block" },
-          position: "fixed",
-          top: 54,
-          left: 0,
-          width: "100%",
-          zIndex: 999,
-          background: "rgba(1, 4, 16, 0.2)",
-          backdropFilter: "blur(4px)",
-        }}
-      >
-        <Box sx={{ width: "calc( 100% - 20px)", margin: "10px", mb: 0 }}>
-          <SearchInputButton setOpen={setOpen} />
-        </Box>
-      </Box> */}
     </>
   );
 };

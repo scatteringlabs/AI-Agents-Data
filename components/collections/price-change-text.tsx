@@ -21,7 +21,7 @@ const PriceChangeText = ({
               ? "rgba(255, 255, 255,0.6)"
               : "#DC2626",
         textAlign: "right",
-        fontSize: fontSize ? fontSize : { md: 16, xs: 12 },
+        fontSize: fontSize ? fontSize : { md: 14, xs: 12 },
         fontWeight,
       }}
     >

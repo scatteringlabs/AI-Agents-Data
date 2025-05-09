@@ -22,14 +22,14 @@ interface iSolSwapCard {
   erc20Address?: string;
   decimals: number;
   chainId: number;
-  hasLogo: boolean;
+  logo_url: string;
 }
 
 function SolSwapCard({
   symbol,
   decimals,
   erc20Address = "",
-  hasLogo,
+  logo_url,
   chainId,
 }: iSolSwapCard) {
   const [activeTab, setActiveTab] = useState<TabType>("Buy");
@@ -120,13 +120,14 @@ function SolSwapCard({
           isSol={true}
           baseTokens={SolBaseTokens as Token[]}
           erc20Address={erc20Address || ""}
-          hasLogo={hasLogo}
           type={activeTab}
           chainId={chainId}
           initFlag={initFlag}
           setInitFlag={setInitFlag}
           currentToken={erc404Token}
           symbol={symbol || ""}
+          logo_url={logo_url}
+          hasLogo={!!logo_url}
         />
       </SolTokenProvider>
     </Card>

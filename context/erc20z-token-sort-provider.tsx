@@ -29,7 +29,7 @@ interface SortProviderProps {
   children: ReactNode;
 }
 export const ERC20ZSortProvider = ({ children }: SortProviderProps) => {
-  const [sortedField, setSortedFieldState] = useState<string>("24h Vol");
+  const [sortedField, setSortedFieldState] = useState<string>("1h Chg");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
   const setSortedField = useCallback(

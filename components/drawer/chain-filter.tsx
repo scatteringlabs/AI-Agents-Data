@@ -89,8 +89,6 @@ const ChainFilter: React.FC<ChainFilterProps> = ({
   selectedChain,
   onChainChange,
 }) => {
-  const { selectedOption } = useGlobalState();
-
   const handleChainChange = (
     event: React.MouseEvent<HTMLElement>,
     newChain: string,

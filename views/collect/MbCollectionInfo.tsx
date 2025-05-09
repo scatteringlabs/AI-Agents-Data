@@ -19,7 +19,10 @@ import { Collection, fetchCollectionDetails } from "@/services/reservoir";
 import { WETH_ADDRESS } from "@uniswap/universal-router-sdk";
 import { fetchTokenPrices, TokenPrices } from "@/services/gecko";
 import { geckoNetworkName } from "@/services/tokens";
+import PriceInfoCardMB from "./zora/price-info-card-md";
+
 interface CollectionInfoProps {
+  isMobile?: boolean;
   slugLoading: boolean;
   collectionDetails?: CollectionDetails;
   handleOpenDialog: () => void;
@@ -29,63 +32,43 @@ const MbCollectionInfo = ({
   slugLoading,
   collectionDetails,
   handleOpenDialog,
+  isMobile = false,
 }: CollectionInfoProps) => {
   const {
     chain_id: chainId,
     slug,
     has_logo,
-    erc20_address,
+    address,
     name,
     symbol,
   } = collectionDetails || {};
-  const { data: collections } = useQuery<Collection[]>({
-    queryKey: ["collectionDetails", collectionDetails?.erc721_address],
-    queryFn: () =>
-      fetchCollectionDetails(
-        collectionDetails?.erc721_address || "",
-        Number(collectionDetails?.chain_id) || 1,
-      ),
-    enabled: Boolean(collectionDetails?.erc721_address),
-  });
-  // const wethAddress = useMemo(
-  //   () => WETH_ADDRESS(Number(collectionDetails?.chain_id) || 1).toLowerCase(),
-  //   [collectionDetails?.chain_id],
-  // );
-  // const { data: tokenPrices } = useQuery<TokenPrices>({
-  //   queryKey: ["tokenPrices"],
-  //   queryFn: () =>
-  //     fetchTokenPrices(
-  //       geckoNetworkName[Number(collectionDetails?.chain_id) || 1],
-  //       wethAddress,
-  //     ),
-  // });
-  // const ethPrice = useMemo(
-  //   () => Number(tokenPrices?.[wethAddress]),
-  //   [wethAddress, tokenPrices],
-  // );
-  const nftVolume = useMemo(() => {
-    return collections?.[0]?.volume?.["1day"] || 0;
-  }, [collections]);
   const totalVolume = useMemo(() => 0, []);
   const showBaner = useMemo(
-    () => !!collectionDetails?.mobile_banner_url,
-    [collectionDetails],
+    () => !!collectionDetails?.mobile_banner_url && !isMobile,
+    [collectionDetails, isMobile],
   );
   const mediaCfg = useMemo(
     () => [
       { filename: "website", link: collectionDetails?.project_url },
       {
         filename: "scan",
-        link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${erc20_address}`,
+        link: `${SCAN_URL_ID[Number(chainId)?.toString()]}token/${address}`,
       },
       { filename: "discord", link: collectionDetails?.discord_url },
-      { filename: "x", link: collectionDetails?.twitter_username },
+      ...(collectionDetails?.twitter_username
+        ? [
+          {
+            filename: "x",
+            link: `https://x.com/${collectionDetails?.twitter_username}`,
+          },
+        ]
+        : []),
       {
         filename: "telegram",
         link: collectionDetails?.telegram_url,
       },
     ],
-    [chainId, collectionDetails, erc20_address],
+    [chainId, collectionDetails, address],
   );
   const infoItems = useMemo(
     () => [
@@ -115,18 +98,8 @@ const MbCollectionInfo = ({
         label: "MARKET CAP",
         value: `$${formatNumberWithKM(collectionDetails?.market_cap)}`,
       },
-      {
-        label: "FLOOR PRICE",
-        value: collections?.[0]?.floorAsk?.price?.amount?.decimal
-          ? `${collections?.[0]?.floorAsk?.price?.amount?.decimal} ETH`
-          : "-",
-      },
-      { label: "24H NFT VOL", value: nftVolume ? `${nftVolume} ETH` : "-" },
-      { label: "NFT LISTED", value: collections?.[0]?.onSaleCount || "-" },
-      { label: "NFT OWNERS", value: collectionDetails?.nft_owners },
-      { label: "24H TOTAL VOL", value: totalVolume ? `$${totalVolume}` : "-" },
     ],
-    [collectionDetails, totalVolume, collections, nftVolume],
+    [collectionDetails],
   );
   if (slugLoading) {
     return (
@@ -137,7 +110,7 @@ const MbCollectionInfo = ({
   }
 
   return (
-    <Box sx={{ display: { md: "none", xs: "block" } }}>
+    <Box sx={{ display: { md: isMobile ? "block" : "none", xs: "block" } }}>
       <Box
         // className={showBaner ? "tw-mt-32" : ""}
         sx={{
@@ -193,10 +166,10 @@ const MbCollectionInfo = ({
           alignItems="center"
         >
           <AvatarCard
-            hasLogo={has_logo}
+            hasLogo={!!collectionDetails?.logo_url}
             // logoUrl={getTokenLogoURL({
             //   chainId,
-            //   address: erc20_address,
+            //   address: address,
             //   size: 250,
             // })}
             logoUrl={collectionDetails?.logo_url || ""}
@@ -260,9 +233,12 @@ const MbCollectionInfo = ({
             />
             <VerifyInfoIcon collectionDetails={collectionDetails} />
           </Box>
+
         </Box>
       </Box>
-      <ExpandableInfoComponent infoItems={infoItems} />
+      {/* {collectionDetails ? (
+        <PriceInfoCardMB collectionDetails={collectionDetails as any} />
+      ) : null} */}
       <Box sx={{ mt: 3 }}>
         <TextTruncate text={collectionDetails?.description || ""} />
       </Box>

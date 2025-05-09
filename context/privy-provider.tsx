@@ -1,5 +1,6 @@
 import { PrivyProvider } from "@privy-io/react-auth";
 import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
+import { base, bsc, mainnet } from "viem/chains";
 
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled
@@ -34,6 +35,8 @@ export default function PrivyAuthProvider({
             "universal_profile", // Universal Profile
           ],
         },
+        defaultChain: base,
+        supportedChains: [base, bsc, mainnet],
         embeddedWallets: {
           // createOnLogin: "all-users",
           createOnLogin: "off",
@@ -46,35 +49,4 @@ export default function PrivyAuthProvider({
       {children}
     </PrivyProvider>
   );
-}
-
-{
-  /* <PrivyProvider
-  appId="your-privy-app-id"
-  config={{
-    appearance: {
-      accentColor: "#6A6FF5",
-      theme: "#FFFFFF",
-      logo: "https://auth.privy.io/logos/privy-logo.png",
-      showWalletLoginFirst: false,
-      walletChainType: "ethereum-and-solana",
-      walletList: ["detected_wallets", "phantom"],
-    },
-    loginMethods: ["wallet"],
-    fundingMethodConfig: {
-      moonpay: {
-        useSandbox: true,
-      },
-    },
-    embeddedWallets: {
-      createOnLogin: "all-users",
-      requireUserPasswordOnCreate: false,
-    },
-    mfa: {
-      noPromptOnMfaRequired: false,
-    },
-  }}
->
-  {children}
-</PrivyProvider>; */
 }

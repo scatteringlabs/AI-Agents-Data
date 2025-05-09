@@ -106,7 +106,7 @@ const PriceInfoOkx = ({
       <BetweenText
         lText="Slippage Auto"
         // @ts-ignore
-        rText={`${oneTokenData?.data?.singleChainSwapInfo?.autoSlippageInfo?.autoSlippage * 100}%`}
+        rText={`${(oneTokenData?.data?.singleChainSwapInfo?.autoSlippageInfo?.autoSlippage * 100)?.toFixed(2)}%`}
       />
       {/* <BetweenText lText="Fee" rText="0.1%" /> */}
       {/* <BetweenText

@@ -64,39 +64,19 @@ const CollectionInfoERC20Z = ({
         <Box className="tw-flex tw-items-start">
           <Box className="tw-flex-shrink-0  tw-overflow-hidden">
             <Box sx={{ width: "100%" }}>
-              {collectionDetails?.logo_url ? (
-                <Box
-                  component="img"
-                  src={collectionDetails?.logo_url}
-                  alt=""
-                  className="avatar"
-                  sx={{
-                    width: { md: 152, xs: 152 * 0.6 },
-                    height: { md: 152, xs: 152 * 0.6 },
-                    borderRadius: "50%",
-                    position: "relative",
-                    zIndex: 1,
-                  }}
-                />
-              ) : (
-                <AvatarCard
-                  hasLogo
-                  logoUrl={
-                    logo_url
-                      ? logo_url
-                      : getTokenLogoURL({
-                          chainId,
-                          address: collectionDetails?.ft_address,
-                          size: 250,
-                        })
-                  }
-                  chainId={chainId}
-                  symbol={collectionDetails?.symbol || ""}
-                  size={152}
-                  showChain={false}
-                  mr={0}
-                />
-              )}
+              <Box
+                component="img"
+                src={collectionDetails?.logo_url}
+                alt=""
+                className="avatar"
+                sx={{
+                  width: { md: 152, xs: 152 * 0.6 },
+                  height: { md: 152, xs: 152 * 0.6 },
+                  borderRadius: "50%",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              />
             </Box>
           </Box>
 

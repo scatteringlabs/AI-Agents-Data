@@ -37,7 +37,7 @@ export const LabelValueText = ({ label, value }: iLabelValueText) => {
           textAlign: "center",
           fontWeight: 600,
           fontFamily: "Poppins",
-          fontSize: { md: "16px !important", xs: "12px !important" },
+          fontSize: { md: "16px !important", xs: "10px !important" },
         }}
       >
         {value ?? ""}

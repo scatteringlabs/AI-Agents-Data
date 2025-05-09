@@ -1,3 +1,4 @@
+import Iconify from "@/components/iconify";
 import { ChainIdByName } from "@/constants/chain";
 import { useChain } from "@/context/chain-provider";
 import {
@@ -23,11 +24,10 @@ const TopText = styled(Typography)`
 
 interface iTabTokenType {
   activeTab: string;
-  setActiveTab: Dispatch<SetStateAction<"top" | "new">>;
+  setActiveTab: Dispatch<SetStateAction<"top" | "new" | "favor">>;
 }
 
 const TabTokenType = ({ activeTab, setActiveTab }: iTabTokenType) => {
-  const { chainId } = useChain();
   const theme = useTheme();
 
   const isSM = useMediaQuery(theme.breakpoints.down("sm"));
@@ -36,8 +36,9 @@ const TabTokenType = ({ activeTab, setActiveTab }: iTabTokenType) => {
       sx={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
-        mb: { md: activeTab === "top" ? 4 : 2, xs: 1 },
+        justifyContent: "flex-start",
+        mb: { md: 0, xs: 1 },
+        columnGap: 4,
       }}
     >
       <Box
@@ -89,6 +90,58 @@ const TabTokenType = ({ activeTab, setActiveTab }: iTabTokenType) => {
             }}
           >
             Top
+          </TopText>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setActiveTab("favor");
+          }}
+        >
+          <Box
+            sx={{
+              width: { md: 32, xs: 24 },
+              height: { md: 32, xs: 24 },
+              mr: 0.4,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Iconify
+              icon={
+                activeTab === "favor"
+                  ? "material-symbols-light:star"
+                  : "material-symbols-light:star-outline"
+              }
+              color={activeTab === "favor" ? "#B054FF" : "#FFFFFF99"}
+              sx={{
+                width: { md: "32px", xs: "24px" },
+                height: { md: "32px", xs: "24px" },
+              }}
+            />
+          </Box>
+          <TopText
+            sx={{
+              fontSize: { md: 24, xs: 16 },
+              color:
+                activeTab === "favor" ? "#AF54FF" : "rgba(255,255,255,0.6)",
+              fontWeight: activeTab === "favor" ? 800 : 500,
+            }}
+          >
+            Watchlist
           </TopText>
         </Box>
       </Box>

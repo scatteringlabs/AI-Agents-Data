@@ -66,10 +66,10 @@ export default function CollectionCard({
   const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
   const { wallets } = useWallets();
+  const wallet = useMemo(() => wallets?.[0], [wallets]);
 
   const { user, login } = usePrivy();
   const userAddress = useMemo(() => user?.wallet?.address, [user]);
-  const wallet = useMemo(() => wallets?.[0], [wallets]);
   const currentChainId = useMemo(
     () => wallet?.chainId?.split(":")?.[1],
     [wallet],

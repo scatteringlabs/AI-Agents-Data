@@ -1,13 +1,18 @@
+import { base, bsc } from "viem/chains";
+
 export const BASE_URL = "https://api.scattering.io/api/v2";
 export const ZORA_BASE_URL = "https://api.scattering.io/zora-api/v1";
 export const BASE_URL_DEV = "https://api.scattering.io/api/v2";
+export const BASE_URL_V3 = "https://api.scattering.io/api/v3";
 // export const BASE_URL_DEV = "https://api.scattering.io/dev-api/v2";
 export const MP_BASE_URL = "https://api.scattering.io/mp-api/v1";
+export const LP_BASE_URL = "https://api.scattering.io/gapi";
 
 export const SCAN_URL_ID: { [key: string]: string } = {
   "1": "https://etherscan.io/",
   "42161": "https://arbiscan.io/",
-  "8453": "https://basescan.org/",
+  [base.id]: "https://basescan.org/",
+  [bsc.id]: "https://www.bscscan.com/",
   "84532": "https://sepolia.basescan.org/",
   "10000": "https://solscan.io/",
 };

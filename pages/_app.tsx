@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createConfig, http, WagmiProvider } from "wagmi";
 
 import Preloader from "@/components/elements/Preloader";
-import { base, baseSepolia, mainnet, sepolia, zora } from "wagmi/chains";
+import { base, baseSepolia, bsc, mainnet, sepolia, zora } from "wagmi/chains";
 import { darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import Layout from "@/components/layout/Layout"; // 默认全局 Layout
 import LaunchpadLayout from "@/components/layout/LaunchpadLayout"; // 新的 Launchpad Layout
@@ -25,6 +25,7 @@ import { ChainProvider } from "@/context/chain-provider";
 import { GlobalStateProvider } from "@/context/GlobalStateContext";
 import PrivyAuthProvider from "@/context/privy-provider";
 import { Erc20ZChainProvider } from "@/context/chain-provider-erc20z";
+import MobileToast from "@/components/MobileToast";
 
 const config = createConfig({
   chains: [mainnet, sepolia, base, baseSepolia, zora],
@@ -38,6 +39,9 @@ const config = createConfig({
     [base.id]: http(
       "https://base-mainnet.g.alchemy.com/v2/CDVPSoGW0dc4AIKFN7nEwnrsLjAHvN5X",
     ),
+    [bsc.id]: http(
+      "https://bnb-mainnet.g.alchemy.com/v2/gcYcBYmX69u_PZ3B8AdOH10-2B9fwcY8",
+    ),
     // [base.id]: http(
     //   "https://base-mainnet.g.alchemy.com/v2/CDVPSoGW0dc4AIKFN7nEwnrsLjAHvN5X",
     // ),
@@ -48,19 +52,6 @@ const theme = createTheme(themeOptions);
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-
-  const getLayout = (page: React.ReactNode) => {
-    if (
-      router.pathname.startsWith("/launchpad/explore") ||
-      router.pathname.startsWith("/launchpad/portfolio") ||
-      router.pathname === "/launchpad"
-    ) {
-      return <LaunchpadLayout>{page}</LaunchpadLayout>;
-    }
-    return <Layout>{page}</Layout>;
-  };
-
   return (
     <PrivyAuthProvider>
       <WagmiProvider config={config}>
@@ -75,7 +66,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <ChainProvider>
                   <GlobalStateProvider>
                     <Suspense fallback={<Preloader />}>
-                      {getLayout(<Component {...pageProps} />)}
+                      <Layout>
+                        <Component {...pageProps} />
+                      </Layout>
                     </Suspense>
                     <Script
                       strategy="afterInteractive"
@@ -101,6 +94,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                       // theme="colored"
                       autoClose={3000}
                     />
+                    <MobileToast />
                   </GlobalStateProvider>
                 </ChainProvider>
               </Erc20ZChainProvider>
