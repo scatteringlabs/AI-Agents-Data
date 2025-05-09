@@ -116,14 +116,16 @@ export default function Layout({ children }: any) {
             sx={{
               width: "100%",
               margin: "0 auto",
-              minHeight: "0px",
               position: "relative",
               pl: { md: 0, xs: 0 },
+              display: "flex",
+              flexDirection: "column",
+              minHeight: "100vh",
             }}
             id="page"
             className="home-7"
           >
-            {children}
+            <Box sx={{ flex: 1 }}>{children}</Box>
             <Box
               sx={{
                 position: "sticky",
@@ -133,7 +135,6 @@ export default function Layout({ children }: any) {
                 zIndex: 999,
               }}
             >
-              {" "}
               <Footer1 />
             </Box>
           </Box>
