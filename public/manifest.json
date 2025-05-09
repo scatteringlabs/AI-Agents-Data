@@ -1,0 +1,24 @@
+{
+  "short_name": "Scattering",
+  "name": "Scattering App",
+  "description": "Scattering App",
+  "icons": [
+    {
+      "src": "assets/images/logo/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/logo/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#FFFFFF"
+}

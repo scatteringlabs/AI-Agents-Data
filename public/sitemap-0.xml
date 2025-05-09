@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url><loc>https://scattering.io</loc><lastmod>2025-01-05T18:08:26.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/404s/tokens</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/erc20z/tokens</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/genie</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/genie/created</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/genie/held</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/launchpad</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/launchpad/create</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/launchpad/explore</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/launchpad/portfolio</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/launchpad/portfolio/created</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/launchpad/portfolio/draft</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/launchpad/portfolio/held</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/market-overview</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://scattering.io/portfolio</loc><lastmod>2025-01-05T18:08:26.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+</urlset>

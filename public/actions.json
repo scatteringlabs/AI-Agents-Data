@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "pathPattern": "/collection/sol/**",
+      "apiPath": "https://scattering.io/blink-api/buy/**"
+    }
+  ]
+}

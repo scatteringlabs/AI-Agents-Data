@@ -1,0 +1,32 @@
+.subTitle {
+  padding: 0 !important;
+  background-color: transparent !important;
+  font-size: 14px;
+  font-weight: 400 !important;
+}
+
+.subTitle::after {
+  right: 0 !important;
+  top: 0 !important;
+}
+
+.subTitleActive {
+  color: #af54ff !important;
+}
+
+.count {
+  position: absolute;
+  top: 0;
+  right: 20px;
+}
+
+.options {
+  padding: 0 14px !important;
+}
+
+.checkboxEllipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}

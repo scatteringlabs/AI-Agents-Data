@@ -1,0 +1,112 @@
+#connectbtn {
+  border-radius: 12px;
+  background: #b054ff;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  color: #161616;
+}
+
+.linear-gradient-background {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), #000410);
+}
+
+.swap-input input {
+  background: transparent !important;
+  color: #fff !important;
+  /* font-size: 30px !important; */
+  border: none !important;
+  padding: 0 !important;
+  font-family: 'Poppins' !important;
+}
+.swap-input input::placeholder {
+  font-size: 30px !important;
+  font-family: 'Poppins' !important;
+}
+.swap-input fieldset {
+  background: transparent !important;
+  border: none !important;
+}
+
+.swap-input {
+  background: transparent !important;
+  border: none !important;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.header-button {
+  background-color: #af54ff;
+  color: #101010;
+}
+
+@media (max-width: 750px) {
+  .swap-input input::placeholder {
+    font-size: 20px !important;
+    font-family: 'Poppins' !important;
+  }
+}
+.widget-table-ranking {
+  overflow-x: hidden;
+}
+.widget-table-ranking::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.widget-table-ranking::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.widget-table-ranking::-webkit-scrollbar-thumb {
+  background: #af54ff;
+  border-radius: 10px;
+}
+
+.widget-table-ranking::-webkit-scrollbar-thumb:hover {
+  background: #af54ff;
+}
+
+@media (max-width: 600px) {
+  .slick-arrow {
+    display: none !important;
+  }
+}
+.slick-prev:before,
+.slick-next:before {
+  display: none;
+}
+.slick-slide {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.chart-text {
+  color: #fff;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.banner-list .slick-list {
+  /* padding-left: 8.8%; */
+}
+
+.share-icon:hover path {
+  fill: #af54ff;
+}

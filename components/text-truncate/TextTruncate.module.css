@@ -1,0 +1,9 @@
+.oneLine {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  mask: linear-gradient(90deg, #fff 80%, transparent 97%);
+}

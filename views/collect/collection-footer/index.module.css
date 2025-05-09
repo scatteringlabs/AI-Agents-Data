@@ -1,0 +1,16 @@
+.wrapper {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #0E111C;
+  width: 100%;
+  z-index: 1;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,27 @@
+.rarityTag {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  padding: 0.6rem;
+  gap: 0.2rem;
+  border-radius: 0.4rem;
+  border: 0.5px solid;
+  line-height: 0;
+  width: 6rem;
+  height: 2.2rem;
+  justify-content: center;
+}
+.icon {
+  flex-shrink: 0;
+}
+.rarity {
+  flex-shrink: 0;
+}
+.rarity:hover {
+  cursor: default;
+}
+
+.rarityTag {
+  padding: 0.6rem;
+  font-size: 1.2rem;
+}

@@ -1,0 +1,31 @@
+/* 隐藏 Firefox 的滚动条 */
+.hideScrollbar {
+  scrollbar-width: none;
+}
+
+/* 隐藏 Chrome, Safari 等基于 WebKit/Blink 的浏览器的滚动条 */
+.hideScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.filterBtn {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  line-height: 0;
+  height: 52px;
+}
+.filterBtn:hover,
+.filterBtn:active,
+.filterBtn:focus {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.select {
+  width: 17.4rem;
+}
+
+@media (min-width: 768px) {
+  .select {
+    width: 23.7rem;
+  }
+}

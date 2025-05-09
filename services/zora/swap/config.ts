@@ -1,0 +1,5 @@
+export const Erc20SwapAddress = "0x22222222e4aea0e4c2be4a898c52e2416560f850";
+export const SecondarySwapAddress =
+  "0x22222222ebf3f46187803fa529c5be33333b0125";
+
+export const WETH_ADDRESS = "0x4200000000000000000000000000000000000006";

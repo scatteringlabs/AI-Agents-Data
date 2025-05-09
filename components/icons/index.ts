@@ -1,0 +1,11 @@
+export { default as IconUp } from "./icon-up";
+export { default as IconDown } from "./icon-down";
+export { default as IconArrowLeft } from "./icon-arrow-left";
+export { default as IconFence } from "./icon-fence";
+export { default as IconLightning } from "./icon-lightning";
+export { default as IconStar } from "./icon-star";
+export { default as IconSweep } from "./icon-sweep";
+export { default as IconDot } from "./icon-dot";
+export { default as IconCoin } from "./icon-coin";
+export { default as IconTransfer } from "./icon-transfer";
+export { default as IconShare } from "./icon-share";
