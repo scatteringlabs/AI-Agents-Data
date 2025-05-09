@@ -5,22 +5,19 @@ interface LaunchpadParams {
   sort_direction: string;
   page: number;
   page_size: number;
+  chain_id?: number;
 }
 
 export interface AgentData {
   name: string;
   chain_id: number;
   slug: string;
-  agent_nums: number;
-  price_change_in_1d: string;
-  price_change_in_7d: string;
-  price_change_in_30d: string;
-  total_protocol_fee: string;
-  total_count_on_scr: number;
-  total_market_cap_on_scr: string;
-  top_agent_name_on_scr: string;
-  top_agent_logo_on_scr: string;
-  top_agent_market_cap_on_scr: string;
+  logo_url: string;
+  agent_nums_in_1d: number;
+  agent_nums_in_7d: number;
+  agent_nums_in_30d: number;
+  total_agent_nums: number;
+  total_revenue: string;
 }
 
 interface LaunchpadResponse {
@@ -32,8 +29,11 @@ interface LaunchpadResponse {
 export const getLaunchpadList = async (
   params: LaunchpadParams,
 ): Promise<LaunchpadResponse> => {
-  const queryParams = new URLSearchParams(params as any).toString();
-  const response = await fetch(`${BASE_URL_V3}/launchpad/list?${queryParams}`);
+  const filteredParams = Object.fromEntries(
+    Object.entries(params).filter(([_, value]) => value !== undefined),
+  );
+  const queryParams = new URLSearchParams(filteredParams as any).toString();
+  const response = await fetch(`${BASE_URL_V3}/launchpad2/list?${queryParams}`);
 
   if (!response.ok) {
     throw new Error("Network response was not ok");

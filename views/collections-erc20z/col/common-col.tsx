@@ -19,7 +19,7 @@ export const CommonKMCol = ({ value }: { value?: string }) => {
         justifyContent: "flex-start",
       }}
     >
-      <h6 style={{ fontSize: "14px", marginLeft: "-24px" }}>
+      <h6 style={{ fontSize: "14px", marginLeft: "-18px" }}>
         {formatNumberWithKM(value, "$")}
       </h6>
     </div>
@@ -39,7 +39,7 @@ export const Common$Col = ({ value }: { value?: string }) => {
     >
       <h6
         className="price gem"
-        style={{ fontSize: "14px", marginLeft: "-34px" }}
+        style={{ fontSize: "14px", marginLeft: "-24px" }}
       >
         ${formatTokenFixedto(value, 3)}
       </h6>
@@ -152,7 +152,7 @@ export const CommonCol = ({ value }: { value?: string }) => {
             margin: 0,
             padding: 0,
             textAlign: "left",
-            marginLeft: "-10px",
+            marginLeft: "-14px",
           }}
         >
           {displayValue}
@@ -173,7 +173,7 @@ export const CommonPriceChangeCol = ({ value }: { value?: string }) => {
         justifyContent: "flex-start",
       }}
     >
-      <div style={{ marginLeft: "-28px" }}>
+      <div style={{ marginLeft: "-18px" }}>
         <PriceChangeText priceChange={value} />
       </div>
     </div>
@@ -199,8 +199,8 @@ export const CommonTXCol = ({
         rowGap: "8px",
       }}
     >
-      <h6 style={{ fontSize: "14px", marginLeft: "-94px" }}>{total}</h6>
-      <Box sx={{ display: "flex", columnGap: 0.4, marginLeft: "-94px" }}>
+      <h6 style={{ fontSize: "14px", marginLeft: "-64px" }}>{total}</h6>
+      <Box sx={{ display: "flex", columnGap: 0.4, marginLeft: "-64px" }}>
         <h6 style={{ color: "#00B912", fontSize: "12px" }}>{value1}</h6>
         <h6 style={{ color: "gray", fontSize: "12px" }}>/</h6>
         <h6 style={{ color: "#DC2626", fontSize: "12px" }}>{value2}</h6>

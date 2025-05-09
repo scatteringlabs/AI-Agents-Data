@@ -1,14 +1,14 @@
-import { Box, Typography, Avatar } from "@mui/material";
-
+import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { formatNumberWithKM } from "@/utils/format";
+import { formatIntNumberWithKM, formatNumberWithKM } from "@/utils/format";
 import { AgentData } from "@/services/launchpad";
+import AvatarCard from "@/components/collections/avatar-card";
+import { ChainIdByName, ChainNameById } from "@/constants/chain";
 
 export const AgentTableRow = ({ item }: { item: AgentData }) => {
   const router = useRouter();
-
-  const goToProject = `/${item.chain_id}/${item.slug}`;
+  const goToProject = `/${ChainIdByName?.[item.chain_id]}/${item.slug}`;
 
   const TextCell = ({ children }: { children: React.ReactNode }) => (
     <Typography
@@ -22,12 +22,8 @@ export const AgentTableRow = ({ item }: { item: AgentData }) => {
     </Typography>
   );
 
-  const PercentCell = ({ value }: { value: string }) => (
-    <TextCell>
-      <span style={{ color: parseFloat(value) >= 0 ? "#4caf50" : "#f44336" }}>
-        {value}%
-      </span>
-    </TextCell>
+  const NumberCell = ({ value }: { value: number }) => (
+    <TextCell>{formatIntNumberWithKM(value.toString())}</TextCell>
   );
 
   return (
@@ -55,60 +51,41 @@ export const AgentTableRow = ({ item }: { item: AgentData }) => {
             width: { xs: "200px", md: "250px" },
           }}
         >
-          <Avatar
-            src={item.top_agent_logo_on_scr}
-            alt={item.top_agent_name_on_scr}
+          <AvatarCard
+            hasLogo={true}
+            logoUrl={item.logo_url}
+            symbol={item.name}
+            chainId={item.chain_id}
+            size={40}
+            mr={0}
+            showChain={true}
           />
           <Box>
             <TextCell>{item.name}</TextCell>
-            <Typography variant="caption" sx={{ color: "#888" }}>
-              Top Agent: {item.top_agent_name_on_scr}
-            </Typography>
+            {/* <Typography variant="caption" sx={{ color: "#888" }}>
+              {item.slug}
+            </Typography> */}
           </Box>
         </Box>
 
-        {/* <Box className="column">
-          <TextCell>{item.chain_id}</TextCell>
-        </Box> */}
-
         <Box className="td5">
-          <PercentCell value={item.price_change_in_1d} />
+          <NumberCell value={item.agent_nums_in_1d} />
         </Box>
 
         <Box className="td5">
-          <PercentCell value={item.price_change_in_7d} />
+          <NumberCell value={item.agent_nums_in_7d} />
         </Box>
 
         <Box className="td5">
-          <PercentCell value={item.price_change_in_30d} />
+          <NumberCell value={item.agent_nums_in_30d} />
         </Box>
 
         <Box className="td5">
-          <TextCell>{formatNumberWithKM(item.total_protocol_fee)}</TextCell>
+          <NumberCell value={item.total_agent_nums} />
         </Box>
 
         <Box className="td5">
-          <TextCell>{Number(item.agent_nums)}</TextCell>
-        </Box>
-
-        <Box className="td5">
-          <TextCell>{item.total_count_on_scr}</TextCell>
-        </Box>
-
-        <Box className="td5">
-          <TextCell>
-            {formatNumberWithKM(item.total_market_cap_on_scr)}
-          </TextCell>
-        </Box>
-
-        <Box className="td5">
-          <TextCell>{item.top_agent_name_on_scr}</TextCell>
-        </Box>
-
-        <Box className="td5">
-          <TextCell>
-            {formatNumberWithKM(item.top_agent_market_cap_on_scr)}
-          </TextCell>
+          <TextCell>{formatNumberWithKM(item.total_revenue)}</TextCell>
         </Box>
       </Box>
     </Link>

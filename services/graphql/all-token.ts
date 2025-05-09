@@ -52,7 +52,7 @@ export interface Pool {
   marketCapETH: string;
 }
 
-// 定义返回的数据结构接口
+// Define return data structure interface
 export interface TokenEntity {
   id: string;
   addr: string;

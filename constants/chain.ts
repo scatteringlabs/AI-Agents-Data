@@ -49,6 +49,17 @@ export const ChainIdByName: { [key: number]: string } = {
   [ChainId.BNB]: "BNB",
 };
 
+export const GmgnNameById: { [key: number]: string } = {
+  [ChainId.MAINNET]: "eth",
+  [10000]: "sol",
+  [ChainId.ARBITRUM_ONE]: "arbitrum",
+  [ChainId.BASE]: "base",
+  [ChainId.SEPOLIA]: "sepolia",
+  [84532]: "base-sepolia",
+  [ChainId.ZORA]: "zora",
+  [ChainId.BNB]: "bsc",
+};
+
 export const DexscreenerNameById: { [key: number]: string } = {
   [ChainId.MAINNET]: "ethereum",
   [10000]: "solana",

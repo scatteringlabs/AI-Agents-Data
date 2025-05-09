@@ -49,12 +49,6 @@ export function useInfiniteCollections({
     sortField = "index_collections.twitter_score";
   }
 
-  // 添加更详细的日志
-  console.log("Current sortedField:", sortedField);
-  console.log("Mapped sortField:", sortField);
-  console.log("Sort order:", sortOrder);
-  console.log("SortFieldMap:", SortFieldMap);
-
   // 构建查询参数
   const queryParams = {
     page: 1,
@@ -69,8 +63,6 @@ export function useInfiniteCollections({
   if (sortedField === "Twitter Score") {
     queryParams.sort_field = "twitter_score"; // 尝试使用不带前缀的字段名
   }
-
-  console.log("Query params:", queryParams);
 
   return useInfiniteQuery({
     queryKey: [

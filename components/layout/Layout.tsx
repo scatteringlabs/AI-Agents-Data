@@ -71,14 +71,29 @@ export default function Layout({ children }: any) {
         />
         <meta name="twitter:image:alt" content="image description" />
       </Head>
-      <div
+      <Box
         id="wrapper"
-        style={{
+        sx={{
           position: "relative",
           display: "flex",
           justifyContent: "flex-start",
           height: "100vh",
-          overflow: "hidden",
+          overflowY: "auto",
+          overflowX: "hidden",
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "rgba(255, 255, 255, 0.1)",
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "rgba(255, 255, 255, 0.2)",
+            borderRadius: "4px",
+            "&:hover": {
+              background: "rgba(255, 255, 255, 0.3)",
+            },
+          },
         }}
       >
         <Box sx={{ display: { md: "block", xs: "none" } }}>
@@ -123,7 +138,7 @@ export default function Layout({ children }: any) {
             </Box>
           </Box>
         </Box>
-      </div>
+      </Box>
       <BackToTop />
       <MessageButton />
     </>

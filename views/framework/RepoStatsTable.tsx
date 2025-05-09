@@ -55,7 +55,14 @@ export const RepoStatsTable = ({
         },
       }}
     >
-      <Box sx={{ position: "sticky", top: 0, zIndex: 1, backgroundColor: "background.paper" }}>
+      <Box
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          backgroundColor: "background.paper",
+        }}
+      >
         <RepoStatsTableHeader columns={columns} />
       </Box>
       <Box>

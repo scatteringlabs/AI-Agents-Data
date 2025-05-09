@@ -24,35 +24,15 @@ const LaunchaPadTable: React.FC<LaunchaPadTableProps> = ({
   const [paseSize, setPaseSize] = useState<number>(100);
   const { sortOrder = "desc", sortedField = "1h Chg" } = useSort();
 
-  // const {
-  //   data,
-  //   fetchNextPage,
-  //   hasNextPage,
-  //   isFetchingNextPage,
-  //   isLoading,
-  //   error,
-  // } = useInfiniteCollections({
-  //   selectedTabName: "",
-  //   chainId: Number(chainId),
-  //   sortOrder: sortOrder || "",
-  //   sortedField: sortedField || "",
-  // });
-  // const [sentryRef] = useInfiniteScroll({
-  //   loading: isFetchingNextPage,
-  //   hasNextPage: hasNextPage,
-  //   onLoadMore: fetchNextPage,
-  //   disabled: !!error,
-  //   rootMargin: "0px 0px 400px 0px",
-  // });
-
   const { data: launchpadList, isLoading } = useQuery({
-    queryKey: ["LaunchpadList", { sortedField, sortOrder }],
+    queryKey: ["LaunchpadList", { sortedField, sortOrder, chainId }],
     queryFn: () =>
       getLaunchpadList({
         page: 1,
         page_size: 100,
         sort_field: SortFieldMap[sortedField || "24h Vol"],
         sort_direction: sortOrder || "desc",
+        chain_id: Number(chainId) === -1 ? undefined : Number(chainId),
       }),
   });
 

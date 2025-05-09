@@ -8,16 +8,16 @@ export default function LaunchpadPage() {
   return (
     <Box
       sx={{
-        p: { md: 4, xs: "16px !important" },
+        p: { md: 0, xs: "16px !important" },
         width: { md: "calc( 100% - 32px )" },
-        mt: { md: 10, xs: 8 },
+        mt: 0,
       }}
     >
       <Box
         className="col-12"
         sx={{
           px: { md: "10px", xs: "0 !important" },
-          marginTop: { md: "40px !important", xs: "20px !important" },
+          marginTop: { md: "0px !important", xs: "20px !important" },
         }}
       >
         <div className="widget-tabs relative">

@@ -1,6 +1,6 @@
 // app/page.tsx
 import { useState } from "react";
-import { Box, Container, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import TimeFilterTabs from "@/views/framework/TimeFilterTabs";
 import { useQuery } from "@tanstack/react-query";
 import { getRepoStatsByDuration } from "@/services/framework/list";
@@ -8,8 +8,8 @@ import { RepoStatsTable } from "@/views/framework/RepoStatsTable";
 import { TableSkeleton } from "@/components/skeleton/table-skeleton";
 import { useErc20ZChain } from "@/context/chain-provider-erc20z";
 import { ChainIdByName } from "@/constants/chain";
-import { NoCollectionSearched } from "@/components/search-not-found/no-collection-searched";
 import { NoDataSearched } from "@/components/search-not-found/no-data-searched";
+import FrameworkLayout from "../layout";
 
 export default function FrameworkPage() {
   const { chainId } = useErc20ZChain();
@@ -31,18 +31,16 @@ export default function FrameworkPage() {
   });
 
   return (
-    <Box sx={{ mt: 12, p: 4, minHeight: "calc(100vh - 140px)" }}>
+    <FrameworkLayout>
       <Box
         sx={{
           my: 2,
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           alignItems: "center",
+          mt: -4,
         }}
       >
-        <Typography variant="h4" gutterBottom>
-          GitHub Repo Stats
-        </Typography>
         <TimeFilterTabs value={duration} onChange={setDuration} />
       </Box>
 
@@ -52,6 +50,6 @@ export default function FrameworkPage() {
         <RepoStatsTable data={data?.data || []} duration={duration} />
       )}
       {!data?.data ? <NoDataSearched /> : null}
-    </Box>
+    </FrameworkLayout>
   );
 }

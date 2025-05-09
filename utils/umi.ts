@@ -148,14 +148,14 @@ export const swapNFTtoToken22 = async (
         signer: umi.identity,
         deployment: publicKey(escrow_address),
         fungibleMint: fungibleMintAddress,
-        fungibleSourceTokenAccount: fungibleSourceTokenAccount, // 托管者 ft ata
-        fungibleTargetTokenAccount: fungibleTargetTokenAccount, // 用户 ft ata
-        fungibleTargetTokenAccountOwner: user.publicKey, // 用户
+        fungibleSourceTokenAccount: fungibleSourceTokenAccount, // Custodian FT ATA
+        fungibleTargetTokenAccount: fungibleTargetTokenAccount, // User FT ATA
+        fungibleTargetTokenAccountOwner: user.publicKey, // User
         hashlistMarker: hashlistMarkerPDA,
         nonFungibleMint: nonFungibleMintAddress,
-        nonFungibleSourceAccountOwner: user, // 用户
-        nonFungibleSourceTokenAccount: nonFungibleSourceTokenAccount, // 用户 nft ata
-        nonFungibleTargetTokenAccount: nonFungibleTargetTokenAccount, // 托管者 nft ata
+        nonFungibleSourceAccountOwner: user, // User
+        nonFungibleSourceTokenAccount: nonFungibleSourceTokenAccount, // User NFT ATA
+        nonFungibleTargetTokenAccount: nonFungibleTargetTokenAccount, // Custodian NFT ATA
       });
 
       if (!swapToFungible22Builder) {
@@ -281,11 +281,11 @@ export const swapTokenToNFT = async (
         deploymentConfig: deploymentConfigPDA,
         hashlistMarker: hashlistMarkerPDA,
         fungibleMint: fungibleMintAddress,
-        fungibleSourceTokenAccount: fungibleSourceTokenAccount, // 用户 ft ata
-        fungibleTargetTokenAccount: fungibleTargetTokenAccount, // 托管者 ft ata
+        fungibleSourceTokenAccount: fungibleSourceTokenAccount, // User FT ATA
+        fungibleTargetTokenAccount: fungibleTargetTokenAccount, // Custodian FT ATA
         nonFungibleMint: nonFungibleMintAddress,
-        nonFungibleSourceTokenAccount: nonFungibleSourceTokenAccount, // 托管者 nft ata
-        nonFungibleTargetTokenAccount: nonFungibleTargetTokenAccount, // 用户 nft ata
+        nonFungibleSourceTokenAccount: nonFungibleSourceTokenAccount, // Custodian NFT ATA
+        nonFungibleTargetTokenAccount: nonFungibleTargetTokenAccount, // User NFT ATA
       });
 
       if (!swapToNonfungible22Builder) {

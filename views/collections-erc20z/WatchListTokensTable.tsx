@@ -3,7 +3,7 @@ import { ERC20ZTopTableHeader } from "./table/table-header";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useQuery } from "@tanstack/react-query";
 import { getZoraTokenTypes } from "@/services/tokens";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import Iconify from "@/components/iconify";
 import {
@@ -17,16 +17,28 @@ import Erc20ZTokenTableRow from "./table/table-row";
 interface WatchListTokensTableProps {
   chainId: string;
   selectedTime: string;
+  onTokenClick?: (slug: string, chain_id: number) => void;
+  isRightPanelCollapsed?: boolean;
 }
 
 const WatchListTokensTable: React.FC<WatchListTokensTableProps> = ({
   chainId,
   selectedTime,
+  onTokenClick,
+  isRightPanelCollapsed,
 }) => {
   const [selectedTabName, setSelectedTabName] = useState<string>("");
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
+  const [hasSelectedFirstToken, setHasSelectedFirstToken] = useState(false);
 
   const { favorites } = useFavorites();
   const { sortOrder = "desc", sortedField = "1h Chg" } = useSort();
+
+  // 监听排序变化，重置选中状态
+  useEffect(() => {
+    setHasSelectedFirstToken(false);
+    setSelectedRow(null);
+  }, [sortOrder, sortedField, selectedTabName]);
 
   const { data: tokenTypes } = useQuery({
     queryKey: ["getZoraTokenTypes"],
@@ -97,6 +109,23 @@ const WatchListTokensTable: React.FC<WatchListTokensTableProps> = ({
   const displayCollections =
     detailedCollections || favorCollections?.data?.list;
 
+  // 默认选中第一行数据
+  useEffect(() => {
+    if (!hasSelectedFirstToken && displayCollections?.[0] && onTokenClick) {
+      const firstToken = displayCollections[0];
+      setSelectedRow(firstToken.rank);
+      onTokenClick(firstToken.slug, firstToken.chain_id);
+      setHasSelectedFirstToken(true);
+    }
+  }, [displayCollections, hasSelectedFirstToken, onTokenClick]);
+
+  const handleRowClick = (rank: number, slug: string, chainId: number) => {
+    setSelectedRow(rank);
+    if (onTokenClick) {
+      onTokenClick(slug, chainId);
+    }
+  };
+
   return (
     <div className="widget-content-tab pt-2 pb-4">
       <DynamicTabs
@@ -141,9 +170,13 @@ const WatchListTokensTable: React.FC<WatchListTokensTableProps> = ({
             ) : (
               displayCollections?.map((item) => (
                 <Erc20ZTokenTableRow
-                  item={item}
                   key={item.erc20_address}
+                  item={item}
                   selectedTime={selectedTime}
+                  onClick={() =>
+                    handleRowClick(item.rank, item.slug, item.chain_id)
+                  }
+                  isSelected={selectedRow === item.rank}
                 />
               ))
             )}

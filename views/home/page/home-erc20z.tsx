@@ -2,7 +2,7 @@ import AutoOpenDialog from "@/components/dialog/auto-open-dialog";
 import { ChainIdByName } from "@/constants/chain";
 import { useSort as useSortNew } from "@/context/new-token-sort-provider";
 import { Box } from "@mui/material";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import TabTokenType from "../components/tab-token-type";
 import Erc20ZTopTokensTable from "@/views/collections-erc20z/Erc20ZTopTokensTable";
 import NewTips from "../components/new-tips";
@@ -12,13 +12,16 @@ import { useSort } from "@/context/erc20z-token-sort-provider";
 import WatchListTokensTable from "@/views/collections-erc20z/WatchListTokensTable";
 import RightPanel from "../components/RightPanel";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { getFavorCollections } from "@/services/collections";
+import { useFavorites } from "@/hooks/useFavorites";
 
 export default function HomePageErc20z() {
   const router = useRouter();
   const { chainId } = useErc20ZChain();
   const { setSortedField: setNewSortedField, sortedField: sortedFieldNew } =
     useSortNew();
-  const { setSortedField, sortedField } = useSort();
+  const { setSortedField, sortedField, sortOrder } = useSort();
   const [selectedTime, setSelectedTime] = useState<"1h" | "6h" | "24h">("24h");
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
   const [selectedToken, setSelectedToken] = useState<{
@@ -26,6 +29,34 @@ export default function HomePageErc20z() {
     chain: string;
   } | null>(null);
   const [activeTab, setActiveTab] = useState<"top" | "new" | "favor">("top");
+
+  // 获取收藏的代币列表
+  const { favorites } = useFavorites();
+  const tokens = useMemo(() => {
+    let t = favorites?.map((f) => ({
+      address: f?.address,
+      chain_id: f?.chain_id,
+    }));
+    if (Number(chainId) !== -1) {
+      t = t?.filter((i) => Number(i.chain_id) === Number(chainId));
+    }
+    return t;
+  }, [favorites, chainId]);
+
+  // 获取收藏的代币详细信息
+  const { data: favorCollections } = useQuery({
+    queryKey: ["getFavorCollections", { tokens, sortOrder, sortedField }],
+    queryFn: () =>
+      getFavorCollections({
+        tokens,
+        page: 1,
+        type_name: "",
+        page_size: 100,
+        sort_direction: sortOrder || "desc",
+        sort_field: sortedField || "1h_chg",
+      }),
+    enabled: Boolean(tokens?.length),
+  });
 
   // 从 URL 参数初始化状态
   useEffect(() => {
@@ -68,15 +99,16 @@ export default function HomePageErc20z() {
 
   const handleTabChange = (tab: "top" | "new" | "favor") => {
     setActiveTab(tab);
-    // 更新 URL 参数
-    // router.push(
-    //   {
-    //     pathname: router.pathname,
-    //     query: { ...router.query, tab },
-    //   },
-    //   undefined,
-    //   { shallow: true },
-    // );
+
+    // 当切换到Watchlist标签时，如果有数据，自动选择第一行
+    if (
+      tab === "favor" &&
+      favorCollections?.data?.list &&
+      favorCollections.data.list.length > 0
+    ) {
+      const firstItem = favorCollections.data.list[0];
+      handleTokenClick(firstItem.slug, firstItem.chain_id);
+    }
   };
 
   const handleTokenClick = async (slug: string, chain_id: number) => {
@@ -283,6 +315,8 @@ export default function HomePageErc20z() {
                   <WatchListTokensTable
                     chainId={chainId?.toString()}
                     selectedTime={selectedTime}
+                    onTokenClick={handleTokenClick}
+                    isRightPanelCollapsed={isRightPanelCollapsed}
                   />
                 ) : null}
               </div>

@@ -14,7 +14,11 @@ interface EvmPageRightProps {
   tokenData?: any;
 }
 
-export default function EvmPageRight({ chain_name, slug, tokenData }: EvmPageRightProps) {
+export default function EvmPageRight({
+  chain_name,
+  slug,
+  tokenData,
+}: EvmPageRightProps) {
   const router = useRouter();
   const { user } = usePrivy();
 
@@ -34,7 +38,7 @@ export default function EvmPageRight({ chain_name, slug, tokenData }: EvmPageRig
         slug: slug?.toString(),
       }),
     enabled: Boolean(slug),
-    initialData: tokenData ? { data: { item: tokenData } } : undefined
+    initialData: tokenData ? { data: { item: tokenData } } : undefined,
   });
 
   return (

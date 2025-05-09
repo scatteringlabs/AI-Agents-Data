@@ -102,13 +102,13 @@ const signAndSendTransaction = async (tx: VersionedTransaction) => {
     console.log("solana", solana?.isPhantom);
 
     if (solana && solana.isPhantom) {
-      // 请求 Phantom 钱包签署交易
+      // Request Phantom wallet to sign transaction
       console.log("111");
 
       const signedTransaction = await solana.signTransaction(tx);
       console.log("222");
 
-      // 发送并确认交易
+      // Send and confirm transaction
       const signature = await sendAndConfirmTransaction(
         connection,
         signedTransaction.serialize(),
@@ -147,7 +147,7 @@ export const getTokenBalance = async (walletAddress: string) => {
       walletPublicKey,
     );
     const tokenAccount = await getAccount(connection, tokenAddress);
-    const balance = Number(tokenAccount.amount) / 1e6; // 将 lamports 转换为 USDC（假设 USDC 有 6 个小数位）
+    const balance = Number(tokenAccount.amount) / 1e6; // Convert lamports to USDC (assuming USDC has 6 decimals)
     return balance;
   } catch (error) {
     console.error("Error fetching token balance:", error);
@@ -216,8 +216,7 @@ export const getJupiterSwapTx = async (
         quoteResponse: jupiterData,
         userPublicKey: userAddress,
         wrapAndUnwrapSol: true,
-        // platformFeeBps: 10,
-        // feeAccount: "G416sDDzrom59mDBg3oQ4SrkXhDUAcRsd4cyi1qKqG5A", //SOL 收款地址
+        // feeAccount: "G416sDDzrom59mDBg3oQ4SrkXhDUAcRsd4cyi1qKqG5A", //SOL fee receiving address
       }),
       {
         headers: {

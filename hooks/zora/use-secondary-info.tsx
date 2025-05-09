@@ -2,7 +2,7 @@ import { createCollectorClient } from "@zoralabs/protocol-sdk";
 import { useEffect, useState } from "react";
 import { useChainId, usePublicClient } from "wagmi";
 
-// 定义 SecondaryInfo 类型
+// Define SecondaryInfo type
 type SecondaryInfo = {
   erc20z: string;
   marketCountdown: number;
@@ -16,9 +16,9 @@ type SecondaryInfo = {
   symbol: string;
 };
 
-// React Hook：获取 secondary 信息
+// React Hook: Get secondary information
 export const useSecondaryInfo = (
-  contract: string, // 强制 contract 参数符合以 '0x' 开头的字符串类型
+  contract: string, // Force contract parameter to be a string type starting with '0x'
   tokenId: bigint,
 ): SecondaryInfo | null => {
   const chainId = useChainId();
@@ -45,7 +45,7 @@ export const useSecondaryInfo = (
         if (result) {
           setSecondaryInfo({
             erc20z: result.erc20z,
-            marketCountdown: Number(result.marketCountdown ?? 0), // 处理 bigint 转换和 undefined
+            marketCountdown: Number(result.marketCountdown ?? 0), // Handle bigint conversion and undefined
             minimumMintsForCountdown: Number(
               result.minimumMintsForCountdown ?? 0,
             ),
@@ -59,7 +59,7 @@ export const useSecondaryInfo = (
           });
         }
       } catch (error) {
-        console.error("获取 secondary 信息失败:", error);
+        console.error("Failed to get secondary info:", error);
       }
     };
 

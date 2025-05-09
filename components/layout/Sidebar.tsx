@@ -21,7 +21,7 @@ import {
 } from "@mui/icons-material";
 import { Icon } from "@iconify/react";
 import Logo from "./header/Logo";
-import { useRouter } from "next/router"; // Next.js 路由
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 type MenuItem = {
@@ -29,7 +29,7 @@ type MenuItem = {
   icon?: string;
   link?: string;
   children?: MenuItem[];
-  disabled?: boolean; // 新增 disabled 属性
+  disabled?: boolean;
 };
 
 const menuItems: MenuItem[] = [
@@ -56,16 +56,16 @@ const menuItems: MenuItem[] = [
     disabled: true,
   },
   {
-    title: "Framework",
+    title: "Data",
     icon: "file-icons:robotframework",
-    link: "/framework",
+    link: "/data/framework",
   },
-  {
-    title: "Launchpad",
-    icon: "mdi:rocket-launch",
-    link: "/launchpad",
-    disabled: true,
-  },
+  // {
+  //   title: "Launchpad",
+  //   icon: "mdi:rocket-launch",
+  //   link: "/data/launchpad",
+  //   // disabled: true,
+  // },
   {
     title: "DeFAI",
     icon: "mdi:brain",
@@ -82,6 +82,7 @@ const menuItems: MenuItem[] = [
     title: "Meme Agent",
     icon: "mdi:rocket-launch",
     link: "https://elyra.fun/",
+    disabled: true,
   },
   {
     title: "Hybrids",
@@ -104,7 +105,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [currentSubmenu, setCurrentSubmenu] = useState<MenuItem | null>(null);
-  const router = useRouter(); // Next.js 路由
+  const router = useRouter();
 
   const handleCollapse = () => {
     const newCollapsed = !isCollapsed;
@@ -112,7 +113,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
     onCollapse?.(newCollapsed);
   };
 
-  // 切换菜单展开/折叠
   const handleToggle = (title: string) => {
     setOpenMenus((prev) => ({
       ...prev,
@@ -120,7 +120,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
     }));
   };
 
-  // 处理菜单点击
   const handleMenuClick = (item: MenuItem) => {
     if (item.link) {
       if (item.link.startsWith("http")) {
@@ -140,15 +139,17 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
     const initialOpenMenus: Record<string, boolean> = {};
     menuItems.forEach((item) => {
       if (item.children) {
-        initialOpenMenus[item.title] = true; // 默认展开
+        initialOpenMenus[item.title] = true;
       }
     });
     setOpenMenus(initialOpenMenus);
   }, []);
 
-  // 递归渲染菜单
   const renderMenuItems = (items: MenuItem[], level = 0) => {
     return items.map((item) => {
+      if (item.disabled) {
+        return null;
+      }
       const isActive = router.pathname === item.link;
       return (
         <Box key={item.title}>
@@ -278,7 +279,31 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
         }}
       >
         <List sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              mb: 4,
+            }}
+          >
+            <Box
+              component="img"
+              src="/assets/images/logo/Scattering logo.svg"
+              sx={{
+                width: 48,
+                height: 48,
+                opacity: 0.8,
+                "&:hover": {
+                  opacity: 1,
+                },
+              }}
+            />
+          </Box>
           {menuItems.map((item) => {
+            if (item.disabled) {
+              return null;
+            }
             const isActive = router.pathname === item.link;
             return (
               <Box
@@ -287,7 +312,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
                   display: "flex",
                   justifyContent: "center",
                   width: "100%",
-                  mb: 1,
+                  mb: 2,
                 }}
               >
                 <Tooltip

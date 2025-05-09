@@ -118,10 +118,10 @@ export const fetchOkxSwapQuote = async ({
 
     const url = `https://www.okx.com/api/v5/dex/aggregator/swap?${params.toString()}`;
 
-    // 请求体为空
+    // Empty request body
     const body = "";
 
-    // 计算签名
+    // Calculate signature
     const signature = generateSignature(
       "GET",
       url,
@@ -130,7 +130,7 @@ export const fetchOkxSwapQuote = async ({
       "485c9f87-3ea0-49ff-be73-eb69949579d8",
     );
 
-    // 设置请求头
+    // Set request headers
     const headers: Record<string, string> = {
       "OK-ACCESS-KEY": "485c9f87-3ea0-49ff-be73-eb69949579d8",
       "OK-ACCESS-SIGN": signature,
@@ -139,7 +139,7 @@ export const fetchOkxSwapQuote = async ({
       "Content-Type": "application/json",
     };
 
-    // 如果是 WaaS 请求，添加项目 ID
+    // If WaaS request, add project ID
     // if (projectId) {
     //   headers["OK-ACCESS-PROJECT"] = projectId;
     // }
@@ -197,11 +197,11 @@ export const useOkxSwapQuote = ({
       }),
     enabled: Boolean(
       chainId &&
-        amountInNormalUnit &&
-        fromTokenAddress &&
-        toTokenAddress &&
-        slippage &&
-        userWalletAddress,
+      amountInNormalUnit &&
+      fromTokenAddress &&
+      toTokenAddress &&
+      slippage &&
+      userWalletAddress,
     ),
     retry: 0,
   });

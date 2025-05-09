@@ -126,6 +126,16 @@ const SocialIcon: React.FC<SocialIconProps> = ({
   );
 };
 
+const getChainName = (chainId: number) => {
+  const chainMap: { [key: number]: string } = {
+    1: "eth",
+    56: "bsc",
+    10000: "sol",
+    8453: "base",
+  };
+  return chainMap[chainId] || chainId.toString();
+};
+
 const TableAvatarCard = ({ item }: { item: Collection }) => {
   const theme = useTheme();
   const isDpwnMd = useMediaQuery(theme.breakpoints.down("md"));
@@ -344,9 +354,30 @@ const TableAvatarCard = ({ item }: { item: Collection }) => {
             whiteSpace: "nowrap",
             maxWidth: { md: "220px", xs: "180px" },
             overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
           }}
         >
           {displayName || "unknown"}
+          <a
+            href={`https://gmgn.ai/${getChainName(item.chain_id)}/token/3J31tE1n_${item.address}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <img
+              src="/images/logo_black.png"
+              alt="logo"
+              style={{
+                width: 14,
+                height: 14,
+                marginLeft: 4,
+                cursor: "pointer",
+              }}
+            />
+          </a>
         </Typography>
       </Box>
     </Box>

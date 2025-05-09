@@ -187,7 +187,7 @@ const fetchTokenEvents = async (
 // };
 interface TokenEventsPage {
   pages: GetTokenEventsResponse[];
-  nextCursor?: string; // 使用 cursor 而不是 nextPage
+  nextCursor?: string; // Using cursor instead of nextPage
 }
 
 export function useTokenEvents(
@@ -198,13 +198,13 @@ export function useTokenEvents(
     refetchInterval: 1000,
     queryFn: ({ pageParam = "" }) =>
       fetchTokenEvents({ ...params, cursor: pageParam }),
-    initialPageParam: "", // 初始化时 cursor 为空字符串
+    initialPageParam: "", // Initialize cursor as empty string
     getNextPageParam: (lastPage) => {
       if (!lastPage) {
         return undefined;
       }
       const nextCursor = lastPage?.data?.getTokenEvents?.cursor;
-      return nextCursor ? nextCursor : undefined; // 如果有 cursor，则返回以获取下一页数据
+      return nextCursor ? nextCursor : undefined; // Return cursor for next page if available
     },
   });
 }

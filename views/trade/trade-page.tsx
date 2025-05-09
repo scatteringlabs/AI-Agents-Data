@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { geckoNetworkName } from "@/services/tokens";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
-import { ChainNameById } from "@/constants/chain";
+import { ChainNameById, GmgnNameById } from "@/constants/chain";
 import TokenPriceProvider from "@/context/token-price-provider";
 import PoolInfoCard from "@/views/trade/pool-info/PoolInfoCard";
 import Link from "next/link";
@@ -39,6 +39,12 @@ interface iTrade {
   logoUrl?: string;
   isMobile?: boolean;
 }
+
+const getGmgnChainName = (chainId?: number) => {
+  if (!chainId) return GmgnNameById[1];
+  return GmgnNameById[chainId] || GmgnNameById[1];
+};
+
 const Trade = ({
   chainId,
   erc20Address,
@@ -66,7 +72,7 @@ const Trade = ({
             sm={12}
             md={12}
             lg={isMobile ? 12 : 8}
-            // sx={{ position: "sticky", top: "170px" }}
+          // sx={{ position: "sticky", top: "170px" }}
           >
             {status === 1 ? (
               <>
@@ -78,13 +84,45 @@ const Trade = ({
                     isMobile={isMobile}
                   /> */}
                 </Stack>
-                <TradingView
+                {/* <TradingView
                   loading={false}
                   poolAddress={collectionDetails?.pool_address}
                   chainId={chainId}
                   symbol={collectionDetails?.base_asset_symbol}
                   tokenPrice={Number(collectionDetails?.price_in_usd)}
-                />
+                /> */}
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "510px",
+                    border: "none",
+                    overflow: "hidden",
+                  }}
+                >
+                  {collectionDetails?.chain_id ? (
+                    <iframe
+                      src={`https://www.gmgn.cc/kline/${getGmgnChainName(collectionDetails?.chain_id)}/${collectionDetails?.address}?interval=15`}
+                      width="100%"
+                      height="100%"
+                      style={{
+                        border: "none",
+                        display: "block",
+                      }}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <iframe
+                      src={`https://www.gmgn.cc/kline/${getGmgnChainName(1)}/${collectionDetails?.address}?interval=15`}
+                      width="100%"
+                      height="100%"
+                      style={{
+                        border: "none",
+                        display: "block",
+                      }}
+                      loading="lazy"
+                    />
+                  )}
+                </Box>
                 {!isMd ? (
                   <Card
                     sx={{

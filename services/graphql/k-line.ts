@@ -1,6 +1,6 @@
 import { graphql_endpoint } from ".";
 
-// 定义获取 K 线数据的 GraphQL 查询
+// Define K-line data GraphQL query
 export const GET_KLINE_DATA = `
   query getKlineData($addr: String!, $priceType: String!) {
     tokenEntities(
@@ -32,7 +32,7 @@ export const GET_KLINE_DATA = `
   }
 `;
 
-// 定义 Price 接口
+// Define Price interface
 export interface Price {
   id: string;
   type: string;
@@ -43,7 +43,7 @@ export interface Price {
   timestamp: string;
 }
 
-// 更新 TokenEntity 接口以包含价格信息
+// Update TokenEntity interface to include price information
 export interface TokenEntity {
   id: string;
   addr: string;
@@ -59,7 +59,7 @@ export interface TokenEntity {
   prices: Price[];
 }
 
-// 定义返回的数据结构接口
+// Define return data structure interface
 export interface TokenEntitiesResponse {
   tokenEntities: TokenEntity[];
 }
@@ -69,10 +69,10 @@ interface GraphQLRequestPayload {
   variables?: Record<string, any>;
 }
 
-// 使用 fetch 获取 K 线数据
+// Use fetch to get K-line data
 export const fetchKlineData = async (
   addr: string,
-  priceType: string, // 新增的参数
+  priceType: string, // Added parameter
 ): Promise<TokenEntitiesResponse> => {
   const payload: GraphQLRequestPayload = {
     query: GET_KLINE_DATA,

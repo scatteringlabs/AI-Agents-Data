@@ -9,14 +9,14 @@ import { ConnectedWallet } from "@privy-io/react-auth";
 
 // 合约地址
 interface CallSell1155Params {
-  tokenAddress: string; // ERC1155 合约地址
-  from: string; // 卖家地址
-  // to: string; // 接收者地址
+  tokenAddress: string; // ERC1155 contract address
+  from: string; // Seller address
+  // to: string; // Recipient address
   tokenId: ethers.BigNumberish; // ERC1155 Token ID
-  amount: ethers.BigNumberish; // 卖出的 1155 数量
-  // recipient: string; // 接收 ETH 的地址
-  minEthToAcquire: ethers.BigNumberish; // 最小收到的 ETH 数量
-  // sqrtPriceLimitX96: ethers.BigNumberish; // 价格限制
+  amount: ethers.BigNumberish; // Amount of ERC1155 to sell
+  // recipient: string; // Address to receive ETH
+  minEthToAcquire: ethers.BigNumberish; // Minimum ETH amount to receive
+  // sqrtPriceLimitX96: ethers.BigNumberish; // Price limit
   chainId: number;
   wallet: ConnectedWallet;
 }

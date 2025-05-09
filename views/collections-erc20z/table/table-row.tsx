@@ -108,7 +108,11 @@ const Erc20ZTokenTableRow: React.FC<Erc20ZTokenTableRowProps> = ({
             className="column-content"
             style={{ fontSize: "14px", color: "#ffc224" }}
           >
-            {item.twitter_score ? Math.round(Number(item.twitter_score)) : "-"}
+            {item.twitter_score !== undefined &&
+              item.twitter_score !== null &&
+              Number(item.twitter_score) !== -1
+              ? Math.round(Number(item.twitter_score))
+              : "-"}
           </div>
         </div>
       </div>
@@ -124,12 +128,16 @@ const Erc20ZTokenTableRow: React.FC<Erc20ZTokenTableRowProps> = ({
         <h6
           style={{
             fontSize: "14px",
-            marginLeft: "-12px",
+            marginLeft: "4px",
             color: "rgba(255, 255, 255, 0.95)",
             fontWeight: 500,
           }}
         >
-          {item.influencers_count || "-"}
+          {item.influencers_count !== undefined &&
+            item.influencers_count !== null &&
+            item.influencers_count !== -1
+            ? item.influencers_count
+            : "-"}
         </h6>
       </div>
       <div
@@ -144,12 +152,14 @@ const Erc20ZTokenTableRow: React.FC<Erc20ZTokenTableRowProps> = ({
         <h6
           style={{
             fontSize: "14px",
-            marginLeft: "-12px",
+            marginLeft: "-10px",
             color: "rgba(255, 255, 255, 0.95)",
             fontWeight: 500,
           }}
         >
-          {item.projects_count || "-"}
+          {item.projects_count !== undefined && item.projects_count !== null && item.projects_count !== -1
+            ? item.projects_count
+            : "-"}
         </h6>
       </div>
       <div
@@ -164,12 +174,16 @@ const Erc20ZTokenTableRow: React.FC<Erc20ZTokenTableRowProps> = ({
         <h6
           style={{
             fontSize: "14px",
-            marginLeft: "-12px",
+            marginLeft: "-4px",
             color: "rgba(255, 255, 255, 0.95)",
             fontWeight: 500,
           }}
         >
-          {item.venture_capitals_count || "-"}
+          {item.venture_capitals_count !== undefined &&
+            item.venture_capitals_count !== null &&
+            item.venture_capitals_count !== -1
+            ? item.venture_capitals_count
+            : "-"}
         </h6>
       </div>
       <Common$Col value={item.price_in_usd} />
@@ -204,48 +218,82 @@ const Erc20ZTokenTableRow: React.FC<Erc20ZTokenTableRowProps> = ({
           gap: 0.5,
           justifyContent: "flex-end",
           paddingRight: "60px",
-          minWidth: topFollowers && topFollowers.length > 0 ? "auto" : "180px",
+          minWidth: "180px",
           height: "24px",
         }}
       >
         {topFollowers && topFollowers.length > 0 ? (
-          topFollowers.map((follower: any, index: number) => (
-            <Tooltip
-              key={index}
-              title={follower.name}
-              enterDelay={0}
-              leaveDelay={0}
-              arrow
-              placement="top"
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "rgba(0, 0, 0, 0.9)",
-                    "& .MuiTooltip-arrow": {
-                      color: "rgba(0, 0, 0, 0.9)",
+          <>
+            {[...Array(5)].map((_, index) => (
+              <Tooltip
+                key={index}
+                title={topFollowers[index]?.name || "-"}
+                enterDelay={0}
+                leaveDelay={0}
+                arrow
+                placement="top"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: "rgba(0, 0, 0, 0.9)",
+                      "& .MuiTooltip-arrow": {
+                        color: "rgba(0, 0, 0, 0.9)",
+                      },
+                      fontSize: "14px",
+                      fontWeight: 500,
+                      padding: "8px 16px",
+                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
+                      borderRadius: "4px",
+                      maxWidth: "none",
+                      color: "rgba(255, 255, 255, 0.95)",
                     },
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    padding: "8px 16px",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
-                    borderRadius: "4px",
-                    maxWidth: "none",
-                    color: "rgba(255, 255, 255, 0.95)",
                   },
-                },
-              }}
-            >
-              <Link href={`https://x.com/${follower.username}`} target="_blank">
-                <Avatar
-                  src={follower.avatar}
-                  alt={follower.name}
-                  sx={{ width: 20, height: 20, cursor: "pointer" }}
-                />
-              </Link>
-            </Tooltip>
-          ))
+                }}
+              >
+                {topFollowers[index] ? (
+                  <Link
+                    href={`https://x.com/${topFollowers[index].username}`}
+                    target="_blank"
+                  >
+                    <Avatar
+                      src={topFollowers[index].avatar}
+                      alt={topFollowers[index].name}
+                      sx={{ width: 20, height: 20, cursor: "pointer" }}
+                    />
+                  </Link>
+                ) : (
+                  <Avatar
+                    sx={{
+                      width: 20,
+                      height: 20,
+                      bgcolor: "rgba(255, 255, 255, 0.1)",
+                      color: "rgba(255, 255, 255, 0.5)",
+                      fontSize: "12px",
+                    }}
+                  >
+                    -
+                  </Avatar>
+                )}
+              </Tooltip>
+            ))}
+          </>
         ) : (
-          <Typography sx={{ color: "rgba(255, 255, 255, 0.8)" }}>-</Typography>
+          <>
+            {[...Array(5)].map((_, index) => (
+              <Avatar
+                key={index}
+                sx={{
+                  width: 20,
+                  height: 20,
+                  bgcolor: "rgba(255, 255, 255, 0.1)",
+                  color: "rgba(255, 255, 255, 0.5)",
+                  fontSize: "12px",
+                }}
+              >
+                -
+              </Avatar>
+            ))}
+          </>
         )}
       </Box>
     </Box>

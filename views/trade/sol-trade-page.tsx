@@ -62,13 +62,32 @@ const SolTrade = ({
                     isMobile={isMobile}
                   />
                 </Stack> */}
-                <TradingView
+                {/* <TradingView
                   loading={detailsLoading}
                   poolAddress={collectionDetails?.pool_address || ""}
                   chainId={10000}
                   symbol={collectionDetails?.symbol}
                   tokenPrice={Number(collectionDetails?.price_in_usd)}
-                />
+                /> */}
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "510px",
+                    border: "none",
+                    overflow: "hidden",
+                  }}
+                >
+                  <iframe
+                    src={`https://www.gmgn.cc/kline/sol/${collectionDetails?.address}?interval=15`}
+                    width="100%"
+                    height="100%"
+                    style={{
+                      border: "none",
+                      display: "block",
+                    }}
+                    loading="lazy"
+                  ></iframe>
+                </Box>
               </>
             ) : (
               <Card

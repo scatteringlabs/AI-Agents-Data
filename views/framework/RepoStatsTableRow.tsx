@@ -53,7 +53,7 @@ export const RepoStatsTableRow = ({ item, duration }: Props) => {
             alignItems: "center",
             gap: 1,
             position: "relative",
-            zIndex: 0
+            zIndex: 0,
           }}
         >
           <AvatarCard
@@ -108,7 +108,7 @@ export const RepoStatsTableRow = ({ item, duration }: Props) => {
           <DeltaCell
             value={
               item[
-              `contributors_change_${duration}` as keyof RepoStat
+                `contributors_change_${duration}` as keyof RepoStat
               ] as number
             }
           />

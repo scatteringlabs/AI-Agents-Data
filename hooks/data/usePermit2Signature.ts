@@ -59,11 +59,11 @@ export type Permit = {
 };
 
 export function currentTimeInSeconds(): number {
-  return getUnixTime(new Date()); // 当前时间的UNIX时间戳（秒）
+  return getUnixTime(new Date()); // Current time in UNIX timestamp (seconds)
 }
 
 export function inXMinutesUnix(x: number): number {
-  return getUnixTime(addMinutes(new Date(), x)); // X分钟后的时间的UNIX时间戳（秒）
+  return getUnixTime(addMinutes(new Date(), x)); // Time X minutes from now in UNIX timestamp (seconds)
 }
 const PERMIT2_SIG_VALIDITY_TIME = 30; // minutes
 export function getPermitStruct(

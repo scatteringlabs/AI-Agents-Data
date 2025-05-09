@@ -63,29 +63,30 @@ const RightPanel: React.FC<RightPanelProps> = ({
         boxShadow: "0 0 10px rgba(0,0,0,0.1)",
         transition: "width 0.3s ease",
         zIndex: 100,
-        overflow: "hidden"
+        overflowY: "auto",
+        overflowX: "hidden",
+        "&::-webkit-scrollbar": {
+          width: "8px",
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "rgba(255, 255, 255, 0.1)",
+          borderRadius: "4px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "rgba(255, 255, 255, 0.2)",
+          borderRadius: "4px",
+          "&:hover": {
+            background: "rgba(255, 255, 255, 0.3)",
+          },
+        },
       }}
     >
       <Box
         sx={{
           p: 2,
-          height: "100%",
-          overflow: "auto",
           position: "relative",
-          "&::-webkit-scrollbar": {
-            width: "8px",
-          },
-          "&::-webkit-scrollbar-track": {
-            background: "rgba(255, 255, 255, 0.1)",
-            borderRadius: "4px",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            background: "rgba(255, 255, 255, 0.2)",
-            borderRadius: "4px",
-            "&:hover": {
-              background: "rgba(255, 255, 255, 0.3)",
-            },
-          },
+          minHeight: "100%",
+          overflow: "visible",
         }}
       >
         <IconButton
@@ -111,42 +112,16 @@ const RightPanel: React.FC<RightPanelProps> = ({
           />
         </IconButton>
 
-        <ButtonGroup
+        <Box
           sx={{
-            mb: 2,
+            position: "relative",
             width: "100%",
-            "& .MuiButton-root": {
-              flex: 1,
-              backgroundColor: "rgba(0, 0, 0, 0.1)",
-              color: "text.primary",
-              "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.2)",
-              },
-              "&.Mui-selected": {
-                backgroundColor: "primary.main",
-                color: "primary.contrastText",
-                "&:hover": {
-                  backgroundColor: "primary.dark",
-                },
-              },
-            },
+            minHeight: "100%",
+            overflow: "visible",
           }}
         >
-          <Button
-            onClick={() => setActiveTab("trade")}
-            variant={activeTab === "trade" ? "contained" : "text"}
-          >
-            Trade
-          </Button>
-          <Button
-            onClick={() => setActiveTab("ai")}
-            variant={activeTab === "ai" ? "contained" : "text"}
-          >
-            AI
-          </Button>
-        </ButtonGroup>
-
-        {content}
+          {content}
+        </Box>
       </Box>
     </Box>
   );

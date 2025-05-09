@@ -8,14 +8,14 @@ import { Erc20SwapAddress } from "./config";
 import { ConnectedWallet } from "@privy-io/react-auth";
 
 interface BuyErc20Params {
-  erc20zAddress: string; // ERC20Z 合约地址
-  recipient: string; // 接收 ERC20 代币的地址
-  minErc20Out: ethers.BigNumberish; // 最小期望的 ERC20 输出
-  ethToSpend: ethers.BigNumberish; // 发送的 ETH 数量
+  erc20zAddress: string; // ERC20Z contract address
+  recipient: string; // Address to receive ERC20 tokens
+  minErc20Out: ethers.BigNumberish; // Minimum expected ERC20 output
+  ethToSpend: ethers.BigNumberish; // Amount of ETH to send
   chainId: number;
   wallet: ConnectedWallet;
 }
-// 合约地址
+// Contract address
 
 export const buyErc20 = async ({
   erc20zAddress,

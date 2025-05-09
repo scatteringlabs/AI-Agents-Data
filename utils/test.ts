@@ -49,7 +49,7 @@ async function main() {
   let collection = publicKey("AQJuBg4ns9p8QyJUWxStKfFV6AzVgN3YmWZvdLh18WNd");
   let feeLocation = publicKey("72SebYpPzemzf4h7g52dgCc4awKgmHnoRmn8PLpP8MaK");
   let assets = publicKey("CKnGht4Jp4o5g2qi2hwvERPWCjVwRuG3BNiag7ovHj98");
-  // mint资产
+  // mint assets
   let tokenMintAddr = publicKey("3G32TcqRWzUZZLTSmWiP43EeM91RJgXnmtCS4udtfWUv");
   // Register it to the Umi client.
   umi.use(keypairIdentity(keypair));
@@ -113,8 +113,8 @@ async function main() {
     uri: "https://shdw-drive.genesysgo.net/EnT7faUnVhZA2G3Nyf9QcJSiVYhgaSXSt6C6ZCa7Rtt7/",
     max: 100,
     min: 0,
-    amount: BigInt(1e9 * 10), // 1 个 nft 需要 10个token
-    feeAmount: BigInt(1e9), // 1个nft 抽取1 ft作为手续费
+    amount: BigInt(1e9 * 10), // 1 NFT requires 10 tokens
+    feeAmount: BigInt(1e9), // 1 NFT charges 1 FT as fee
     path: 0,
     solFeeAmount: BigInt(0),
   }).sendAndConfirm(umi);
