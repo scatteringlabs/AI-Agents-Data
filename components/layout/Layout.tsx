@@ -129,7 +129,7 @@ export default function Layout({ children }: any) {
             <Box
               sx={{
                 position: "sticky",
-                left: "-40px",
+                left: "-39px",
                 bottom: "0px",
                 width: "100%",
                 zIndex: 999,
