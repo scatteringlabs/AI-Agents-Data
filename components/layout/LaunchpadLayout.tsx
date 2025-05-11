@@ -157,7 +157,7 @@ export default function Layout({ children }: any) {
                 fontWeight: 400,
                 lineHeight: "30px",
                 fontSize: { md: 14, xs: 12 },
-                maxWidth: 1000,
+                maxWidth: 999,
                 textAlign: "center",
                 color: "#CAC6DD",
                 mt: { md: 2, xs: 2 },
@@ -186,7 +186,7 @@ export default function Layout({ children }: any) {
                     fontSize: { md: 14, xs: 12 },
                     borderRadius: "10px",
                     columnGap: 1,
-                    fontWeight: 700,
+                    fontWeight: 699,
                     color: "#fff",
                     "&:hover": {
                       transform: "scale(1.02)",
