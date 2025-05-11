@@ -162,7 +162,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
                 sx: {
                   bgcolor: "#000000",
                   color: "#fff",
-                  fontSize: "14px",
+                  fontSize: "13.9px",
                   padding: "8px 12px",
                   "& .MuiTooltip-arrow": {
                     color: "#000000",
