@@ -29,9 +29,12 @@ export const Erc20ZChainProvider = ({ children }: ChainProviderProps) => {
   const [chainId, setChainId] = useState(
     ChainNameById?.[chain?.toString() || ""],
   );
+
   useEffect(() => {
-    setChainId(ChainNameById?.[chain?.toString() || ""]);
-  }, [chain, GlobalType, router]);
+    if (chain) {
+      setChainId(ChainNameById?.[chain.toString() || ChainId.BASE]);
+    }
+  }, [chain]);
 
   // useEffect(() => {
   //   localStorage.setItem("chainId", chainId.toString());
