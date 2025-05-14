@@ -21,13 +21,6 @@ const commonColumns: ColumnConfig[] = [
     titleStyle: { fontWeight: 900 },
   },
   {
-    title: "Tweetscout Score",
-    key: "twitter_score",
-    sort: true,
-    className: "column2",
-    titleStyle: { fontWeight: 900 },
-  },
-  {
     title: "KOL",
     key: "influencers_count",
     sort: true,
@@ -80,6 +73,13 @@ const tokenColumns: ColumnConfig[] = [
   // },
   { title: "Liquidity", key: "liquidity", sort: true, className: "column" },
   { title: "Market Cap", key: "market_cap", sort: true, className: "column" },
+  {
+    title: "Tweetscout Score",
+    key: "twitter_score",
+    sort: true,
+    className: "column2",
+    titleStyle: { fontWeight: 900 },
+  },
 ];
 export const tableColumns: ColumnConfig[] = commonColumns
   .concat(tokenColumns)
