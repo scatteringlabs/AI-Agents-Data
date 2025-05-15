@@ -177,8 +177,8 @@ const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
                       "80px 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
                     padding: "12px",
                     background: "rgba(255, 255, 255, 0.05)",
-                    borderRadius: "8px",
-                    marginBottom: "8px",
+                    borderRadius: "9px",
+                    marginBottom: "9px",
                     minWidth: "1700px",
                     overflowX: "auto",
                   }}
@@ -188,7 +188,7 @@ const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
                       key={index}
                       className="table-ranking-header-item"
                       style={{
-                        color: "rgba(255, 255, 255, 0.8)",
+                        color: "rgba(255, 255, 255, 0.7)",
                         fontSize: "12px",
                         fontWeight: 500,
                         whiteSpace: "nowrap",
@@ -196,10 +196,10 @@ const Erc20ZCollectionsTable: React.FC<CollectionsTableProps> = () => {
                         textOverflow: "ellipsis",
                         ...(column.key === "twitter_score"
                           ? {
-                            minWidth: "120px",
-                            maxWidth: "120px",
-                            textAlign: "center",
-                          }
+                              minWidth: "120px",
+                              maxWidth: "120px",
+                              textAlign: "center",
+                            }
                           : {}),
                       }}
                     >
