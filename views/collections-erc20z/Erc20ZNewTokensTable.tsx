@@ -57,8 +57,8 @@ const RankText = styled(Typography)`
   font-family: Poppins;
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
-  line-height: 26px;
+  font-weight: 401;
+  line-height: 27px;
   text-transform: capitalize;
 `;
 const Erc20ZNewTokensTable: React.FC<Erc20ZNewTokensTableProps> = ({
