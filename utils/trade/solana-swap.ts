@@ -210,27 +210,14 @@ export const getJupiterSwapTx = async (
 ): Promise<{ transaction: VersionedTransaction }> => {
   let transactionResponse: any;
   try {
-    const requestBody: {
-      quoteResponse: JupQuoteResponse;
-      userPublicKey: string;
-      wrapAndUnwrapSol: boolean;
-      feeAccount?: string;
-    } = {
-      quoteResponse: jupiterData,
-      userPublicKey: userAddress,
-      wrapAndUnwrapSol: false,
-    };
-
-    // 如果是使用 SOL 购买，添加手续费账户
-    if (
-      jupiterData.inputMint === "So11111111111111111111111111111111111111112"
-    ) {
-      requestBody.feeAccount = "BvfuZPcBVZvrt3JRUdz2dFjgC1R7rrd7YqBPodt2ysiJ";
-    }
-
     transactionResponse = await axios.post(
       "https://quote-api.jup.ag/v6/swap",
-      JSON.stringify(requestBody),
+      JSON.stringify({
+        quoteResponse: jupiterData,
+        userPublicKey: userAddress,
+        wrapAndUnwrapSol: true,
+        // feeAccount: "G416sDDzrom59mDBg3oQ4SrkXhDUAcRsd4cyi1qKqG5A", //SOL fee receiving address
+      }),
       {
         headers: {
           "Content-Type": "application/json",
@@ -247,6 +234,7 @@ export const getJupiterSwapTx = async (
       err.response.data &&
       err.response.data.error
     ) {
+      // toast?.error(err.response.data.error);
       throw new JupiterError(err.response.data.error);
     }
     toast?.error("Cannot get swap transaction");
@@ -262,7 +250,6 @@ export const getJupiterSwapTx = async (
   console.log("swapTransaction", swapTransaction);
 
   const swapTransactionBuf = Buffer.from(swapTransaction, "base64");
-  // @ts-ignore
   return { transaction: VersionedTransaction.deserialize(swapTransactionBuf) };
 };
 
