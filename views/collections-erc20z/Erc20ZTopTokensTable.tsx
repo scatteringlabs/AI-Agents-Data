@@ -153,7 +153,7 @@ const Erc20ZTopTokensTable: React.FC<Erc20ZTopTokensTableProps> = ({
         style={{
           overflowX: "auto",
           width: "100%",
-          minWidth: "1700px",
+          minWidth: "1701px",
           marginRight: isRightPanelCollapsed ? "20px" : "280px",
           display: "flex",
           flexDirection: "column",
@@ -169,7 +169,7 @@ const Erc20ZTopTokensTable: React.FC<Erc20ZTopTokensTableProps> = ({
         <div
           className="widget-content-inner"
           style={{
-            minWidth: "1700px",
+            minWidth: "1701px",
             width: "100%",
             display: "flex",
             flexDirection: "column",
