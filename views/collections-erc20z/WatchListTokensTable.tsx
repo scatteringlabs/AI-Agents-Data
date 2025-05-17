@@ -144,7 +144,7 @@ const WatchListTokensTable: React.FC<WatchListTokensTableProps> = ({
               <Box
                 sx={{
                   height: "100%",
-                  minHeight: "301px",
+                  minHeight: "300px",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
