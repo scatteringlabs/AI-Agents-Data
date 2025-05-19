@@ -16,6 +16,7 @@ import {
   FormControl,
   FormLabel,
   FormControlLabel,
+  CircularProgress,
 } from "@mui/material";
 import { toPng } from "html-to-image";
 import download from "downloadjs";
@@ -58,7 +59,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
 }) => {
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const [fullUrl, setFullUrl] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [copyState, copyToClipboard] = useCopyToClipboard();
   const [value, setValue] = useState("trade");
@@ -102,10 +103,40 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
         console.error("Error fetching image:", error);
       });
   }, [collectionDetails]);
+
+  // 添加图片预加载状态检查
+  const checkImagesLoaded = async () => {
+    if (!dialogRef.current) return;
+    const images = dialogRef.current.getElementsByTagName("img");
+    const imagePromises = Array.from(images).map(
+      (img) =>
+        new Promise((resolve) => {
+          if (img.complete) {
+            resolve(null);
+          } else {
+            img.onload = () => resolve(null);
+            img.onerror = () => resolve(null); // 即使加载失败也继续
+          }
+        }),
+    );
+    await Promise.all(imagePromises);
+  };
+
   const copyImageToClipboard = async () => {
     if (dialogRef.current) {
       try {
-        const dataUrl = await toPng(dialogRef.current);
+        setIsLoading(true);
+        await checkImagesLoaded();
+        const dataUrl = await toPng(dialogRef.current!, {
+          quality: 1.0,
+          pixelRatio: 2,
+          skipAutoScale: true,
+          skipFonts: true,
+          filter: (node) => {
+            const className = node.className || "";
+            return !className.includes("MuiBox-root");
+          },
+        });
         const response = await fetch(dataUrl);
         const blob = await response.blob();
         const clipboardItem = new ClipboardItem({ [blob.type]: blob });
@@ -114,17 +145,38 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
         toast.success("Image copied to clipboard");
       } catch (error) {
         console.error("Error converting dialog content to image:", error);
+        toast.error("Failed to copy image to clipboard");
+      } finally {
+        setIsLoading(false);
       }
     }
   };
+
   const handleSaveImage = () => {
     if (dialogRef.current) {
-      toPng(dialogRef.current)
+      setIsLoading(true);
+      checkImagesLoaded()
+        .then(() => {
+          return toPng(dialogRef.current!, {
+            quality: 1.0,
+            pixelRatio: 2,
+            skipAutoScale: true,
+            skipFonts: true,
+            filter: (node) => {
+              const className = node.className || "";
+              return !className.includes("MuiBox-root");
+            },
+          });
+        })
         .then((dataUrl) => {
           download(dataUrl, "share-content.png");
         })
         .catch((error) => {
           console.error("Error converting dialog content to image:", error);
+          toast.error("Failed to save image");
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   };
@@ -158,6 +210,24 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
           width: "100%",
         }}
       >
+        {isLoading && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              zIndex: 1000,
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
         <Box
           sx={{
             background: "#09051A",
