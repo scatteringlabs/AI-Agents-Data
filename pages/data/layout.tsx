@@ -7,15 +7,20 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
     backgroundColor: "#AF54FF",
     height: "3px",
   },
+  "& .MuiTab-root": {
+    minWidth: 120,
+    marginRight: 40,
+  },
 }));
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   textTransform: "none",
-  fontSize: "1.1rem",
+  fontSize: "20px",
   fontWeight: 500,
   color: "#666",
   "&.Mui-selected": {
     color: "#AF54FF",
+    fontWeight: 700,
   },
   "&:hover": {
     color: "#AF54FF",
@@ -72,7 +77,7 @@ export default function FrameworkLayout({
 
   return (
     <Container maxWidth="xl">
-      <Box sx={{ mt: 16 }}>
+      <Box sx={{ mt: 18 }}>
         <Box>
           <StyledTabs value={value} onChange={handleChange}>
             <StyledTab label="Framework" />
