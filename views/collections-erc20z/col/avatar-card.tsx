@@ -194,9 +194,9 @@ const TableAvatarCard = ({ item }: { item: Collection }) => {
           item?.logo_url
             ? item?.logo_url
             : getTokenLogoURL({
-              chainId: item?.chain_id || 1,
-              address: item?.address,
-            })
+                chainId: item?.chain_id || 1,
+                address: item?.address,
+              })
         }
         symbol={item.symbol || "unknown"}
         chainId={item.chain_id}
@@ -247,15 +247,13 @@ const TableAvatarCard = ({ item }: { item: Collection }) => {
                 className="social-icon"
               />
             )}
-            {twitterUrl && (
-              <SocialIcon
-                href={`https://x.com/search?q=(%24${item.symbol}%20OR%20${item.address})&src=typed_query&f=live`}
-                iconSrc="/images/search.svg"
-                alt="Search"
-                tooltip="Search Twitter"
-                className="social-icon"
-              />
-            )}
+            <SocialIcon
+              href={`https://x.com/search?q=(%24${item.symbol}%20OR%20${item.address})&src=typed_query&f=live`}
+              iconSrc="/images/search.svg"
+              alt="Search"
+              tooltip="Search Twitter"
+              className="social-icon"
+            />
             {projectUrl && (
               <SocialIcon
                 href={projectUrl}
